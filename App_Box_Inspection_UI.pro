@@ -39,7 +39,9 @@ SOURCES += \
     module/PacketEthComm/Client/EthernetClient.cpp \
     module/PacketEthComm/Client/EthernetClientControlData.cpp \
     module/PacketEthComm/EthernetGetInfo.cpp \
-    module/PacketEthComm/RendezvueCheckData.cpp
+    module/PacketEthComm/RendezvueCheckData.cpp \
+    censemble.cpp \
+    cmat2qimage.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -54,7 +56,9 @@ HEADERS += \
     module/PacketEthComm/Client/EthernetClientControlData.h \
     module/PacketEthComm/ErrorType.h \
     module/PacketEthComm/EthernetGetInfo.h \
-    module/PacketEthComm/RendezvueCheckData.h
+    module/PacketEthComm/RendezvueCheckData.h \
+    censemble.h \
+    cmat2qimage.h
 
 FORMS += \
         mainwindow.ui

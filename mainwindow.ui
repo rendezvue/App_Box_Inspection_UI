@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="label_image">
+   <widget class="QLabel" name="label_image_top">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -33,7 +33,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_image_2">
+   <widget class="QLabel" name="label_image_bottom">
     <property name="geometry">
      <rect>
       <x>980</x>
@@ -52,6 +52,48 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="label_image_top_bg">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>30</y>
+      <width>896</width>
+      <height>672</height>
+     </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_image_bottom_bg">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>30</y>
+      <width>896</width>
+      <height>672</height>
+     </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>label_image_top_bg</zorder>
+   <zorder>label_image_bottom_bg</zorder>
+   <zorder>label_image_top</zorder>
+   <zorder>label_image_bottom</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
