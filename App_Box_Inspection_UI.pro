@@ -41,7 +41,8 @@ SOURCES += \
     module/PacketEthComm/EthernetGetInfo.cpp \
     module/PacketEthComm/RendezvueCheckData.cpp \
     censemble.cpp \
-    cmat2qimage.cpp
+    cmat2qimage.cpp \
+    CIniInfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -58,7 +59,8 @@ HEADERS += \
     module/PacketEthComm/EthernetGetInfo.h \
     module/PacketEthComm/RendezvueCheckData.h \
     censemble.h \
-    cmat2qimage.h
+    cmat2qimage.h \
+    CIniInfo.h
 
 FORMS += \
         mainwindow.ui

@@ -20,11 +20,25 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_pEnsemble[1], SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture_Bottom(cv::Mat))) ;
 	
 
-	m_pEnsemble[0]->SetIP("192.168.56.102") ;
-	m_pEnsemble[1]->SetIP("192.168.56.102") ;
+	//m_pEnsemble[0]->SetIP("192.168.56.102") ;
+	//m_pEnsemble[1]->SetIP("192.168.56.102") ;
 
-	m_pEnsemble[0]->SetPort(4000) ;
-	m_pEnsemble[1]->SetPort(4001) ;
+	//m_pEnsemble[0]->SetPort(4000) ;
+	//m_pEnsemble[1]->SetPort(4001) ;
+
+	std::string top_ip = m_cls_info.Get_Top_Ip_Addr() ;
+	int top_port = m_cls_info.Get_Top_Port_Num() ;
+
+	std::string bottom_ip = m_cls_info.Get_Bottom_Ip_Addr() ;
+	int bottom_port = m_cls_info.Get_Bottom_Port_Num() ;
+	
+	m_cls_info.Save(top_ip, top_port, bottom_ip, bottom_port) ;
+
+	m_pEnsemble[0]->SetIP(top_ip) ;
+	m_pEnsemble[1]->SetIP(bottom_ip) ;
+
+	m_pEnsemble[0]->SetPort(top_port) ;
+	m_pEnsemble[1]->SetPort(bottom_port) ;
 	
 	m_pEnsemble[0]->m_thread_run = true ;
 	m_pEnsemble[1]->m_thread_run = true ;
