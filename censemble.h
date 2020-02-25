@@ -40,6 +40,7 @@ protected:
 
 signals:
 	void Done(cv::Mat image);
+	void NetStatus(bool b_con);
 
 };
 

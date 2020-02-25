@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(m_pEnsemble[0], SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture_Top(cv::Mat))) ;
 	connect(m_pEnsemble[1], SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture_Bottom(cv::Mat))) ;
+
+	connect(m_pEnsemble[0], SIGNAL(NetStatus(bool)), this, SLOT(updateNetwork_Top(bool))) ;
+	connect(m_pEnsemble[1], SIGNAL(NetStatus(bool)), this, SLOT(updateNetwork_Bottom(bool))) ;
 	
 
 	//m_pEnsemble[0]->SetIP("192.168.56.102") ;
@@ -45,6 +48,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	m_pEnsemble[0]->start() ;
 	m_pEnsemble[1]->start() ;
+
+	//display
+	QString qstr_top = QString::fromStdString(top_ip) + ":" + QString::number(top_port);
+	QString qstr_bottom = QString::fromStdString(bottom_ip) + ":" + QString::number(bottom_port);
+	
+	ui->label_info_top->setText(qstr_top) ;
+	ui->label_info_bottom->setText(qstr_bottom) ;
+	
 }
 
 MainWindow::~MainWindow()
@@ -124,3 +135,26 @@ void MainWindow::updatePicture_Bottom(cv::Mat image)
     }
 }
 
+void MainWindow::updateNetwork_Top(bool b_con)
+{
+	if( b_con )
+	{
+		ui->label_info_top->setStyleSheet("QLabel { color : green; }");
+	}
+	else
+	{
+		ui->label_info_top->setStyleSheet("QLabel { color : red; }");
+	}
+}
+
+void MainWindow::updateNetwork_Bottom(bool b_con)
+{
+	if( b_con )
+	{
+		ui->label_info_bottom->setStyleSheet("QLabel { color : green; }");
+	}
+	else
+	{
+		ui->label_info_bottom->setStyleSheet("QLabel { color : red; }");
+	}
+}

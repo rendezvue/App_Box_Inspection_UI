@@ -19,6 +19,8 @@ void CEnsemble::run(void)
                 //try re-connect
                 m_cls_api.Ensemble_Network_Disconnect() ;
                 m_cls_api.Ensemble_Network_Connect(m_str_ip.c_str(), m_port) ;
+
+				emit NetStatus(false);
             }
             else
             {
@@ -78,6 +80,7 @@ void CEnsemble::run(void)
 	            }
 
 				emit Done(m_mat_input_image);
+				emit NetStatus(true);
             }
         }
 		

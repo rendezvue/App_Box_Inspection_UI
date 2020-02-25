@@ -29,6 +29,9 @@ public slots:
 	void updatePicture_Top(cv::Mat image);
 	void updatePicture_Bottom(cv::Mat image);
 
+	void updateNetwork_Top(bool b_con);
+	void updateNetwork_Bottom(bool b_con);
+
 };
 
 #endif // MAINWINDOW_H
