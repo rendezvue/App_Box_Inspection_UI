@@ -24,6 +24,12 @@ void CEnsemble::run(void)
             }
             else
             {
+            	//load DB
+            	m_cls_api.Ensemble_Task_File_Load() ;
+
+				//Get Job Info
+				std::string str_prj_list_xml = m_cls_api.Ensemble_Project_Get_List() ;
+				
             	//Get Image
             	if( m_mat_input_image.empty() )
 		        {

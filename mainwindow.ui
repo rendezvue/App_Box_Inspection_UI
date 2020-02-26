@@ -196,7 +196,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>800</y>
+      <y>830</y>
       <width>320</width>
       <height>240</height>
      </rect>
@@ -211,6 +211,19 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="label_job_info_top">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>810</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
    <zorder>label_image_top_bg</zorder>
    <zorder>label_image_bottom_bg</zorder>
    <zorder>label_image_top</zorder>
@@ -222,6 +235,7 @@
    <zorder>progressBar</zorder>
    <zorder>label_3</zorder>
    <zorder>label_image_top_2</zorder>
+   <zorder>label_job_info_top</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

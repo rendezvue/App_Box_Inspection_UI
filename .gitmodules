@@ -13,3 +13,6 @@
 [submodule "module/EnsembleAPI"]
 	path = module/EnsembleAPI
 	url = https://github.com/rendezvue/EnsembleAPI.git
+[submodule "module/pugixml"]
+	path = module/pugixml
+	url = https://github.com/rendezvue/pugixml.git
