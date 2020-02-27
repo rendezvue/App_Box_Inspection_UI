@@ -10,6 +10,9 @@
     <height>1080</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -118,6 +121,9 @@
       <height>17</height>
      </rect>
     </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
     <property name="text">
      <string>TextLabel</string>
     </property>
@@ -188,6 +194,9 @@
       <height>17</height>
      </rect>
     </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
     <property name="text">
      <string>TextLabel</string>
     </property>
@@ -207,6 +216,9 @@
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
     </property>
     <property name="text">
      <string>Config</string>
@@ -228,6 +240,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
     <property name="text">
      <string>New</string>
     </property>
@@ -240,6 +255,9 @@
       <width>891</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="sizeConstraint">
@@ -254,6 +272,9 @@
          <bold>true</bold>
         </font>
        </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>CAMERA : TOP</string>
        </property>
@@ -265,6 +286,9 @@
         <font>
          <pointsize>13</pointsize>
         </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>-</string>
@@ -282,6 +306,9 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
@@ -295,6 +322,9 @@
          <bold>true</bold>
         </font>
        </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>CAMERA : BOTTOM</string>
        </property>
@@ -306,6 +336,9 @@
         <font>
          <pointsize>13</pointsize>
         </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>-</string>
@@ -329,6 +362,9 @@
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
     </property>
     <property name="text">
      <string>Save</string>

@@ -5,10 +5,22 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    //showMaximized();
-    setWindowState(Qt::WindowFullScreen);
+    //installEventFilter(this); // install filter BEFORE setupUI.
+	//qApp->installEventFilter(this);
+	//setMouseTracking(true);
+	ui->setupUi(this);
 
-    ui->setupUi(this);
+	centralWidget()->installEventFilter(this);
+	centralWidget()->setMouseTracking(true);
+
+	m_top_point_x = -1 ;
+	m_top_point_y = -1 ;
+
+	m_bottom_point_x = -1 ;
+	m_bottom_point_y = -1 ;
+	
+    //showMaximized();
+    //setWindowState(Qt::WindowFullScreen);
 
 	ui->label_image_top_bg->setStyleSheet("QLabel { background-color : black; }");
     ui->label_image_bottom_bg->setStyleSheet("QLabel { background-color : black; }");
@@ -119,7 +131,22 @@ void MainWindow::updatePicture_Top(cv::Mat image)
 
 		CMat2QImage cls_mat_2_qimage ;
 		QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, p_image_label->width(), p_image_label->height()) ;
-        p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
+        //p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
+
+		//draw guide line(mouse)
+		if( m_top_point_x >= 0 && m_top_point_y >= 0 && m_pEnsemble[0]->Get_Status() == STATUS_CONFIG )
+	    {
+	        QPainter qPainter(&qt_display_image);
+	        qPainter.setBrush(Qt::NoBrush);
+	        qPainter.setPen(Qt::red);
+
+	        qPainter.drawLine(m_top_point_x,0,m_top_point_x,image.rows);
+	        qPainter.drawLine(0,m_top_point_y,image.cols,m_top_point_y);
+
+	        bool bEnd = qPainter.end();
+	    }
+
+	     p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
     }
 }
 
@@ -153,6 +180,20 @@ void MainWindow::updatePicture_Bottom(cv::Mat image)
 
 		CMat2QImage cls_mat_2_qimage ;
 		QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, p_image_label->width(), p_image_label->height()) ;
+
+		//draw guide line(mouse)
+		if( m_bottom_point_x >= 0 && m_bottom_point_y >= 0 && m_pEnsemble[1]->Get_Status() == STATUS_CONFIG )
+	    {
+	        QPainter qPainter(&qt_display_image);
+	        qPainter.setBrush(Qt::NoBrush);
+	        qPainter.setPen(Qt::red);
+
+	        qPainter.drawLine(m_bottom_point_x,0,m_bottom_point_x,image.rows);
+	        qPainter.drawLine(0,m_bottom_point_y,image.cols,m_bottom_point_y);
+
+	        bool bEnd = qPainter.end();
+	    }
+		
         p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
     }
 }
@@ -297,16 +338,129 @@ void MainWindow::OnButton_Config_Save(void)
 	m_pEnsemble[1]->Config_Save() ;
 }
 
+#if 0
+bool MainWindow::eventFilter(QObject *obj, QEvent* event)
+{
+	if (event->type() == QEvent::MouseMove)
+	{
+		QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+
+		QPoint point = mouseEvent->pos() ;
+
+		int pt_x = point.x() ;
+		int pt_y = point.y() ;
+
+		qDebug("event mouse move : %d, %d", pt_x, pt_y) ;
+
+		//top
+		int top_region_x = ui->label_image_top->x() ;
+		int top_region_y = ui->label_image_top->y() ;
+
+		int top_region_w = ui->label_image_top->width() ;
+	    int top_region_h = ui->label_image_top->height() ;
+
+		//bottom		
+		int bottom_region_x = ui->label_image_bottom->x() ;
+		int bottom_region_y = ui->label_image_bottom->y() ;
+
+		int bottom_region_w = ui->label_image_bottom->width() ;
+		int bottom_region_h = ui->label_image_bottom->height() ;
+
+		//qDebug("mouse : %d, %d", pt_x, pt_y) ;
+		//qDebug("left : %d, %d, %d, %d", top_region_x, top_region_y, top_region_w, top_region_h) ;
+		//qDebug("right : %d, %d, %d, %d", bottom_region_x, bottom_region_y, bottom_region_w, bottom_region_h) ;
+
+		if( pt_x >= top_region_x && pt_x <= top_region_x+top_region_w &&
+			pt_y >= top_region_y && pt_y <= top_region_y+top_region_h )  
+		{
+			//qDebug("mouse top : %d, %d", pt_x, pt_y) ;
+			
+			m_top_point_x = top_region_x - pt_x ;
+			m_top_point_y = top_region_y - pt_y ;
+
+			m_bottom_point_x = -1 ;
+			m_bottom_point_y = -1 ;
+		}
+		else if( pt_x >= bottom_region_x && pt_x <= bottom_region_x+bottom_region_w &&
+				pt_y >= bottom_region_y && pt_y <= bottom_region_y+bottom_region_h )  
+		{
+			//qDebug("mouse bottom : %d, %d", pt_x, pt_y) ;
+			
+			m_top_point_x = -1 ;
+			m_top_point_y = -1 ;
+
+			m_bottom_point_x = bottom_region_x - pt_x ;
+			m_bottom_point_y = bottom_region_y - pt_y ;
+		}
+	}
+	
+	return false;
+}
+#endif
+
+#if 1
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
-{
+{	
+	QPoint point = event->pos() ;
+
+	int pt_x = point.x() ;
+	int pt_y = point.y() ;
+
+	qDebug("event mouse move : %d, %d", pt_x, pt_y) ;
+
+	//top
+	int top_region_x = ui->label_image_top->x() ;
+	int top_region_y = ui->label_image_top->y() ;
+
+	int top_region_w = ui->label_image_top->width() ;
+    int top_region_h = ui->label_image_top->height() ;
+
+	//bottom		
+	int bottom_region_x = ui->label_image_bottom->x() ;
+	int bottom_region_y = ui->label_image_bottom->y() ;
+
+	int bottom_region_w = ui->label_image_bottom->width() ;
+	int bottom_region_h = ui->label_image_bottom->height() ;
+
+	//qDebug("mouse : %d, %d", pt_x, pt_y) ;
+	//qDebug("left : %d, %d, %d, %d", top_region_x, top_region_y, top_region_w, top_region_h) ;
+	//qDebug("right : %d, %d, %d, %d", bottom_region_x, bottom_region_y, bottom_region_w, bottom_region_h) ;
+
+	if( pt_x >= top_region_x && pt_x <= top_region_x+top_region_w &&
+		pt_y >= top_region_y && pt_y <= top_region_y+top_region_h )  
+	{
+		//qDebug("mouse top : %d, %d", pt_x, pt_y) ;
+		
+		m_top_point_x = pt_x - top_region_x ;
+		m_top_point_y = pt_y - top_region_y ;
+
+		m_bottom_point_x = -1 ;
+		m_bottom_point_y = -1 ;
+	}
+	else if( pt_x >= bottom_region_x && pt_x <= bottom_region_x+bottom_region_w &&
+			pt_y >= bottom_region_y && pt_y <= bottom_region_y+bottom_region_h )  
+	{
+		//qDebug("mouse bottom : %d, %d", pt_x, pt_y) ;
+		
+		m_top_point_x = -1 ;
+		m_top_point_y = -1 ;
+
+		m_bottom_point_x = pt_x - bottom_region_x ;
+		m_bottom_point_y = pt_y - bottom_region_y ;
+	}
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
 }
+#endif
 
+void MainWindow::showEvent(QShowEvent *ev)
+{
+    QMainWindow::showEvent(ev) ;
+}
 

@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMouseEvent>
+#include <QPainter>
+
 #include "censemble.h"
 #include "cmat2qimage.h"
 #include "CIniInfo.h"
@@ -25,10 +28,20 @@ private:
 
 	 CIniInfo m_cls_info ;
 
+	 int m_top_point_x ;
+	 int m_top_point_y ;
+
+	 int m_bottom_point_x ;
+	 int m_bottom_point_y ;
+	 
 protected:
-	void mousePressEvent(QMouseEvent *event) override;
+	void showEvent(QShowEvent *ev) override;
+	//bool eventFilter(QObject*, QEvent*);
+#if 1
+    void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+#endif
 	
 public slots:
 	void updatePicture_Top(cv::Mat image);
