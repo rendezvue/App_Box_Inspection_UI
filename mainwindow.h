@@ -25,6 +25,11 @@ private:
 
 	 CIniInfo m_cls_info ;
 
+protected:
+	void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+	
 public slots:
 	void updatePicture_Top(cv::Mat image);
 	void updatePicture_Bottom(cv::Mat image);

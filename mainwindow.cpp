@@ -297,4 +297,16 @@ void MainWindow::OnButton_Config_Save(void)
 	m_pEnsemble[1]->Config_Save() ;
 }
 
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+}
+
 
