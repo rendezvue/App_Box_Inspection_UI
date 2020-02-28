@@ -13,6 +13,12 @@ namespace Ui {
 class MainWindow;
 }
 
+typedef struct _SelectRegion
+{	
+	int x = -1,y = -1,w = 0,h = 0 ;
+	int type = -1 ;
+}SelectRegion;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -33,6 +39,8 @@ private:
 
 	 int m_bottom_point_x ;
 	 int m_bottom_point_y ;
+
+	 SelectRegion m_select_region ;
 	 
 protected:
 	void showEvent(QShowEvent *ev) override;
