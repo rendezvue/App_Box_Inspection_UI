@@ -39,6 +39,8 @@ public:
 
 	void Config_New(void) ;
 	void Config_Save(void) ;
+
+	void Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h) ;
 	
 	bool m_thread_run ;
 

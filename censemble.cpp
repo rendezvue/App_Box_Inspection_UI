@@ -282,3 +282,13 @@ void CEnsemble::Config_Save(void)
 	}
 }
 
+void CEnsemble::Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h)
+{
+	if( Get_Status() == STATUS_CONFIG )
+	{
+		//SelectObject
+		m_cls_api.Ensemble_Job_Set_SelectObject(m_str_job_id, f_x, f_y, f_w, f_h) ;
+	}
+}
+
+

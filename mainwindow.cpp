@@ -553,6 +553,47 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 	m_bottom_point_x = -1 ;
 	m_bottom_point_y = -1 ;
 
+	if( m_select_region.type == 0 )	//top
+	{
+		if( m_pEnsemble[0]->Get_Status() == STATUS_CONFIG )
+		{			
+			float f_x = 0.0 ;
+			float f_y = 0.0 ;
+			float f_w = 0.0 ;
+			float f_h = 0.0 ;
+
+			int label_w = ui->label_image_top->width() ;
+			int label_h = ui->label_image_top->height() ;
+
+			f_x = (float)m_select_region.x / (float)label_w ;
+			f_y = (float)m_select_region.y / (float)label_h ;
+			f_w = (float)m_select_region.w / (float)label_w ;
+			f_h = (float)m_select_region.h / (float)label_h ;
+			
+			m_pEnsemble[0]->Config_Set_Region(f_x, f_y, f_w, f_h) ;
+		}
+	}
+	else if( m_select_region.type == 1 )	//bottom
+	{
+		if( m_pEnsemble[1]->Get_Status() == STATUS_CONFIG )
+		{
+			float f_x = 0.0 ;
+			float f_y = 0.0 ;
+			float f_w = 0.0 ;
+			float f_h = 0.0 ;
+
+			int label_w = ui->label_image_bottom->width() ;
+			int label_h = ui->label_image_bottom->height() ;
+
+			f_x = (float)m_select_region.x / (float)label_w ;
+			f_y = (float)m_select_region.y / (float)label_h ;
+			f_w = (float)m_select_region.w / (float)label_w ;
+			f_h = (float)m_select_region.h / (float)label_h ;
+			
+			m_pEnsemble[1]->Config_Set_Region(f_x, f_y, f_w, f_h) ;
+		}
+	}
+
 	//reset
 	m_select_region.type = -1 ;
 	m_select_region.x = -1 ;
