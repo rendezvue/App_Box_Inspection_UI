@@ -69,6 +69,8 @@ public slots:
 	void OnButton_Config_New(void) ;
 	void OnButton_Config_Save(void) ;
 
+	void OnButton_Test_Run(void) ;
+
 };
 
 #endif // MAINWINDOW_H

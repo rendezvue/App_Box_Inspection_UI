@@ -370,6 +370,29 @@
      <string>Save</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_test_run">
+    <property name="geometry">
+     <rect>
+      <x>1590</x>
+      <y>10</y>
+      <width>311</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>Test Run</string>
+    </property>
+   </widget>
    <zorder>label_image_top_bg</zorder>
    <zorder>label_image_bottom_bg</zorder>
    <zorder>label_image_top</zorder>
@@ -385,6 +408,7 @@
    <zorder>horizontalLayoutWidget</zorder>
    <zorder>horizontalLayoutWidget_2</zorder>
    <zorder>pushButton_config_save</zorder>
+   <zorder>pushButton_test_run</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

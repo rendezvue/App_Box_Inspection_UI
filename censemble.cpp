@@ -2,10 +2,16 @@
 
 void CEnsemble::run(void)
 {
+	std::vector<std::string> vec_test_source_list ;
+	int test_index = -1 ;
+		
     qRegisterMetaType<cv::Mat>("cv::Mat");
 
 	//Connect
 	m_cls_api.Ensemble_Network_Connect(m_str_ip.c_str(), m_port) ;
+
+	//get source list
+	vec_test_source_list = Get_Source_List() ;
 	
     while(m_thread_run)
     {        
@@ -20,6 +26,10 @@ void CEnsemble::run(void)
                 m_cls_api.Ensemble_Network_Disconnect() ;
                 m_cls_api.Ensemble_Network_Connect(m_str_ip.c_str(), m_port) ;
 
+				//get source list
+				vec_test_source_list.clear() ;
+				vec_test_source_list = Get_Source_List() ;
+				
 				emit NetStatus(false);
             }
             else
@@ -63,17 +73,42 @@ void CEnsemble::run(void)
 
 				//qDebug("test 0") ;
 				const int status = Get_Status() ;
-				if( status == STATUS_CONFIG)
+
+				if( status == STATUS_TEST_RUN )
 				{
-					//Set Base Image : not reset 
-					//m_cls_api.Ensemble_Job_Set_Image(str_job_id, false)  ;
-					
-					//qDebug("test 1") ;
+					if( vec_test_source_list.size() > 0 )
+					{
+						//next image
+						if( test_index >=0 )
+						{
+							if( test_index >= vec_test_source_list.size() ) test_index = 0 ;
+							
+							m_cls_api.Ensemble_Source_Set(vec_test_source_list[test_index]) ;
+						}
+
+						//Run
+						std::string str_result_xml = m_cls_api.Ensemble_Job_Run(m_str_job_id) ;
+
+						//Get Result Imag
+						ret = m_cls_api.Ensemble_Result_Get_Image(m_str_job_id, image_type,  &get_data, &width, &height, &get_source_image_type) ;
+						//ret = m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
+						
+						test_index++ ;
+					}
+					else
+					{
+						vec_test_source_list = Get_Source_List() ;
+					}
+
+					//delay
+					QThread::msleep(100) ;	//delay 1sec
+				}
+				else if( status == STATUS_CONFIG)
+				{
                     ret = m_cls_api.Ensemble_Job_Get_Image(m_str_job_id, image_type, &get_data, &width, &height, &get_source_image_type)  ;
 				}
 				else
 				{
-					//qDebug("test 2") ;
                 	ret = m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
 				}
 				//qDebug("test 3") ;
@@ -302,4 +337,31 @@ void CEnsemble::Config_Set_Region(const float f_x, const float f_y, const float 
 	}
 }
 
+std::vector<std::string> CEnsemble::Get_Source_List(void)
+{
+	std::vector<std::string> ret_vec_str_path ;
+	
+	std::string str_source_list_xml = m_cls_api.Ensemble_Source_Get_List() ;
 
+	//xml parsing
+	//XML Parsing
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_string((char *)(str_source_list_xml.c_str()));
+
+    if (!result)
+    {
+        qDebug("xml parsing error") ;
+    }
+    else
+    {
+        for (pugi::xml_node job: doc.child("Ensemble").children("Image"))
+        {
+            std::string str_path = job.child("PATH").text().get();
+            std::string str_path2 = str_path ;
+
+			ret_vec_str_path.push_back(str_path2) ;
+        }
+    }
+
+	return ret_vec_str_path ;
+}

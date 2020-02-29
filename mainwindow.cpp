@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->pushButton_config_new, SIGNAL(clicked()), this,  SLOT(OnButton_Config_New())) ;
 	connect(ui->pushButton_config_save, SIGNAL(clicked()), this,  SLOT(OnButton_Config_Save())) ;
 
+	connect(ui->pushButton_test_run, SIGNAL(clicked()), this,  SLOT(OnButton_Test_Run())) ;
+	
+
 	ui->pushButton_config_new->hide() ;
 	ui->pushButton_config_save->hide() ;
 		
@@ -609,5 +612,23 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 void MainWindow::showEvent(QShowEvent *ev)
 {
     QMainWindow::showEvent(ev) ;
+}
+
+void MainWindow::OnButton_Test_Run(void)
+{
+	if( m_pEnsemble[0]->Get_Status() == STATUS_TEST_RUN)
+	{
+		m_pEnsemble[0]->Set_Status(STATUS_NORMAL) ;
+		m_pEnsemble[1]->Set_Status(STATUS_NORMAL) ;
+		
+		ui->pushButton_test_run->setText("Test Run Start");
+	}
+	else
+	{
+		m_pEnsemble[0]->Set_Status(STATUS_TEST_RUN) ;
+		m_pEnsemble[1]->Set_Status(STATUS_TEST_RUN) ;
+
+		ui->pushButton_test_run->setText("Test Run Stop");
+	}
 }
 

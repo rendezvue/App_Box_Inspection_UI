@@ -14,6 +14,7 @@
 
 #define STATUS_NORMAL		0
 #define STATUS_CONFIG		1
+#define STATUS_TEST_RUN		2
 
 class CEnsemble : public QThread
 {
@@ -34,7 +35,9 @@ public:
 	std::string Get_Job_Info(std::string* p_out_str_job_id=NULL) ;
 	cv::Mat Get_Job_Image(const std::string str_job_id="") ; 
 	std::string Get_Job_ID(void) ;
-	
+
+	std::vector<std::string> Get_Source_List(void) ;
+		
 	void Set_Status(const int status) ;
 	int Get_Status(void) ;
 	
