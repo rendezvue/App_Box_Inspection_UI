@@ -31,7 +31,7 @@ void CEnsemble::run(void)
 				if( str_job_info.empty() )
 				{
 					//load DB
-	            	m_cls_api.Ensemble_Task_File_Load() ;
+	            	Config_Load() ;
 				}
 				else
 				{
@@ -210,6 +210,11 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 	return str_ret ;
 }
 
+std::string CEnsemble::Get_Job_ID(void)
+{
+	return m_str_job_id ;
+}
+
 cv::Mat CEnsemble::Get_Job_Image(const std::string str_job_id) 
 {
 	cv::Mat object_image ;
@@ -278,8 +283,14 @@ void CEnsemble::Config_Save(void)
 {
 	if( Get_Status() == STATUS_CONFIG )
 	{
-		m_cls_api.Ensemble_Task_File_Save() ;
+		m_cls_api.Ensemble_Task_File_Save(true) ;
 	}
+}
+
+void CEnsemble::Config_Load(void)
+{
+	//load DB
+	m_cls_api.Ensemble_Task_File_Load() ;
 }
 
 void CEnsemble::Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h)

@@ -366,6 +366,9 @@ void MainWindow::OnButton_Config_Save(void)
 {
 	m_pEnsemble[0]->Config_Save() ;
 	m_pEnsemble[1]->Config_Save() ;
+
+	m_pEnsemble[0]->Config_Load() ;
+	m_pEnsemble[1]->Config_Load() ;
 }
 
 #if 0

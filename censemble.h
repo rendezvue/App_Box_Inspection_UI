@@ -33,12 +33,14 @@ public:
 
 	std::string Get_Job_Info(std::string* p_out_str_job_id=NULL) ;
 	cv::Mat Get_Job_Image(const std::string str_job_id="") ; 
-
+	std::string Get_Job_ID(void) ;
+	
 	void Set_Status(const int status) ;
 	int Get_Status(void) ;
-
+	
 	void Config_New(void) ;
 	void Config_Save(void) ;
+	void Config_Load(void) ;
 
 	void Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h) ;
 	

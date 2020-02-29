@@ -125,7 +125,7 @@
      <bool>true</bool>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>-</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_image_top_object_bg">
@@ -198,7 +198,7 @@
      <bool>true</bool>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>-</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_config">
