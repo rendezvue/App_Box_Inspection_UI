@@ -210,7 +210,7 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 					int type = job.attribute("Type").as_int();
 					std::string str_name = job.attribute("Name").value();
 					
-					std::string str_tool_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
+					//std::string str_tool_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 
 					if( p_out_str_job_id )
 					{
@@ -230,12 +230,42 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 	                    int type = tool.attribute("Type").as_int();
 	                    std::string str_name = tool.attribute("Name").value();
 						
-						std::string str_tool_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
+						//std::string str_tool_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 						
 	                    //qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
 						//add info
 						str_ret += str_name ;
+
+						//---------------------------
+		                //Option list
+		                int count = 0 ;
+		                for (pugi::xml_node option: tool.child("Options").children("Option"))
+		                {
+		                	std::string str_option_id = option.attribute("ID").value();
+		                    int option_type = option.attribute("Type").as_int();
+		                    std::string str_option_name = option.attribute("Name").value();
+							
+							//std::string str_tool_option_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(option_type) ;
+
+							if( count == 0 )
+							{
+								str_ret += "(" ;
+								str_ret += str_option_name ;
+							}
+							else
+							{
+								str_ret += ", " ;
+								str_ret += str_option_name ;
+							}
+
+							count++ ;
+		                }
+
+						if( count > 0 )
+						{
+							str_ret += ")" ;
+						}
 	                }
 				}
 			}
