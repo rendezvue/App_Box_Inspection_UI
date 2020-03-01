@@ -45,7 +45,7 @@ void CEnsemble::run(void)
 				}
 				else
 				{
-                    QString qstr_info = QString::fromStdString(m_str_job_id);
+                    QString qstr_info = QString::fromStdString(str_job_info);
         			emit JobInfo(qstr_info);
 				}
 #endif				
@@ -178,6 +178,8 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 	//Get Job Info
 	std::string str_prj_list_xml = m_cls_api.Ensemble_Project_Get_List() ;
 
+	//qDebug("Get Job Info = %s", str_prj_list_xml.c_str()) ;
+	
 	//Job info parsing
 	//XML Parsing
     pugi::xml_document doc;
@@ -217,7 +219,7 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 						(*p_out_str_job_id) = str_job_id ;
 					}
 					
-					//qDebug("Job : Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
+					//qDebug("Job : Type=%d, Name=%s", type, str_name.c_str()) ;
 
 					//add info
 					str_ret += str_name + "::" ;
@@ -232,7 +234,7 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 						
 						//std::string str_tool_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 						
-	                    //qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
+	                    //qDebug("Tool : Type=%d, Name=%s", type, str_name.c_str()) ;
 
 						//add info
 						str_ret += str_name ;
@@ -245,6 +247,8 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 		                	std::string str_option_id = option.attribute("ID").value();
 		                    int option_type = option.attribute("Type").as_int();
 		                    std::string str_option_name = option.attribute("Name").value();
+
+							//qDebug("Option : Type=%d, Name=%s", option_type, str_option_name.c_str()) ;
 							
 							//std::string str_tool_option_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(option_type) ;
 
