@@ -41,6 +41,9 @@ private:
 	 int m_bottom_point_y ;
 
 	 SelectRegion m_select_region ;
+
+	 bool m_set_user_level_top ;
+	 bool m_set_user_level_bottom ;
 	 
 protected:
 	void showEvent(QShowEvent *ev) override;
@@ -76,6 +79,14 @@ public slots:
 
 	void updateLevelCrack_Top(int level) ;
 	void updateLevelCrack_Bottom(int level) ;
+
+	//slider
+	void OnSliderSetTopLevel(void) ;
+    void OnSliderTopMove(int value) ;
+
+	//slider
+	void OnSliderSetBottomLevel(void) ;
+    void OnSliderBottomMove(int value) ;
 
 };
 

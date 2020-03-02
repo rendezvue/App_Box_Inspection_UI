@@ -34,9 +34,8 @@ void CEnsemble::run(void)
             }
             else
             {
-            	std::string str_option_inspect_crack ; 
 #if 1    
-				std::string str_job_info = Get_Job_Info(&m_str_job_id, &str_option_inspect_crack) ;
+				std::string str_job_info = Get_Job_Info(&m_str_job_id, &m_str_option_inspect_crack) ;
 				//qDebug("str_job_info = %s", str_job_info.c_str()) ;
 
 				if( str_job_info.empty() )
@@ -54,12 +53,12 @@ void CEnsemble::run(void)
 				//get run option of inspect crack
 				//qDebug("Crack ID = %s", str_option_inspect_crack.c_str()) ;
 
-				int run_option = m_cls_api.Ensemble_Task_Get_Run_Option(str_option_inspect_crack) ;
+				int run_option = m_cls_api.Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack) ;
 				emit RunCheck_Crack((bool)run_option) ;
 
 				//get inspect level
 				//Get Level 
-			    int inspect_level = m_cls_api.Ensemble_Tool_Option_Crack_Get_InspectLevel(str_option_inspect_crack);
+			    int inspect_level = m_cls_api.Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack);
 				emit Level_Crack(inspect_level) ;
 #if 1
 				//Get Object Image
@@ -379,6 +378,11 @@ void CEnsemble::Config_Load(void)
 {
 	//load DB
 	m_cls_api.Ensemble_Task_File_Load() ;
+}
+
+void CEnsemble::Config_Set_Level(const int level)
+{
+	m_cls_api.Ensemble_Tool_Option_Crack_Set_InspectLevel(m_str_option_inspect_crack, level);
 }
 
 void CEnsemble::Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h)

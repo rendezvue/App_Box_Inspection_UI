@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	m_bottom_point_x = -1 ;
 	m_bottom_point_y = -1 ;
+
+	m_set_user_level_top = false ;
+	m_set_user_level_bottom = false ;
 	
     //showMaximized();
     setWindowState(Qt::WindowFullScreen);
@@ -51,6 +54,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	//level
 	connect(m_pEnsemble[0], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Top(int))) ;
 	connect(m_pEnsemble[1], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
+
+	//slider
+	connect(ui->horizontalSlider_level_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopLevel()));
+	connect(ui->horizontalSlider_level_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopMove(int)));
+	connect(ui->horizontalSlider_level_bottom, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetBottomLevel()));
+	connect(ui->horizontalSlider_level_bottom, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderBottomMove(int)));
 	
 	//button
 	connect(ui->pushButton_config, SIGNAL(clicked()), this,  SLOT(OnButton_Config())) ;
@@ -647,6 +656,7 @@ void MainWindow::updateRunCrack_Top(bool b_run)
 
 void MainWindow::updateRunCrack_Bottom(bool b_run)
 {
+	ui->checkBox_check_crack_bottom->setChecked(b_run);
 }
 
 void MainWindow::updateLevelCrack_Top(int level)
@@ -654,11 +664,42 @@ void MainWindow::updateLevelCrack_Top(int level)
 	//qDebug("crack level = %d", level) ;
 	
 	//Set Slider
-	ui->horizontalSlider_level_top->setValue(level) ;
+	if( m_set_user_level_top == false ) ui->horizontalSlider_level_top->setValue(level) ;
 }
 
 void MainWindow::updateLevelCrack_Bottom(int level)
 {
+	//Set Slider
+	if( m_set_user_level_bottom == false ) ui->horizontalSlider_level_bottom->setValue(level) ;
 }
 
+void MainWindow::OnSliderSetTopLevel(void)
+{
+	//get level
+    int level = ui->horizontalSlider_level_top->value() ;
+	m_pEnsemble[0]->Config_Set_Level(level) ;
+
+	m_set_user_level_top = false ;
+}
+
+void MainWindow::OnSliderTopMove(int value) 
+{
+	//set feature
+	m_set_user_level_top = true ;
+}
+
+void MainWindow::OnSliderSetBottomLevel(void)
+{
+	//get level
+    int level = ui->horizontalSlider_level_bottom->value() ;
+	m_pEnsemble[1]->Config_Set_Level(level) ;
+
+	m_set_user_level_bottom = false ;
+}
+
+void MainWindow::OnSliderBottomMove(int value) 
+{
+	//set feature
+	m_set_user_level_bottom = true ;
+}
 

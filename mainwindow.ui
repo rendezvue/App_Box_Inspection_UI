@@ -451,6 +451,64 @@
      </property>
     </widget>
    </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>1310</x>
+      <y>800</y>
+      <width>561</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Bottom Check Option</string>
+    </property>
+    <widget class="QSlider" name="horizontalSlider_level_bottom">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>80</y>
+       <width>401</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>10</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::TicksBothSides</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Check Level :</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_check_crack_bottom">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>40</y>
+       <width>121</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Crack</string>
+     </property>
+    </widget>
+   </widget>
    <zorder>label_image_top_bg</zorder>
    <zorder>label_image_bottom_bg</zorder>
    <zorder>label_image_top</zorder>
@@ -468,6 +526,7 @@
    <zorder>pushButton_config_save</zorder>
    <zorder>pushButton_test_run</zorder>
    <zorder>groupBox</zorder>
+   <zorder>groupBox_2</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

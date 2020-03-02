@@ -45,6 +45,8 @@ public:
 	void Config_Save(void) ;
 	void Config_Load(void) ;
 
+	void Config_Set_Level(const int level) ;
+	
 	void Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h) ;
 	
 	bool m_thread_run ;
@@ -59,6 +61,7 @@ private:
 	int m_status ;
 
 	std::string m_str_job_id ; 
+	std::string m_str_option_inspect_crack ;
 	
 protected:
     void run(void) ;
