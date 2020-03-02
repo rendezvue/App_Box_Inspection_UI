@@ -34,8 +34,9 @@ void CEnsemble::run(void)
             }
             else
             {
+            	std::string str_option_inspect_crack ; 
 #if 1    
-				std::string str_job_info = Get_Job_Info(&m_str_job_id) ;
+				std::string str_job_info = Get_Job_Info(&m_str_job_id, &str_option_inspect_crack) ;
 				//qDebug("str_job_info = %s", str_job_info.c_str()) ;
 
 				if( str_job_info.empty() )
@@ -50,6 +51,16 @@ void CEnsemble::run(void)
 				}
 #endif				
 
+				//get run option of inspect crack
+				//qDebug("Crack ID = %s", str_option_inspect_crack.c_str()) ;
+
+				int run_option = m_cls_api.Ensemble_Task_Get_Run_Option(str_option_inspect_crack) ;
+				emit RunCheck_Crack((bool)run_option) ;
+
+				//get inspect level
+				//Get Level 
+			    int inspect_level = m_cls_api.Ensemble_Tool_Option_Crack_Get_InspectLevel(str_option_inspect_crack);
+				emit Level_Crack(inspect_level) ;
 #if 1
 				//Get Object Image
                 cv::Mat job_image = Get_Job_Image(m_str_job_id) ;
@@ -171,7 +182,7 @@ void CEnsemble::SetPort(const unsigned int port)
 	m_port = port ;
 }
 
-std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
+std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id, std::string* p_out_str_option_crack_id)
 {
 	std::string str_ret ;
 	
@@ -248,7 +259,15 @@ std::string CEnsemble::Get_Job_Info(std::string* p_out_str_job_id)
 		                    int option_type = option.attribute("Type").as_int();
 		                    std::string str_option_name = option.attribute("Name").value();
 
-							//qDebug("Option : Type=%d, Name=%s", option_type, str_option_name.c_str()) ;
+							if( option_type == TOOL_TYPE_OPTION_INSPECT_CRACK || option_type == TOOL_TYPE_OPTION_INSPECT_CRACK2 )
+							{
+								if( p_out_str_option_crack_id != NULL )
+								{
+									(*p_out_str_option_crack_id) = str_option_id ;
+								}
+							}
+							
+							//qDebug("Option : ID=%s, Type=%d(%d), Name=%s", str_option_id.c_str(), option_type, TOOL_TYPE_OPTION_INSPECT_CRACK2, str_option_name.c_str()) ;
 							
 							//std::string str_tool_option_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(option_type) ;
 

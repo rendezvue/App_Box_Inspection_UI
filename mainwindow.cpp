@@ -43,6 +43,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	//job info
 	connect(m_pEnsemble[0], SIGNAL(JobInfo(QString)), this, SLOT(updateJobInfo_Top(QString))) ;
 	connect(m_pEnsemble[1], SIGNAL(JobInfo(QString)), this, SLOT(updateJobInfo_Bottom(QString))) ;
+
+	//run checked
+	connect(m_pEnsemble[0], SIGNAL(RunCheck_Crack(bool)), this, SLOT(updateRunCrack_Top(bool))) ;
+	connect(m_pEnsemble[1], SIGNAL(RunCheck_Crack(bool)), this, SLOT(updateRunCrack_Bottom(bool))) ;
+
+	//level
+	connect(m_pEnsemble[0], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
 	
 	//button
 	connect(ui->pushButton_config, SIGNAL(clicked()), this,  SLOT(OnButton_Config())) ;
@@ -631,4 +639,26 @@ void MainWindow::OnButton_Test_Run(void)
 		ui->pushButton_test_run->setText("Test Run Stop");
 	}
 }
+
+void MainWindow::updateRunCrack_Top(bool b_run)
+{
+	ui->checkBox_check_crack_top->setChecked(b_run);
+}
+
+void MainWindow::updateRunCrack_Bottom(bool b_run)
+{
+}
+
+void MainWindow::updateLevelCrack_Top(int level)
+{
+	//qDebug("crack level = %d", level) ;
+	
+	//Set Slider
+	ui->horizontalSlider_level_top->setValue(level) ;
+}
+
+void MainWindow::updateLevelCrack_Bottom(int level)
+{
+}
+
 

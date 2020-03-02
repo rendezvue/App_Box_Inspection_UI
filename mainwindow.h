@@ -71,6 +71,12 @@ public slots:
 
 	void OnButton_Test_Run(void) ;
 
+	void updateRunCrack_Top(bool b_run) ;
+	void updateRunCrack_Bottom(bool b_run) ;
+
+	void updateLevelCrack_Top(int level) ;
+	void updateLevelCrack_Bottom(int level) ;
+
 };
 
 #endif // MAINWINDOW_H
