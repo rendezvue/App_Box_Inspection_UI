@@ -51,6 +51,7 @@ public:
 	void Config_Load(void) ;
 
 	void Config_Set_Level(const int level) ;
+	void Config_Set_Level_ColorCompare(const int level) ;
 	
 	void Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h) ;
 	

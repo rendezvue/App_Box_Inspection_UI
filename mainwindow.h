@@ -96,13 +96,19 @@ public slots:
 	void updateCountNg_Top(int count) ;
 	void updateCountNg_Bottom(int count) ;
 	
-	//slider
+	//slider Crack
 	void OnSliderSetTopLevel(void) ;
     void OnSliderTopMove(int value) ;
-
-	//slider
+	//slider Crack
 	void OnSliderSetBottomLevel(void) ;
     void OnSliderBottomMove(int value) ;
+
+	//slider Color
+	void OnSliderSetTopLevel_Color(void) ;
+    void OnSliderTopMove_Color(int value) ;
+	//slider Color
+	void OnSliderSetBottomLevel_Color(void) ;
+    void OnSliderBottomMove_Color(int value) ;
 
 };
 
