@@ -35,7 +35,7 @@ void CEnsemble::run(void)
             else
             {
 #if 1    
-				std::string str_job_info = Get_Job_Info(&m_str_job_id, &m_str_option_inspect_crack) ;
+				std::string str_job_info = Get_Job_Info(&m_str_job_id, &m_str_option_inspect_crack_id) ;
 				//qDebug("str_job_info = %s", str_job_info.c_str()) ;
 
 				if( str_job_info.empty() )
@@ -53,12 +53,12 @@ void CEnsemble::run(void)
 				//get run option of inspect crack
 				//qDebug("Crack ID = %s", str_option_inspect_crack.c_str()) ;
 
-				int run_option = m_cls_api.Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack) ;
+				int run_option = m_cls_api.Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack_id) ;
 				emit RunCheck_Crack((bool)run_option) ;
 
 				//get inspect level
 				//Get Level 
-			    int inspect_level = m_cls_api.Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack);
+			    int inspect_level = m_cls_api.Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack_id);
 				emit Level_Crack(inspect_level) ;
 #if 1
 				//Get Object Image
@@ -98,7 +98,12 @@ void CEnsemble::run(void)
 
 						//Run
 						std::string str_result_xml = m_cls_api.Ensemble_Job_Run(m_str_job_id) ;
-
+						//qDebug("[%s] Run Result = %s", m_str_job_id.c_str(), str_result_xml.c_str()) ;
+						
+						//Result Crack Quality
+						float result_crack_quality= Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_crack_id) ;
+						emit signal_Quality_Crack(result_crack_quality) ;
+						
 						//Get Result Imag
 						ret = m_cls_api.Ensemble_Result_Get_Image(m_str_job_id, image_type,  &get_data, &width, &height, &get_source_image_type) ;
 						//ret = m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
@@ -382,7 +387,7 @@ void CEnsemble::Config_Load(void)
 
 void CEnsemble::Config_Set_Level(const int level)
 {
-	m_cls_api.Ensemble_Tool_Option_Crack_Set_InspectLevel(m_str_option_inspect_crack, level);
+	m_cls_api.Ensemble_Tool_Option_Crack_Set_InspectLevel(m_str_option_inspect_crack_id, level);
 }
 
 void CEnsemble::Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h)
@@ -422,3 +427,91 @@ std::vector<std::string> CEnsemble::Get_Source_List(void)
 
 	return ret_vec_str_path ;
 }
+
+/*
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>	
+<Result ID='20200303152237_eWTM6398'>
+	<Jobs ID='20200303152237_eWTM6398' TYPE='30001' FindCount='1'>    
+		<Job>        
+			<Src Width='640' Height='480'/>        
+			<Pose CenterX='330.000000' CenterY='337.000000' Angle='357' Roi_TL_X='71.000000' Roi_TL_Y='243.000000' Roi_TR_X='598.276367' Roi_TR_Y='270.633392' Roi_BR_X='589.745605' Roi_BR_Y='433.410004' Roi_BL_X='62.469238' Roi_BL_Y='405.776611' />        
+			<Matching Score='0.747813'/>        
+			<Specific>        </Specific>        
+			<Tools>    
+				<Tool ID='20200303152301_wuzI6025' TYPE='40500'>        
+					<Pose CenterX='330.000000' CenterY='337.000000' Angle='357' Roi_TL_X='71.000000' Roi_TL_Y='243.000000' Roi_TR_X='598.276367' Roi_TR_Y='270.633392' Roi_BR_X='589.745605' Roi_BR_Y='433.410004' Roi_BL_X='62.469238' Roi_BL_Y='405.776611' />        
+					<Matching Score='0.747813'/>        
+					<Specific>        </Specific>        
+					<Options>    
+						<Option ID='20200303152310_fmMJ6097' TYPE='40101'>        
+							<Specific>            
+								<Pass>1</Pass>            
+								<Quality>100.000000</Quality>        
+							</Specific>    
+						</Option>        
+					</Options>    
+				</Tool>        
+			</Tools>    
+		</Job>
+	</Jobs>	
+</Result>
+*/
+float CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, const std::string job_id)
+{
+	float ret = 0 ;
+
+	//Job info parsing
+	//XML Parsing
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_string((char *)(str_result_xml.c_str()));
+
+	if (!result)
+    {
+        qDebug("xml parsing error") ;
+    }
+    else
+    {
+
+        for (pugi::xml_node result : doc.children("Result") )
+        {
+			for (pugi::xml_node jobs: result.children("Jobs"))
+            {
+            	std::string jobs_str_id = jobs.attribute("ID").value();
+                int jobs_type = jobs.attribute("TYPE").as_int();
+				int jobs_find_count = jobs.attribute("FindCount").as_int();
+
+				for (pugi::xml_node job: jobs.children("Job"))
+				{
+					int job_source_width = job.child("Src").attribute("Width").as_int();
+					int job_source_height = job.child("Src").attribute("Height").as_int();
+						
+					//---------------------------
+	                //Tool list
+	                for (pugi::xml_node tool: job.child("Tools").children("Tool"))
+	                {
+	                    std::string str_id = tool.attribute("ID").value();
+	                    int type = tool.attribute("Type").as_int();
+
+						//---------------------------
+		                //Option list
+		                for (pugi::xml_node option: tool.child("Options").children("Option"))
+		                {
+		                	std::string str_option_id = option.attribute("ID").value();
+		                    int option_type = option.attribute("Type").as_int();
+
+                            int pass = option.child("Specific").child("Pass").text().as_int();
+                            float quality = option.child("Specific").child("Quality").text().as_float();
+
+                            qDebug("str_option_id = %s, quality = %f", str_option_id.c_str(), quality) ;
+							
+                            ret = quality;
+		                }
+	                }
+				}
+			}
+        }
+    }
+	
+	return ret ;
+}
+

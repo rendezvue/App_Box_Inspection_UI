@@ -80,6 +80,9 @@ public slots:
 	void updateLevelCrack_Top(int level) ;
 	void updateLevelCrack_Bottom(int level) ;
 
+	void updateQualityCrack_Top(float quality) ;
+	void updateQualityCrack_Bottom(float quality) ;
+
 	//slider
 	void OnSliderSetTopLevel(void) ;
     void OnSliderTopMove(int value) ;

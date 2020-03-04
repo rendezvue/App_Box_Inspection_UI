@@ -37,6 +37,8 @@ public:
 	std::string Get_Job_ID(void) ;
 
 	std::vector<std::string> Get_Source_List(void) ;
+
+	float Get_Result_Crack_Quality(const std::string str_result_xml, const std::string job_id) ;
 		
 	void Set_Status(const int status) ;
 	int Get_Status(void) ;
@@ -61,7 +63,7 @@ private:
 	int m_status ;
 
 	std::string m_str_job_id ; 
-	std::string m_str_option_inspect_crack ;
+	std::string m_str_option_inspect_crack_id ;
 	
 protected:
     void run(void) ;
@@ -73,6 +75,7 @@ signals:
 	void JobInfo(QString qstr_info);
 	void RunCheck_Crack(bool b_run);
 	void Level_Crack(int level);
+	void signal_Quality_Crack(float quality);
 
 };
 

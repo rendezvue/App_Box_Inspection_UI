@@ -55,6 +55,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_pEnsemble[0], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Top(int))) ;
 	connect(m_pEnsemble[1], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
 
+	//quality
+	connect(m_pEnsemble[0], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Top(float))) ;
+	connect(m_pEnsemble[1], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
+	
 	//slider
 	connect(ui->horizontalSlider_level_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopLevel()));
 	connect(ui->horizontalSlider_level_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopMove(int)));
@@ -671,6 +675,16 @@ void MainWindow::updateLevelCrack_Bottom(int level)
 {
 	//Set Slider
 	if( m_set_user_level_bottom == false ) ui->horizontalSlider_level_bottom->setValue(level) ;
+}
+
+void MainWindow::updateQualityCrack_Top(float quality)
+{
+	ui->progressBar_quality_top->setValue(quality) ;
+}
+
+void MainWindow::updateQualityCrack_Bottom(float quality)
+{
+	ui->progressBar_quality_bottom->setValue(quality) ;
 }
 
 void MainWindow::OnSliderSetTopLevel(void)

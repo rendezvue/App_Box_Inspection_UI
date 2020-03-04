@@ -499,8 +499,8 @@
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>80</y>
-       <width>401</width>
+       <y>110</y>
+       <width>421</width>
        <height>20</height>
       </rect>
      </property>
@@ -518,13 +518,16 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>80</y>
+       <y>110</y>
        <width>91</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
       <string>Check Level :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
     <widget class="QCheckBox" name="checkBox_check_crack_bottom">
@@ -538,6 +541,35 @@
      </property>
      <property name="text">
       <string>Crack</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Quality :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="progressBar_quality_bottom">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>70</y>
+       <width>421</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>24</number>
      </property>
     </widget>
    </widget>
