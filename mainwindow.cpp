@@ -60,10 +60,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	//run checked
 	connect(m_pEnsemble[0], SIGNAL(RunCheck_Crack(bool)), this, SLOT(updateRunCrack_Top(bool))) ;
 	connect(m_pEnsemble[1], SIGNAL(RunCheck_Crack(bool)), this, SLOT(updateRunCrack_Bottom(bool))) ;
+	connect(m_pEnsemble[0], SIGNAL(RunCheck_Color(bool)), this, SLOT(updateRunColor_Top(bool))) ;
+	connect(m_pEnsemble[1], SIGNAL(RunCheck_Color(bool)), this, SLOT(updateRunColor_Bottom(bool))) ;
 
 	//level
 	connect(m_pEnsemble[0], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Top(int))) ;
 	connect(m_pEnsemble[1], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
+	connect(m_pEnsemble[0], SIGNAL(Level_Color(int)), this, SLOT(updateLevelColor_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(Level_Color(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
 
 	//quality
 	connect(m_pEnsemble[0], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Top(float))) ;
@@ -682,6 +686,16 @@ void MainWindow::updateRunCrack_Bottom(bool b_run)
 	ui->checkBox_check_crack_bottom->setChecked(b_run);
 }
 
+void MainWindow::updateRunColor_Top(bool b_run)
+{
+	ui->checkBox_check_color_top->setChecked(b_run);
+}
+
+void MainWindow::updateRunColor_Bottom(bool b_run)
+{
+	ui->checkBox_check_color_bottom->setChecked(b_run);
+}
+	
 void MainWindow::updateLevelCrack_Top(int level)
 {
 	//qDebug("crack level = %d", level) ;
@@ -694,6 +708,18 @@ void MainWindow::updateLevelCrack_Bottom(int level)
 {
 	//Set Slider
 	if( m_set_user_level_bottom == false ) ui->horizontalSlider_level_bottom->setValue(level) ;
+}
+
+void MainWindow::updateLevelColor_Top(int level)
+{
+	//Set Slider
+	if( m_set_user_level_top == false ) ui->horizontalSlider_color_level_top->setValue(level) ;
+}
+
+void MainWindow::updateLevelColor_Bottom(int level)
+{
+	//Set Slider
+	if( m_set_user_level_top == false ) ui->horizontalSlider_color_level_bottom->setValue(level) ;
 }
 
 void MainWindow::updateQualityCrack_Top(float quality)

@@ -35,7 +35,7 @@ public:
 	void SetIP(const std::string str_ip) ;
 	void SetPort(const unsigned int port) ;
 
-	std::string Get_Job_Info(std::string* p_out_str_job_id=NULL, std::string* p_out_str_option_crack_id=NULL) ;
+	std::string Get_Job_Info(std::string* p_out_str_job_id=NULL, std::string* p_out_str_option_crack_id=NULL, std::string* p_out_str_option_color_id=NULL) ;
 	cv::Mat Get_Job_Image(const std::string str_job_id="") ; 
 	std::string Get_Job_ID(void) ;
 
@@ -67,6 +67,7 @@ private:
 
 	std::string m_str_job_id ; 
 	std::string m_str_option_inspect_crack_id ;
+	std::string m_str_option_inspect_color_id ;
 
 	unsigned int m_count_run ;
 	unsigned int m_count_pass ;
@@ -81,7 +82,9 @@ signals:
 	void NetStatus(bool b_con);
 	void JobInfo(QString qstr_info);
 	void RunCheck_Crack(bool b_run);
+	void RunCheck_Color(bool b_run);
 	void Level_Crack(int level);
+	void Level_Color(int level);
 	void signal_Quality_Crack(float quality);
 
 	void signal_Count_Run(int count);

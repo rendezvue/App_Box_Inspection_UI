@@ -77,8 +77,14 @@ public slots:
 	void updateRunCrack_Top(bool b_run) ;
 	void updateRunCrack_Bottom(bool b_run) ;
 
+	void updateRunColor_Top(bool b_run) ;
+	void updateRunColor_Bottom(bool b_run) ;
+
 	void updateLevelCrack_Top(int level) ;
 	void updateLevelCrack_Bottom(int level) ;
+
+	void updateLevelColor_Top(int level) ;
+	void updateLevelColor_Bottom(int level) ;
 
 	void updateQualityCrack_Top(float quality) ;
 	void updateQualityCrack_Bottom(float quality) ;
