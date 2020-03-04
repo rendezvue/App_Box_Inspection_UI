@@ -25,6 +25,9 @@ public:
             QThread(parent)
           , m_thread_run(true)
           , m_status(STATUS_NORMAL)
+          , m_count_run(0)
+          , m_count_pass(0)
+          , m_count_ng(0)
     {
     }
     ~CEnsemble() {}
@@ -38,7 +41,7 @@ public:
 
 	std::vector<std::string> Get_Source_List(void) ;
 
-	float Get_Result_Crack_Quality(const std::string str_result_xml, const std::string job_id) ;
+	void Get_Result_Crack_Quality(const std::string str_result_xml, const std::string job_id, int* out_pass, float* out_quality) ;
 		
 	void Set_Status(const int status) ;
 	int Get_Status(void) ;
@@ -64,6 +67,10 @@ private:
 
 	std::string m_str_job_id ; 
 	std::string m_str_option_inspect_crack_id ;
+
+	unsigned int m_count_run ;
+	unsigned int m_count_pass ;
+	unsigned int m_count_ng ;
 	
 protected:
     void run(void) ;
@@ -76,6 +83,10 @@ signals:
 	void RunCheck_Crack(bool b_run);
 	void Level_Crack(int level);
 	void signal_Quality_Crack(float quality);
+
+	void signal_Count_Run(int count);
+	void signal_Count_Pass(int count);
+	void signal_Count_Ng(int count);
 
 };
 

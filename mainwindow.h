@@ -83,6 +83,13 @@ public slots:
 	void updateQualityCrack_Top(float quality) ;
 	void updateQualityCrack_Bottom(float quality) ;
 
+	void updateCountRun_Top(int count) ;
+	void updateCountRun_Bottom(int count) ;
+	void updateCountPass_Top(int count) ;
+	void updateCountPass_Bottom(int count) ;
+	void updateCountNg_Top(int count) ;
+	void updateCountNg_Bottom(int count) ;
+	
 	//slider
 	void OnSliderSetTopLevel(void) ;
     void OnSliderTopMove(int value) ;

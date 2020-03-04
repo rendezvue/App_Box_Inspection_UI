@@ -98,11 +98,22 @@ void CEnsemble::run(void)
 
 						//Run
 						std::string str_result_xml = m_cls_api.Ensemble_Job_Run(m_str_job_id) ;
+						m_count_run++ ;
+						emit signal_Count_Run(m_count_run) ;
 						//qDebug("[%s] Run Result = %s", m_str_job_id.c_str(), str_result_xml.c_str()) ;
 						
-						//Result Crack Quality
-						float result_crack_quality= Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_crack_id) ;
+						//Result Inspect
+						float result_crack_quality = 0.0 ;
+						int result_crack_pass = 0 ;
+						Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_crack_id, &result_crack_pass, &result_crack_quality) ;
 						emit signal_Quality_Crack(result_crack_quality) ;
+
+						if( result_crack_pass )		m_count_pass++ ;
+						else						m_count_ng++ ;
+						emit signal_Count_Pass(m_count_pass) ;
+						emit signal_Count_Ng(m_count_ng) ;
+
+						
 						
 						//Get Result Imag
 						ret = m_cls_api.Ensemble_Result_Get_Image(m_str_job_id, image_type,  &get_data, &width, &height, &get_source_image_type) ;
@@ -456,10 +467,8 @@ std::vector<std::string> CEnsemble::Get_Source_List(void)
 	</Jobs>	
 </Result>
 */
-float CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, const std::string job_id)
+void CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, const std::string job_id, int* out_pass, float* out_quality)
 {
-	float ret = 0 ;
-
 	//Job info parsing
 	//XML Parsing
     pugi::xml_document doc;
@@ -503,15 +512,14 @@ float CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, cons
                             float quality = option.child("Specific").child("Quality").text().as_float();
 
                             qDebug("str_option_id = %s, quality = %f", str_option_id.c_str(), quality) ;
-							
-                            ret = quality;
+
+							if( out_pass ) (*out_pass) = pass ;
+							if( out_quality ) (*out_quality) = quality ;
 		                }
 	                }
 				}
 			}
         }
     }
-	
-	return ret ;
 }
 

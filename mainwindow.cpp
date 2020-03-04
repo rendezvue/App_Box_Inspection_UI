@@ -10,6 +10,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	//setMouseTracking(true);
 	ui->setupUi(this);
 
+	//
+	ui->lineEdit_count_run_top->setStyleSheet("color: black") ;
+	ui->lineEdit_count_run_bottom->setStyleSheet("color: black") ;
+
+	ui->lineEdit_count_pass_top->setStyleSheet("color: green") ;
+	ui->lineEdit_count_pass_bottom->setStyleSheet("color: green") ;
+
+	ui->lineEdit_count_ng_top->setStyleSheet("color: red") ;
+	ui->lineEdit_count_ng_bottom->setStyleSheet("color: red") ;
+
 	centralWidget()->installEventFilter(this);
 	centralWidget()->setMouseTracking(true);
 
@@ -58,6 +68,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	//quality
 	connect(m_pEnsemble[0], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Top(float))) ;
 	connect(m_pEnsemble[1], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
+
+	//ccount
+	connect(m_pEnsemble[0], SIGNAL(signal_Count_Run(int)), this, SLOT(updateCountRun_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(signal_Count_Run(int)), this, SLOT(updateCountRun_Bottom(int))) ;
+	connect(m_pEnsemble[0], SIGNAL(signal_Count_Pass(int)), this, SLOT(updateCountPass_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(signal_Count_Pass(int)), this, SLOT(updateCountPass_Bottom(int))) ;
+	connect(m_pEnsemble[0], SIGNAL(signal_Count_Ng(int)), this, SLOT(updateCountNg_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(signal_Count_Ng(int)), this, SLOT(updateCountNg_Bottom(int))) ;
+	
 	
 	//slider
 	connect(ui->horizontalSlider_level_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopLevel()));
@@ -685,6 +704,36 @@ void MainWindow::updateQualityCrack_Top(float quality)
 void MainWindow::updateQualityCrack_Bottom(float quality)
 {
 	ui->progressBar_quality_bottom->setValue(quality) ;
+}
+
+void MainWindow::updateCountRun_Top(int count)
+{
+	ui->lineEdit_count_run_top->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountRun_Bottom(int count)
+{
+	ui->lineEdit_count_run_bottom->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountPass_Top(int count)
+{
+	ui->lineEdit_count_pass_top->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountPass_Bottom(int count)
+{
+	ui->lineEdit_count_pass_bottom->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountNg_Top(int count)
+{
+	ui->lineEdit_count_ng_top->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountNg_Bottom(int count)
+{
+	ui->lineEdit_count_ng_bottom->setText(QString::number(count)) ;
 }
 
 void MainWindow::OnSliderSetTopLevel(void)
