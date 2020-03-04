@@ -116,6 +116,11 @@ void CEnsemble::run(void)
 						Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_crack_id, &result_crack_pass, &result_crack_quality) ;
 						emit signal_Quality_Crack(result_crack_quality) ;
 
+						float result_color_quality = 0.0 ;
+						int result_color_pass = 0 ;
+						Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_color_id, &result_color_pass, &result_color_quality) ;
+						emit signal_Quality_Color(result_color_quality) ;
+						
 						if( result_crack_pass )		m_count_pass++ ;
 						else						m_count_ng++ ;
 						emit signal_Count_Pass(m_count_pass) ;
@@ -133,9 +138,6 @@ void CEnsemble::run(void)
 					{
 						vec_test_source_list = Get_Source_List() ;
 					}
-
-					//delay
-					QThread::msleep(100) ;	//delay 1sec
 				}
 				else if( status == STATUS_CONFIG)
 				{
@@ -187,6 +189,9 @@ void CEnsemble::run(void)
 
 				emit Done(m_mat_input_image);
 				emit NetStatus(true);
+
+				//delay
+				QThread::msleep(1000) ;	//delay 1sec
             }
         }
 		
@@ -536,8 +541,13 @@ void CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, const
 
                             qDebug("str_option_id = %s, quality = %f", str_option_id.c_str(), quality) ;
 
-							if( out_pass ) (*out_pass) = pass ;
-							if( out_quality ) (*out_quality) = quality ;
+							if( job_id == str_option_id )
+							{
+								if( out_pass ) (*out_pass) = pass ;
+								if( out_quality ) (*out_quality) = quality ;
+
+								break ;
+							}
 		                }
 	                }
 				}

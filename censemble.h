@@ -87,6 +87,7 @@ signals:
 	void Level_Crack(int level);
 	void Level_Color(int level);
 	void signal_Quality_Crack(float quality);
+	void signal_Quality_Color(float quality);
 
 	void signal_Count_Run(int count);
 	void signal_Count_Pass(int count);

@@ -88,6 +88,8 @@ public slots:
 
 	void updateQualityCrack_Top(float quality) ;
 	void updateQualityCrack_Bottom(float quality) ;
+	void updateQualityColor_Top(float quality) ;
+	void updateQualityColor_Bottom(float quality) ;
 
 	void updateCountRun_Top(int count) ;
 	void updateCountRun_Bottom(int count) ;

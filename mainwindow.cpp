@@ -70,8 +70,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_pEnsemble[1], SIGNAL(Level_Color(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
 
 	//quality
+	//crack
 	connect(m_pEnsemble[0], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Top(float))) ;
 	connect(m_pEnsemble[1], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
+	//color
+	connect(m_pEnsemble[0], SIGNAL(signal_Quality_Color(float)), this, SLOT(updateQualityColor_Top(float))) ;
+	connect(m_pEnsemble[1], SIGNAL(signal_Quality_Color(float)), this, SLOT(updateQualityColor_Bottom(float))) ;
 
 	//ccount
 	connect(m_pEnsemble[0], SIGNAL(signal_Count_Run(int)), this, SLOT(updateCountRun_Top(int))) ;
@@ -738,6 +742,16 @@ void MainWindow::updateQualityCrack_Bottom(float quality)
 	ui->progressBar_quality_bottom->setValue(quality) ;
 }
 
+void MainWindow::updateQualityColor_Top(float quality)
+{
+	ui->progressBar_color_quality_top->setValue(quality) ;
+}
+
+void MainWindow::updateQualityColor_Bottom(float quality)
+{
+	ui->progressBar_color_quality_bottom->setValue(quality) ;
+}
+	
 void MainWindow::updateCountRun_Top(int count)
 {
 	ui->lineEdit_count_run_top->setText(QString::number(count)) ;
