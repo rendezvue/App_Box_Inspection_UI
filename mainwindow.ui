@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>100</y>
+      <y>90</y>
       <width>896</width>
       <height>672</height>
      </rect>
@@ -40,7 +40,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>100</y>
+      <y>90</y>
       <width>896</width>
       <height>672</height>
      </rect>
@@ -59,7 +59,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>100</y>
+      <y>90</y>
       <width>896</width>
       <height>672</height>
      </rect>
@@ -78,7 +78,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>100</y>
+      <y>90</y>
       <width>896</width>
       <height>672</height>
      </rect>
@@ -97,7 +97,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>800</y>
+      <y>790</y>
       <width>320</width>
       <height>240</height>
      </rect>
@@ -116,7 +116,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>780</y>
+      <y>770</y>
       <width>891</width>
       <height>17</height>
      </rect>
@@ -132,7 +132,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>800</y>
+      <y>790</y>
       <width>320</width>
       <height>240</height>
      </rect>
@@ -151,7 +151,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>800</y>
+      <y>790</y>
       <width>320</width>
       <height>240</height>
      </rect>
@@ -170,7 +170,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>800</y>
+      <y>790</y>
       <width>320</width>
       <height>240</height>
      </rect>
@@ -189,7 +189,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>780</y>
+      <y>770</y>
       <width>891</width>
       <height>17</height>
      </rect>
@@ -251,7 +251,7 @@
     <property name="geometry">
      <rect>
       <x>39</x>
-      <y>70</y>
+      <y>60</y>
       <width>891</width>
       <height>31</height>
      </rect>
@@ -301,7 +301,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>70</y>
+      <y>60</y>
       <width>891</width>
       <height>31</height>
      </rect>
@@ -397,7 +397,7 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>800</y>
+      <y>790</y>
       <width>561</width>
       <height>241</height>
      </rect>
@@ -482,12 +482,89 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
+    <widget class="QSlider" name="horizontalSlider_color_level_top">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>200</y>
+       <width>421</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::TicksBothSides</enum>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="progressBar_color_quality_top">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>170</y>
+       <width>421</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>24</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>200</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Check Level :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_check_color_top">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>140</y>
+       <width>121</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Color</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>170</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Quality :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
       <x>1310</x>
-      <y>800</y>
+      <y>790</y>
       <width>561</width>
       <height>241</height>
      </rect>
@@ -499,7 +576,7 @@
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>110</y>
+       <y>100</y>
        <width>421</width>
        <height>20</height>
       </rect>
@@ -518,7 +595,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>110</y>
+       <y>100</y>
        <width>91</width>
        <height>17</height>
       </rect>
@@ -572,12 +649,89 @@
       <number>24</number>
      </property>
     </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>170</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Quality :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_check_color_bottom">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>140</y>
+       <width>121</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Color</string>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="progressBar_color_quality_bottom">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>170</y>
+       <width>421</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>24</number>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider_color_level_bottom">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>200</y>
+       <width>421</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::TicksBothSides</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>200</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Check Level :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -590,7 +744,7 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>113</width>
       <height>25</height>
      </rect>
@@ -619,7 +773,7 @@
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>113</width>
       <height>25</height>
      </rect>
@@ -648,7 +802,7 @@
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -661,7 +815,7 @@
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>31</width>
       <height>21</height>
      </rect>
@@ -674,7 +828,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>113</width>
       <height>25</height>
      </rect>
@@ -703,7 +857,7 @@
     <property name="geometry">
      <rect>
       <x>1150</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -716,7 +870,7 @@
     <property name="geometry">
      <rect>
       <x>1370</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>113</width>
       <height>25</height>
      </rect>
@@ -745,7 +899,7 @@
     <property name="geometry">
      <rect>
       <x>1200</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>113</width>
       <height>25</height>
      </rect>
@@ -774,7 +928,7 @@
     <property name="geometry">
      <rect>
       <x>1020</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>113</width>
       <height>25</height>
      </rect>
@@ -803,7 +957,7 @@
     <property name="geometry">
      <rect>
       <x>1330</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>31</width>
       <height>21</height>
      </rect>
@@ -816,7 +970,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>1050</y>
+      <y>1040</y>
       <width>41</width>
       <height>21</height>
      </rect>
