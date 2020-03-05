@@ -83,8 +83,8 @@ public slots:
 	void updateLevelCrack_Top(int level) ;
 	void updateLevelCrack_Bottom(int level) ;
 
-	void updateLevelColor_Top(int level) ;
-	void updateLevelColor_Bottom(int level) ;
+	void updateSensitivityColor_Top(int level) ;
+	void updateSensitivityColor_Bottom(int level) ;
 
 	void updateQualityCrack_Top(float quality) ;
 	void updateQualityCrack_Bottom(float quality) ;

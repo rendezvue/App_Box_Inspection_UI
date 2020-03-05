@@ -489,7 +489,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_color_level_top">
+    <widget class="QSlider" name="horizontalSlider_color_sensitivity_top">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -719,7 +719,7 @@
       <number>0</number>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_color_level_bottom">
+    <widget class="QSlider" name="horizontalSlider_color_sensitivity_bottom">
      <property name="geometry">
       <rect>
        <x>190</x>

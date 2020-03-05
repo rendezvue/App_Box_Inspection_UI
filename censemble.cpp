@@ -64,10 +64,10 @@ void CEnsemble::run(void)
 			    int inspect_level = m_cls_api.Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack_id);
 				emit Level_Crack(inspect_level) ;
 
-                qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
+                //qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
 				
-				inspect_level = m_cls_api.Ensemble_Tool_Option_ColorCompare_Get_InspectLevel(m_str_option_inspect_color_id);
-				emit Level_Color(inspect_level) ;
+				int sensitivity_level = m_cls_api.Ensemble_Tool_Option_ColorCompare_Get_Sensitivity(m_str_option_inspect_color_id);
+				emit Sensitivity_Color(sensitivity_level) ;
 #if 1
 				//Get Object Image
                 cv::Mat job_image = Get_Job_Image(m_str_job_id) ;
@@ -427,6 +427,11 @@ void CEnsemble::Config_Set_Level(const int level)
 void CEnsemble::Config_Set_Level_ColorCompare(const int level)
 {
 	m_cls_api.Ensemble_Tool_Option_ColorCompare_Set_InspectLevel(m_str_option_inspect_color_id, level);
+}
+
+void CEnsemble::Config_Set_ColorCompare_Sensitivity(const int level)
+{
+	m_cls_api.Ensemble_Tool_Option_ColorCompare_Set_Sensitivity(m_str_option_inspect_color_id, level);
 }
 
 void CEnsemble::Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h)

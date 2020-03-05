@@ -52,6 +52,7 @@ public:
 
 	void Config_Set_Level(const int level) ;
 	void Config_Set_Level_ColorCompare(const int level) ;
+	void Config_Set_ColorCompare_Sensitivity(const int level) ;
 	
 	void Config_Set_Region(const float f_x, const float f_y, const float f_w, const float f_h) ;
 	
@@ -85,7 +86,7 @@ signals:
 	void RunCheck_Crack(bool b_run);
 	void RunCheck_Color(bool b_run);
 	void Level_Crack(int level);
-	void Level_Color(int level);
+	void Sensitivity_Color(int level);
 	void signal_Quality_Crack(float quality);
 	void signal_Quality_Color(float quality);
 
