@@ -83,6 +83,9 @@ public slots:
 	void updateLevelCrack_Top(int level) ;
 	void updateLevelCrack_Bottom(int level) ;
 
+	void updateLevelColor_Top(int level) ;
+	void updateLevelColor_Bottom(int level) ;
+
 	void updateSensitivityColor_Top(int level) ;
 	void updateSensitivityColor_Bottom(int level) ;
 
@@ -105,12 +108,18 @@ public slots:
 	void OnSliderSetBottomLevel(void) ;
     void OnSliderBottomMove(int value) ;
 
-	//slider Color
+	//slider Color : Sensitivity
+	void OnSliderSetTopSensitivity_Color(void) ;
+    void OnSliderTopSensitivityMove_Color(int value) ;
+	//slider Color : Sensitivity
+	void OnSliderSetBottomSensitivity_Color(void) ;
+    void OnSliderBottomSensitivityMove_Color(int value) ;
+	//slider Color : Check Level
 	void OnSliderSetTopLevel_Color(void) ;
-    void OnSliderTopMove_Color(int value) ;
-	//slider Color
+	void OnSliderTopLevelMove_Color(int value) ;
+	//slider Color : Check Level
 	void OnSliderSetBottomLevel_Color(void) ;
-    void OnSliderBottomMove_Color(int value) ;
+	void OnSliderBottomLevelMove_Color(int value) ;
 
 };
 

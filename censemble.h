@@ -86,6 +86,7 @@ signals:
 	void RunCheck_Crack(bool b_run);
 	void RunCheck_Color(bool b_run);
 	void Level_Crack(int level);
+	void Level_Color(int level);
 	void Sensitivity_Color(int level);
 	void signal_Quality_Crack(float quality);
 	void signal_Quality_Color(float quality);

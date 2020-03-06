@@ -65,6 +65,8 @@ void CEnsemble::run(void)
 				emit Level_Crack(inspect_level) ;
 
                 //qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
+				inspect_level = m_cls_api.Ensemble_Tool_Option_ColorCompare_Get_InspectLevel(m_str_option_inspect_color_id);
+				emit Level_Color(inspect_level) ;
 				
 				int sensitivity_level = m_cls_api.Ensemble_Tool_Option_ColorCompare_Get_Sensitivity(m_str_option_inspect_color_id);
 				emit Sensitivity_Color(sensitivity_level) ;

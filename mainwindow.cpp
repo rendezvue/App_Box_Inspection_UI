@@ -66,6 +66,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	//level
 	connect(m_pEnsemble[0], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Top(int))) ;
 	connect(m_pEnsemble[1], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
+	connect(m_pEnsemble[0], SIGNAL(Level_Color(int)), this, SLOT(updateLevelColor_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(Level_Color(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
+	
 	connect(m_pEnsemble[0], SIGNAL(Sensitivity_Color(int)), this, SLOT(updateSensitivityColor_Top(int))) ;
 	connect(m_pEnsemble[1], SIGNAL(Sensitivity_Color(int)), this, SLOT(updateSensitivityColor_Bottom(int))) ;
 
@@ -92,11 +95,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->horizontalSlider_level_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopMove(int)));
 	connect(ui->horizontalSlider_level_bottom, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetBottomLevel()));
 	connect(ui->horizontalSlider_level_bottom, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderBottomMove(int)));
-	//color compare
-	connect(ui->horizontalSlider_color_sensitivity_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopLevel_Color()));
-	connect(ui->horizontalSlider_color_sensitivity_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopMove_Color(int)));
-	connect(ui->horizontalSlider_color_sensitivity_bottom, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetBottomLevel_Color()));
-	connect(ui->horizontalSlider_color_sensitivity_bottom, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderBottomMove_Color(int)));
+	//color compare : sensitivity
+	connect(ui->horizontalSlider_color_sensitivity_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopSensitivity_Color()));
+	connect(ui->horizontalSlider_color_sensitivity_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopSensitivityMove_Color(int)));
+	connect(ui->horizontalSlider_color_sensitivity_bottom, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetBottomSensitivity_Color()));
+	connect(ui->horizontalSlider_color_sensitivity_bottom, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderBottomSensitivityMove_Color(int)));
+	//color compare : check level	
+	connect(ui->horizontalSlider_color_level_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopLevel_Color()));
+	connect(ui->horizontalSlider_color_level_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopLevelMove_Color(int)));
+	connect(ui->horizontalSlider_color_level_bottom, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetBottomLevel_Color()));
+	connect(ui->horizontalSlider_color_level_bottom, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderBottomLevelMove_Color(int)));
 	
 	//button
 	connect(ui->pushButton_config, SIGNAL(clicked()), this,  SLOT(OnButton_Config())) ;
@@ -720,6 +728,20 @@ void MainWindow::updateLevelCrack_Bottom(int level)
 	if( m_set_user_level_bottom == false ) ui->horizontalSlider_level_bottom->setValue(level) ;
 }
 
+void MainWindow::updateLevelColor_Top(int level)
+{
+	//qDebug("crack level = %d", level) ;
+	
+	//Set Slider
+	if( m_set_user_level_top == false ) ui->horizontalSlider_color_level_top->setValue(level) ;
+}
+
+void MainWindow::updateLevelColor_Bottom(int level)
+{
+	//Set Slider
+	if( m_set_user_level_bottom == false ) ui->horizontalSlider_color_level_bottom->setValue(level) ;
+}
+
 void MainWindow::updateSensitivityColor_Top(int level)
 {
 	//Set Slider
@@ -812,7 +834,7 @@ void MainWindow::OnSliderBottomMove(int value)
 	m_set_user_level_bottom = true ;
 }
 
-void MainWindow::OnSliderSetTopLevel_Color(void)
+void MainWindow::OnSliderSetTopSensitivity_Color(void)
 {
 	//get level
     int level = ui->horizontalSlider_color_sensitivity_top->value() ;
@@ -821,13 +843,13 @@ void MainWindow::OnSliderSetTopLevel_Color(void)
 	m_set_user_level_top = false ;
 }
 
-void MainWindow::OnSliderTopMove_Color(int value)
+void MainWindow::OnSliderTopSensitivityMove_Color(int value)
 {
 	//set feature
 	m_set_user_level_top = true ;
 }
 
-void MainWindow::OnSliderSetBottomLevel_Color(void)
+void MainWindow::OnSliderSetBottomSensitivity_Color(void)
 {
 	//get level
     int level = ui->horizontalSlider_color_sensitivity_bottom->value() ;
@@ -836,10 +858,39 @@ void MainWindow::OnSliderSetBottomLevel_Color(void)
 	m_set_user_level_bottom = false ;
 }
 
-void MainWindow::OnSliderBottomMove_Color(int value)
+void MainWindow::OnSliderBottomSensitivityMove_Color(int value)
 {
 	//set feature
 	m_set_user_level_bottom = true ;
 }
 
+//slider Color : Check Level
+void MainWindow::OnSliderSetTopLevel_Color(void)
+{
+	//get level
+    int level = ui->horizontalSlider_color_level_bottom->value() ;
+	m_pEnsemble[0]->Config_Set_Level_ColorCompare(level) ;
+
+	m_set_user_level_top = false ;
+}
+
+void MainWindow::OnSliderTopLevelMove_Color(int value)
+{
+	m_set_user_level_top = true ;
+}
+
+//slider Color : Check Level
+void MainWindow::OnSliderSetBottomLevel_Color(void) 
+{
+	//get level
+    int level = ui->horizontalSlider_color_level_bottom->value() ;
+	m_pEnsemble[1]->Config_Set_Level_ColorCompare(level) ;
+
+	m_set_user_level_bottom = false ;
+}
+
+void MainWindow::OnSliderBottomLevelMove_Color(int value)
+{
+	m_set_user_level_bottom = true ;
+}
 
