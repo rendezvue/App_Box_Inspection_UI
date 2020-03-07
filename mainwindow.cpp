@@ -767,22 +767,46 @@ void MainWindow::updateSensitivityColor_Bottom(int level)
 void MainWindow::updateQualityCrack_Top(float quality)
 {
 	ui->progressBar_quality_top->setValue(quality) ;
+
+	const int level = ui->horizontalSlider_level_top->value() ;
+	UI_UpdateProgressbarColorStatus(ui->progressBar_quality_top, quality, level) ;
 }
 
 void MainWindow::updateQualityCrack_Bottom(float quality)
 {
 	ui->progressBar_quality_bottom->setValue(quality) ;
+
+	const int level = ui->horizontalSlider_level_bottom->value() ;
+	UI_UpdateProgressbarColorStatus(ui->progressBar_quality_bottom, quality, level) ;
 }
 
 void MainWindow::updateQualityColor_Top(float quality)
 {
 	ui->progressBar_color_quality_top->setValue(quality) ;
+
+	const int level = ui->horizontalSlider_color_level_top->value() ;
+	UI_UpdateProgressbarColorStatus(ui->progressBar_color_quality_top, quality, level) ;
 }
 
 void MainWindow::updateQualityColor_Bottom(float quality)
 {
 	ui->progressBar_color_quality_bottom->setValue(quality) ;
+
+	const int level = ui->horizontalSlider_color_level_bottom->value() ;
+	UI_UpdateProgressbarColorStatus(ui->progressBar_color_quality_bottom, quality, level) ;
 }
+
+void MainWindow::UI_UpdateProgressbarColorStatus(QProgressBar *pbar, const float quality, const float level)
+{
+	QString danger = "QProgressBar{text-align: center; color: rgb(10,10,10);} QProgressBar::chunk {background-color: red;}";
+	QString safe= "QProgressBar{text-align: center; color: rgb(10,10,10);} QProgressBar::chunk {background-color: green;}";
+
+	if(quality < level)
+	    pbar->setStyleSheet(danger);
+	else
+	    pbar->setStyleSheet(safe);
+}
+
 	
 void MainWindow::updateCountRun_Top(int count)
 {

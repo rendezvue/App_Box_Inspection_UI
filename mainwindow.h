@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QPainter>
+#include <qprogressbar.h>
 
 #include "censemble.h"
 #include "cmat2qimage.h"
@@ -44,7 +45,10 @@ private:
 
 	 bool m_set_user_level_top ;
 	 bool m_set_user_level_bottom ;
-	 
+
+public:
+	void UI_UpdateProgressbarColorStatus(QProgressBar *pbar, const float quality, const float level) ;
+	
 protected:
 	void showEvent(QShowEvent *ev) override;
 	//bool eventFilter(QObject*, QEvent*);

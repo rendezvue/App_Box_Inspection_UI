@@ -94,8 +94,8 @@ void CEnsemble::run(void)
 				//qDebug("test 0") ;
 				const int status = Get_Status() ;
 
-				int result_crack_pass = 1 ;
-				int result_color_pass = 1 ;
+				int result_crack_pass = -1 ;
+				int result_color_pass = -1 ;
 				if( status == STATUS_TEST_RUN )
 				{
 					if( vec_test_source_list.size() > 0 )
@@ -203,15 +203,18 @@ void CEnsemble::run(void)
 	            }
 
 				//result image
-				cv::Scalar color_inspect  = cv::Scalar(0,0,255) ;  //NG
-				if( result_crack_pass && result_color_pass )
+				if( result_crack_pass >= 0 || result_color_pass >= 0 )
 				{
-					color_inspect  = cv::Scalar(0,255,0) ;  //PASS
-				}
+					cv::Scalar color_inspect  = cv::Scalar(255,0,0) ;  //NG
+					if( result_crack_pass == 1 && result_color_pass == 1 )
+					{
+						color_inspect  = cv::Scalar(0,255,0) ;  //PASS
+					}
 
-				//draw
-				cv::Rect rect_inspect_display = cv::Rect(0,0,m_mat_input_image.cols, m_mat_input_image.rows) ;
-				cv::rectangle(m_mat_input_image, rect_inspect_display, color_inspect, 3) ;
+					//draw
+					cv::Rect rect_inspect_display = cv::Rect(0,0,m_mat_input_image.cols, m_mat_input_image.rows) ;
+					cv::rectangle(m_mat_input_image, rect_inspect_display, color_inspect, 3) ;
+				}
 					
 				emit Done(m_mat_input_image);
 				emit NetStatus(true);
