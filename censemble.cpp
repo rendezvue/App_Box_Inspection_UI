@@ -94,6 +94,8 @@ void CEnsemble::run(void)
 				//qDebug("test 0") ;
 				const int status = Get_Status() ;
 
+				int result_crack_pass = 1 ;
+				int result_color_pass = 1 ;
 				if( status == STATUS_TEST_RUN )
 				{
 					if( vec_test_source_list.size() > 0 )
@@ -114,19 +116,30 @@ void CEnsemble::run(void)
 						
 						//Result Inspect
 						float result_crack_quality = 0.0 ;
-						int result_crack_pass = 0 ;
 						Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_crack_id, &result_crack_pass, &result_crack_quality) ;
 						emit signal_Quality_Crack(result_crack_quality) ;
 
 						float result_color_quality = 0.0 ;
-						int result_color_pass = 0 ;
 						Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_color_id, &result_color_pass, &result_color_quality) ;
 						emit signal_Quality_Color(result_color_quality) ;
 						
-						if( result_crack_pass )		m_count_pass++ ;
-						else						m_count_ng++ ;
+						if( result_crack_pass && result_color_pass )
+						{
+							m_count_pass++ ;
+						}
+						else
+						{	
+							m_count_ng++ ;
+
+                            if( result_crack_pass == false ) m_count_ng_crack++ ;
+                            if( result_color_pass == false ) m_count_ng_color++ ;
+						}
+
+						
 						emit signal_Count_Pass(m_count_pass) ;
 						emit signal_Count_Ng(m_count_ng) ;
+						emit signal_Count_Ng_Crack(m_count_ng_crack) ;
+						emit signal_Count_Ng_Color(m_count_ng_color) ;
 
 						
 						
@@ -189,6 +202,17 @@ void CEnsemble::run(void)
 	                }
 	            }
 
+				//result image
+				cv::Scalar color_inspect  = cv::Scalar(0,0,255) ;  //NG
+				if( result_crack_pass && result_color_pass )
+				{
+					color_inspect  = cv::Scalar(0,255,0) ;  //PASS
+				}
+
+				//draw
+				cv::Rect rect_inspect_display = cv::Rect(0,0,m_mat_input_image.cols, m_mat_input_image.rows) ;
+				cv::rectangle(m_mat_input_image, rect_inspect_display, color_inspect, 3) ;
+					
 				emit Done(m_mat_input_image);
 				emit NetStatus(true);
 

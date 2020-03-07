@@ -20,6 +20,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->lineEdit_count_ng_top->setStyleSheet("color: red") ;
 	ui->lineEdit_count_ng_bottom->setStyleSheet("color: red") ;
 
+	ui->lineEdit_count_ng_crack_top->setStyleSheet("color: red") ;
+	ui->lineEdit_count_ng_crack_bottom->setStyleSheet("color: red") ;
+
+	ui->lineEdit_count_ng_color_top->setStyleSheet("color: red") ;
+	ui->lineEdit_count_ng_color_bottom->setStyleSheet("color: red") ;
+
 	centralWidget()->installEventFilter(this);
 	centralWidget()->setMouseTracking(true);
 
@@ -87,6 +93,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_pEnsemble[1], SIGNAL(signal_Count_Pass(int)), this, SLOT(updateCountPass_Bottom(int))) ;
 	connect(m_pEnsemble[0], SIGNAL(signal_Count_Ng(int)), this, SLOT(updateCountNg_Top(int))) ;
 	connect(m_pEnsemble[1], SIGNAL(signal_Count_Ng(int)), this, SLOT(updateCountNg_Bottom(int))) ;
+	connect(m_pEnsemble[0], SIGNAL(signal_Count_Ng_Crack(int)), this, SLOT(updateCountNgCrack_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(signal_Count_Ng_Crack(int)), this, SLOT(updateCountNgCrack_Bottom(int))) ;
+	connect(m_pEnsemble[0], SIGNAL(signal_Count_Ng_Color(int)), this, SLOT(updateCountNgColor_Top(int))) ;
+	connect(m_pEnsemble[1], SIGNAL(signal_Count_Ng_Color(int)), this, SLOT(updateCountNgColor_Bottom(int))) ;
 	
 	
 	//slider
@@ -802,6 +812,26 @@ void MainWindow::updateCountNg_Top(int count)
 void MainWindow::updateCountNg_Bottom(int count)
 {
 	ui->lineEdit_count_ng_bottom->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountNgCrack_Top(int count)
+{
+	ui->lineEdit_count_ng_crack_top->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountNgCrack_Bottom(int count)
+{
+	ui->lineEdit_count_ng_crack_bottom->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountNgColor_Top(int count)
+{
+	ui->lineEdit_count_ng_color_top->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountNgColor_Bottom(int count)
+{
+	ui->lineEdit_count_ng_color_bottom->setText(QString::number(count)) ;
 }
 
 void MainWindow::OnSliderSetTopLevel(void)

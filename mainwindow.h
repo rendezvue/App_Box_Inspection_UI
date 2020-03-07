@@ -100,6 +100,10 @@ public slots:
 	void updateCountPass_Bottom(int count) ;
 	void updateCountNg_Top(int count) ;
 	void updateCountNg_Bottom(int count) ;
+	void updateCountNgCrack_Top(int count) ;
+	void updateCountNgCrack_Bottom(int count) ;
+	void updateCountNgColor_Top(int count) ;
+	void updateCountNgColor_Bottom(int count) ;
 	
 	//slider Crack
 	void OnSliderSetTopLevel(void) ;

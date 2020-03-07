@@ -28,6 +28,8 @@ public:
           , m_count_run(0)
           , m_count_pass(0)
           , m_count_ng(0)
+          , m_count_ng_crack(0)
+          , m_count_ng_color(0)
     {
     }
     ~CEnsemble() {}
@@ -74,6 +76,8 @@ private:
 	unsigned int m_count_run ;
 	unsigned int m_count_pass ;
 	unsigned int m_count_ng ;
+	unsigned int m_count_ng_crack ;
+	unsigned int m_count_ng_color ;
 	
 protected:
     void run(void) ;
@@ -94,6 +98,8 @@ signals:
 	void signal_Count_Run(int count);
 	void signal_Count_Pass(int count);
 	void signal_Count_Ng(int count);
+	void signal_Count_Ng_Crack(int count);
+	void signal_Count_Ng_Color(int count);
 
 };
 
