@@ -10,6 +10,8 @@
 #include "cmat2qimage.h"
 #include "CIniInfo.h"
 
+#include <QDesktopServices> 
+
 namespace Ui {
 class MainWindow;
 }
@@ -77,6 +79,7 @@ public slots:
 	void OnButton_Config_Save(void) ;
 
 	void OnButton_Test_Run(void) ;
+	void OnButton_Open_Log(void) ;
 
 	void updateRunCrack_Top(bool b_run) ;
 	void updateRunCrack_Bottom(bool b_run) ;

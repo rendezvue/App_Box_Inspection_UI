@@ -373,7 +373,7 @@
    <widget class="QPushButton" name="pushButton_test_run">
     <property name="geometry">
      <rect>
-      <x>1590</x>
+      <x>1420</x>
       <y>10</y>
       <width>311</width>
       <height>41</height>
@@ -1329,6 +1329,29 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_test_open_log">
+    <property name="geometry">
+     <rect>
+      <x>1740</x>
+      <y>10</y>
+      <width>141</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>Open Log</string>
+    </property>
+   </widget>
    <zorder>label_image_top_bg</zorder>
    <zorder>label_image_bottom_bg</zorder>
    <zorder>label_image_top</zorder>
@@ -1371,6 +1394,7 @@
    <zorder>lineEdit_count_ng_crack_bottom</zorder>
    <zorder>label_25</zorder>
    <zorder>label_26</zorder>
+   <zorder>pushButton_test_open_log</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

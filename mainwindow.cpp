@@ -122,6 +122,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->pushButton_config_save, SIGNAL(clicked()), this,  SLOT(OnButton_Config_Save())) ;
 
 	connect(ui->pushButton_test_run, SIGNAL(clicked()), this,  SLOT(OnButton_Test_Run())) ;
+	connect(ui->pushButton_test_open_log, SIGNAL(clicked()), this,  SLOT(OnButton_Open_Log())) ;
 	
 
 	ui->pushButton_config_new->hide() ;
@@ -704,6 +705,11 @@ void MainWindow::OnButton_Test_Run(void)
 	}
 }
 
+void MainWindow::OnButton_Open_Log(void)
+{
+	QDesktopServices::openUrl(QUrl("file:///./Log", QUrl::TolerantMode));
+}
+
 void MainWindow::updateRunCrack_Top(bool b_run)
 {
 	ui->checkBox_check_crack_top->setChecked(b_run);
@@ -947,4 +953,3 @@ void MainWindow::OnSliderBottomLevelMove_Color(int value)
 {
 	m_set_user_level_bottom = true ;
 }
-
