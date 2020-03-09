@@ -49,53 +49,71 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	m_pEnsemble = new CEnsemble(this) ;
 
-	connect(m_pEnsemble, SIGNAL(Done_Top(cv::Mat)), this, SLOT(updatePicture_Top(cv::Mat))) ;
-	connect(m_pEnsemble, SIGNAL(Done_Bottom(cv::Mat)), this, SLOT(updatePicture_Bottom(cv::Mat))) ;
+	connect(m_pEnsemble, SIGNAL(Done(cv::Mat, cv::Mat)), this, SLOT(updatePicture(cv::Mat, cv::Mat))) ;
+	//connect(m_pEnsemble, SIGNAL(Done_Top(cv::Mat)), this, SLOT(updatePicture_Top(cv::Mat))) ;
+	//connect(m_pEnsemble, SIGNAL(Done_Bottom(cv::Mat)), this, SLOT(updatePicture_Bottom(cv::Mat))) ;
 
-	connect(m_pEnsemble, SIGNAL(UpdateObjectImae_Top(cv::Mat)), this, SLOT(updateObjectPicture_Top(cv::Mat))) ;
-	connect(m_pEnsemble, SIGNAL(UpdateObjectImae_Bottom(cv::Mat)), this, SLOT(updateObjectPicture_Bottom(cv::Mat))) ;
-	
-	connect(m_pEnsemble, SIGNAL(NetStatus_Top(bool)), this, SLOT(updateNetwork_Top(bool))) ;
-	connect(m_pEnsemble, SIGNAL(NetStatus_Bottom(bool)), this, SLOT(updateNetwork_Bottom(bool))) ;
+	connect(m_pEnsemble, SIGNAL(UpdateObjectImae(cv::Mat, cv::Mat)), this, SLOT(updateObjectPicture(cv::Mat, cv::Mat))) ;
+	//connect(m_pEnsemble, SIGNAL(UpdateObjectImae_Top(cv::Mat)), this, SLOT(updateObjectPicture_Top(cv::Mat))) ;
+	//connect(m_pEnsemble, SIGNAL(UpdateObjectImae_Bottom(cv::Mat)), this, SLOT(updateObjectPicture_Bottom(cv::Mat))) ;
+
+	connect(m_pEnsemble, SIGNAL(NetStatus(bool, bool)), this, SLOT(updateNetwork(bool, bool))) ;
+	//connect(m_pEnsemble, SIGNAL(NetStatus_Top(bool)), this, SLOT(updateNetwork_Top(bool))) ;
+	//connect(m_pEnsemble, SIGNAL(NetStatus_Bottom(bool)), this, SLOT(updateNetwork_Bottom(bool))) ;
 
 	//job info
-	connect(m_pEnsemble, SIGNAL(JobInfo_Top(QString)), this, SLOT(updateJobInfo_Top(QString))) ;
-	connect(m_pEnsemble, SIGNAL(JobInfo_Bottom(QString)), this, SLOT(updateJobInfo_Bottom(QString))) ;
+	connect(m_pEnsemble, SIGNAL(JobInfo(QString, QString)), this, SLOT(updateJobInfo(QString, QString))) ;
+	//connect(m_pEnsemble, SIGNAL(JobInfo_Top(QString)), this, SLOT(updateJobInfo_Top(QString))) ;
+	//connect(m_pEnsemble, SIGNAL(JobInfo_Bottom(QString)), this, SLOT(updateJobInfo_Bottom(QString))) ;
 
 	//run checked
-	connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Top(bool)), this, SLOT(updateRunCrack_Top(bool))) ;
-	connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Bottom(bool)), this, SLOT(updateRunCrack_Bottom(bool))) ;
-	connect(m_pEnsemble, SIGNAL(RunCheck_Color_Top(bool)), this, SLOT(updateRunColor_Top(bool))) ;
-	connect(m_pEnsemble, SIGNAL(RunCheck_Color_Bottom(bool)), this, SLOT(updateRunColor_Bottom(bool))) ;
+	connect(m_pEnsemble, SIGNAL(RunCheck_Crack(bool, bool)), this, SLOT(updateRunCrack(bool, bool))) ;
+	//connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Top(bool)), this, SLOT(updateRunCrack_Top(bool))) ;
+	//connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Bottom(bool)), this, SLOT(updateRunCrack_Bottom(bool))) ;
+
+	connect(m_pEnsemble, SIGNAL(RunCheck_Color(bool, bool)), this, SLOT(updateRunColor(bool, bool))) ;
+	//connect(m_pEnsemble, SIGNAL(RunCheck_Color_Top(bool)), this, SLOT(updateRunColor_Top(bool))) ;
+	//connect(m_pEnsemble, SIGNAL(RunCheck_Color_Bottom(bool)), this, SLOT(updateRunColor_Bottom(bool))) ;
 
 	//level
-	connect(m_pEnsemble, SIGNAL(Level_Crack_Top(int)), this, SLOT(updateLevelCrack_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(Level_Crack_Bottom(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
-	connect(m_pEnsemble, SIGNAL(Level_Color_Top(int)), this, SLOT(updateLevelColor_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(Level_Color_Bottom(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
-	
-	connect(m_pEnsemble, SIGNAL(Sensitivity_Color_Top(int)), this, SLOT(updateSensitivityColor_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(Sensitivity_Color_Bottom(int)), this, SLOT(updateSensitivityColor_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(Level_Crack(int, int)), this, SLOT(updateLevelCrack(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(Level_Crack_Top(int)), this, SLOT(updateLevelCrack_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(Level_Crack_Bottom(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(Level_Color(int, int)), this, SLOT(updateLevelColor(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(Level_Color_Top(int)), this, SLOT(updateLevelColor_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(Level_Color_Bottom(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
+
+	connect(m_pEnsemble, SIGNAL(Sensitivity_Color(int, int)), this, SLOT(updateSensitivityColor(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(Sensitivity_Color_Top(int)), this, SLOT(updateSensitivityColor_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(Sensitivity_Color_Bottom(int)), this, SLOT(updateSensitivityColor_Bottom(int))) ;
 
 	//quality
 	//crack
-	connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Top(float)), this, SLOT(updateQualityCrack_Top(float))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Bottom(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Quality_Crack(float, float)), this, SLOT(updateQualityCrack(float, float))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Top(float)), this, SLOT(updateQualityCrack_Top(float))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Bottom(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
 	//color
-	connect(m_pEnsemble, SIGNAL(signal_Quality_Color_Top(float)), this, SLOT(updateQualityColor_Top(float))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Quality_Color_Bottom(float)), this, SLOT(updateQualityColor_Bottom(float))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Quality_Color(float, float)), this, SLOT(updateQualityColor(float, float))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Quality_Color_Top(float)), this, SLOT(updateQualityColor_Top(float))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Quality_Color_Bottom(float)), this, SLOT(updateQualityColor_Bottom(float))) ;
 
 	//ccount
-	connect(m_pEnsemble, SIGNAL(signal_Count_Run_Top(int)), this, SLOT(updateCountRun_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Run_Bottom(int)), this, SLOT(updateCountRun_Bottom(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Pass_Top(int)), this, SLOT(updateCountPass_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Pass_Bottom(int)), this, SLOT(updateCountPass_Bottom(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Top(int)), this, SLOT(updateCountNg_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Bottom(int)), this, SLOT(updateCountNg_Bottom(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Top(int)), this, SLOT(updateCountNgCrack_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Bottom(int)), this, SLOT(updateCountNgCrack_Bottom(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Top(int)), this, SLOT(updateCountNgColor_Top(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Bottom(int)), this, SLOT(updateCountNgColor_Bottom(int))) ;
+
+	connect(m_pEnsemble, SIGNAL(signal_Count_Run(int, int)), this, SLOT(updateCountRun(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Run_Top(int)), this, SLOT(updateCountRun_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Run_Bottom(int)), this, SLOT(updateCountRun_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Pass(int, int)), this, SLOT(updateCountPass(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Pass_Top(int)), this, SLOT(updateCountPass_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Pass_Bottom(int)), this, SLOT(updateCountPass_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng(int, int)), this, SLOT(updateCountNg(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Top(int)), this, SLOT(updateCountNg_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Bottom(int)), this, SLOT(updateCountNg_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack(int, int)), this, SLOT(updateCountNgCrack(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Top(int)), this, SLOT(updateCountNgCrack_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Bottom(int)), this, SLOT(updateCountNgCrack_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color(int, int)), this, SLOT(updateCountNgColor(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Top(int)), this, SLOT(updateCountNgColor_Top(int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Bottom(int)), this, SLOT(updateCountNgColor_Bottom(int))) ;
 	
 	
 	//slider
@@ -168,6 +186,16 @@ MainWindow::~MainWindow()
 	m_pEnsemble = NULL ;
 	
     delete ui;
+}
+
+void MainWindow::updatePicture(cv::Mat image_top, cv::Mat image_bottom)
+{
+	cv::Mat top, bottom ;
+	if( !image_top.empty() ) image_top.copyTo(top) ;
+	if( !image_bottom.empty() ) image_bottom.copyTo(bottom) ;
+		
+	updatePicture_Top(top) ;
+	updatePicture_Bottom(bottom) ;
 }
 
 void MainWindow::updatePicture_Top(cv::Mat image)
@@ -296,6 +324,12 @@ void MainWindow::updatePicture_Bottom(cv::Mat image)
     }
 }
 
+void MainWindow::updateObjectPicture(cv::Mat image_top, cv::Mat image_bottom)
+{
+	updateObjectPicture_Top(image_top) ;
+	updateObjectPicture_Bottom(image_bottom) ;
+}
+
 void MainWindow::updateObjectPicture_Top(cv::Mat image)
 {
 	if( image.empty() ) return ;
@@ -362,6 +396,12 @@ void MainWindow::updateObjectPicture_Bottom(cv::Mat image)
     }
 }	
 
+void MainWindow::updateNetwork(bool b_con_top, bool b_con_bottom)
+{
+	updateNetwork_Top(b_con_top) ;
+	updateNetwork_Bottom(b_con_bottom) ;
+}
+
 void MainWindow::updateNetwork_Top(bool b_con)
 {
 	if( b_con )
@@ -384,6 +424,12 @@ void MainWindow::updateNetwork_Bottom(bool b_con)
 	{
 		ui->label_info_bottom->setStyleSheet("QLabel { color : red; }");
 	}
+}
+
+void MainWindow::updateJobInfo(QString qstr_info_top, QString qstr_info_bottom)
+{
+	updateJobInfo_Top(qstr_info_top) ;
+	updateJobInfo_Bottom(qstr_info_bottom) ;
 }
 
 void MainWindow::updateJobInfo_Top(QString qstr_info)
@@ -696,6 +742,12 @@ void MainWindow::OnButton_Open_Log(void)
 	QDesktopServices::openUrl(QUrl("file:///./Log", QUrl::TolerantMode));
 }
 
+void MainWindow::updateRunCrack(bool b_run_top, bool b_run_bottom)
+{
+	updateRunCrack_Top(b_run_top) ;
+	updateRunCrack_Bottom(b_run_bottom) ;
+}
+
 void MainWindow::updateRunCrack_Top(bool b_run)
 {
 	ui->checkBox_check_crack_top->setChecked(b_run);
@@ -706,6 +758,12 @@ void MainWindow::updateRunCrack_Bottom(bool b_run)
 	ui->checkBox_check_crack_bottom->setChecked(b_run);
 }
 
+void MainWindow::updateRunColor(bool b_run_top, bool b_run_bottom)
+{
+	updateRunColor_Top(b_run_top) ;
+	updateRunColor_Bottom(b_run_bottom) ;
+}
+
 void MainWindow::updateRunColor_Top(bool b_run)
 {
 	ui->checkBox_check_color_top->setChecked(b_run);
@@ -714,6 +772,12 @@ void MainWindow::updateRunColor_Top(bool b_run)
 void MainWindow::updateRunColor_Bottom(bool b_run)
 {
 	ui->checkBox_check_color_bottom->setChecked(b_run);
+}
+
+void MainWindow::updateLevelCrack(int level_top, int level_bottom)
+{
+	updateLevelCrack_Top(level_top) ;
+	updateLevelCrack_Bottom(level_bottom) ;
 }
 	
 void MainWindow::updateLevelCrack_Top(int level)
@@ -730,6 +794,12 @@ void MainWindow::updateLevelCrack_Bottom(int level)
 	if( m_set_user_level_bottom == false ) ui->horizontalSlider_level_bottom->setValue(level) ;
 }
 
+void MainWindow::updateLevelColor(int level_top, int level_bottom)
+{
+	updateLevelColor_Top(level_top) ;
+	updateLevelColor_Bottom(level_bottom) ;
+}
+
 void MainWindow::updateLevelColor_Top(int level)
 {
 	//qDebug("crack level = %d", level) ;
@@ -744,6 +814,12 @@ void MainWindow::updateLevelColor_Bottom(int level)
 	if( m_set_user_level_bottom == false ) ui->horizontalSlider_color_level_bottom->setValue(level) ;
 }
 
+void MainWindow::updateSensitivityColor(int level_top, int level_bottom)
+{
+	updateSensitivityColor_Top(level_top) ;
+	updateSensitivityColor_Bottom(level_bottom) ;
+}
+
 void MainWindow::updateSensitivityColor_Top(int level)
 {
 	//Set Slider
@@ -754,6 +830,12 @@ void MainWindow::updateSensitivityColor_Bottom(int level)
 {
 	//Set Slider
 	if( m_set_user_level_bottom == false ) ui->horizontalSlider_color_sensitivity_bottom->setValue(level) ;
+}
+
+void MainWindow::updateQualityCrack(float quality_top, float quality_bottom)
+{
+	updateQualityCrack_Top(quality_top) ;
+	updateQualityCrack_Bottom(quality_bottom) ;
 }
 
 void MainWindow::updateQualityCrack_Top(float quality)
@@ -770,6 +852,12 @@ void MainWindow::updateQualityCrack_Bottom(float quality)
 
 	const int level = ui->horizontalSlider_level_bottom->value() ;
 	UI_UpdateProgressbarColorStatus(ui->progressBar_quality_bottom, quality, level) ;
+}
+
+void MainWindow::updateQualityColor(float quality_top, float quality_bottom) 
+{
+	updateQualityColor_Top(quality_top) ;
+	updateQualityColor_Bottom(quality_bottom) ;
 }
 
 void MainWindow::updateQualityColor_Top(float quality)
@@ -799,6 +887,11 @@ void MainWindow::UI_UpdateProgressbarColorStatus(QProgressBar *pbar, const float
 	    pbar->setStyleSheet(safe);
 }
 
+void MainWindow::updateCountRun(int count_top, int count_bottom)
+{
+	updateCountRun_Top(count_top) ;
+	updateCountRun_Bottom(count_bottom) ;
+}
 	
 void MainWindow::updateCountRun_Top(int count)
 {
@@ -808,6 +901,12 @@ void MainWindow::updateCountRun_Top(int count)
 void MainWindow::updateCountRun_Bottom(int count)
 {
 	ui->lineEdit_count_run_bottom->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountPass(int count_top, int count_bottom)
+{
+	updateCountPass_Top(count_top) ;
+	updateCountPass_Bottom(count_bottom) ;
 }
 
 void MainWindow::updateCountPass_Top(int count)
@@ -820,6 +919,12 @@ void MainWindow::updateCountPass_Bottom(int count)
 	ui->lineEdit_count_pass_bottom->setText(QString::number(count)) ;
 }
 
+void MainWindow::updateCountNg(int count_top, int count_bottom)
+{
+	updateCountNg_Top(count_top) ;
+	updateCountNg_Bottom(count_bottom) ;
+}
+
 void MainWindow::updateCountNg_Top(int count)
 {
 	ui->lineEdit_count_ng_top->setText(QString::number(count)) ;
@@ -830,6 +935,12 @@ void MainWindow::updateCountNg_Bottom(int count)
 	ui->lineEdit_count_ng_bottom->setText(QString::number(count)) ;
 }
 
+void MainWindow::updateCountNgCrack(int count_top, int count_bottom)
+{
+	updateCountNgCrack_Top(count_top) ;
+	updateCountNgCrack_Bottom(count_bottom) ;
+}
+
 void MainWindow::updateCountNgCrack_Top(int count)
 {
 	ui->lineEdit_count_ng_crack_top->setText(QString::number(count)) ;
@@ -838,6 +949,12 @@ void MainWindow::updateCountNgCrack_Top(int count)
 void MainWindow::updateCountNgCrack_Bottom(int count)
 {
 	ui->lineEdit_count_ng_crack_bottom->setText(QString::number(count)) ;
+}
+
+void MainWindow::updateCountNgColor(int count_top, int count_bottom)
+{
+	updateCountNgColor_Top(count_top) ;
+	updateCountNgColor_Bottom(count_bottom) ;
 }
 
 void MainWindow::updateCountNgColor_Top(int count)

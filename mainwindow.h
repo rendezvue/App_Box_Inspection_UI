@@ -65,15 +65,19 @@ protected:
 
 	
 public slots:
+	void updatePicture(cv::Mat image_top, cv::Mat image_bottom);	
 	void updatePicture_Top(cv::Mat image);
 	void updatePicture_Bottom(cv::Mat image);
 
+	void updateObjectPicture(cv::Mat image_top, cv::Mat image_bottom);
 	void updateObjectPicture_Top(cv::Mat image);
 	void updateObjectPicture_Bottom(cv::Mat image);
 
+	void updateNetwork(bool b_con_top, bool b_con_bottom);
 	void updateNetwork_Top(bool b_con);
 	void updateNetwork_Bottom(bool b_con);
 
+	void updateJobInfo(QString qstr_info_top, QString qstr_info_bottom);
 	void updateJobInfo_Top(QString qstr_info);
 	void updateJobInfo_Bottom(QString qstr_info);
 
@@ -85,34 +89,46 @@ public slots:
 	void OnButton_Test_Run(void) ;
 	void OnButton_Open_Log(void) ;
 
+	void updateRunCrack(bool b_run_top, bool b_run_bottom) ;
 	void updateRunCrack_Top(bool b_run) ;
 	void updateRunCrack_Bottom(bool b_run) ;
 
+	void updateRunColor(bool b_run_top, bool b_run_bottom) ;
 	void updateRunColor_Top(bool b_run) ;
 	void updateRunColor_Bottom(bool b_run) ;
 
+	void updateLevelCrack(int level_top, int level_bottom) ;
 	void updateLevelCrack_Top(int level) ;
 	void updateLevelCrack_Bottom(int level) ;
 
+	void updateLevelColor(int level_top, int level_bottom) ;
 	void updateLevelColor_Top(int level) ;
 	void updateLevelColor_Bottom(int level) ;
 
+	void updateSensitivityColor(int level_top, int level_bottom) ;
 	void updateSensitivityColor_Top(int level) ;
 	void updateSensitivityColor_Bottom(int level) ;
 
+	void updateQualityCrack(float quality_top, float quality_bottom) ;
 	void updateQualityCrack_Top(float quality) ;
 	void updateQualityCrack_Bottom(float quality) ;
+	void updateQualityColor(float quality_top, float quality_bottom) ;
 	void updateQualityColor_Top(float quality) ;
 	void updateQualityColor_Bottom(float quality) ;
 
+	void updateCountRun(int count_top, int count_bottom) ;
 	void updateCountRun_Top(int count) ;
 	void updateCountRun_Bottom(int count) ;
+	void updateCountPass(int count_top, int count_bottom) ;
 	void updateCountPass_Top(int count) ;
 	void updateCountPass_Bottom(int count) ;
+	void updateCountNg(int count_top, int count_bottom) ;
 	void updateCountNg_Top(int count) ;
 	void updateCountNg_Bottom(int count) ;
+	void updateCountNgCrack(int count_top, int count_bottom) ;
 	void updateCountNgCrack_Top(int count) ;
 	void updateCountNgCrack_Bottom(int count) ;
+	void updateCountNgColor(int count_top, int count_bottom) ;
 	void updateCountNgColor_Top(int count) ;
 	void updateCountNgColor_Bottom(int count) ;
 	

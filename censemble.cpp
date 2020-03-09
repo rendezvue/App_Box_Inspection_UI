@@ -15,6 +15,17 @@ void CEnsemble::run(void)
 	//get source list
 	vec_test_source_list[TOP] = Get_Source_List(TOP) ;
 	vec_test_source_list[BOTTOM] = Get_Source_List(BOTTOM) ;
+
+	cv::Mat job_image[FACE_MAX_COUNT] ;
+	bool network_status[FACE_MAX_COUNT] = {false,} ;
+	std::string str_job_info[FACE_MAX_COUNT] ;
+	int run_option_crack[FACE_MAX_COUNT] = {0,} ;
+	int run_option_color[FACE_MAX_COUNT] = {0,} ;
+	int inspect_level_crack[FACE_MAX_COUNT] = {0,} ;
+	int inspect_level_color[FACE_MAX_COUNT] = {0,} ;
+	int sensitivity_level_color[FACE_MAX_COUNT] = {0,} ;
+	float result_crack_quality[FACE_MAX_COUNT] = {0.0, } ;
+	float result_color_quality[FACE_MAX_COUNT] = {0.0, } ;
 	
     while(m_thread_run)
     {        
@@ -35,61 +46,25 @@ void CEnsemble::run(void)
 					vec_test_source_list[nFace].clear() ;
 					vec_test_source_list[nFace] = Get_Source_List(nFace) ;
 
-					if( nFace == TOP ) 			emit NetStatus_Top(false);
-					else if( nFace == BOTTOM ) 	emit NetStatus_Bottom(false);
+					network_status[nFace] = false ;
             	}
 	            else
 	            {
 #if 1    
-					std::string str_job_info ;
+					str_job_info[nFace] = Get_Job_Info(nFace, &m_str_job_id[nFace], &m_str_option_inspect_crack_id[nFace], &m_str_option_inspect_color_id[nFace]) ;
 
-					str_job_info = Get_Job_Info(nFace, &m_str_job_id[nFace], &m_str_option_inspect_crack_id[nFace], &m_str_option_inspect_color_id[nFace]) ;
-
-					if( str_job_info.empty() )
+					if( str_job_info[nFace].empty() )
 					{
 						//load DB
 		            	Config_Load(nFace) ;
 					}
-					else
-					{
-	                    QString qstr_info = QString::fromStdString(str_job_info);
-
-						if( nFace == TOP ) 			emit JobInfo_Top(qstr_info);
-						else if( nFace == BOTTOM ) emit JobInfo_Bottom	(qstr_info);
-					}
 #endif				
-
-					//check run for crack
-					int run_option = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack_id[nFace]) ;
-					if( nFace == TOP )			emit RunCheck_Crack_Top((bool)run_option);
-					else if( nFace == BOTTOM ) 	emit RunCheck_Crack_Bottom((bool)run_option);
-
-					//check run for color
-					run_option = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_color_id[nFace]) ;
-					if( nFace == TOP )			emit RunCheck_Color_Top((bool)run_option);
-					else if( nFace == BOTTOM ) 	emit RunCheck_Color_Bottom((bool)run_option);
-
-					//get inspect level
-					//Get Level 
-				    int inspect_level = m_cls_api[nFace].Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack_id[nFace]);
-					if( nFace == TOP )			emit Level_Crack_Top(inspect_level) ;
-					else if( nFace == BOTTOM )	emit Level_Crack_Bottom	(inspect_level) ;
-
-	                //qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
-					inspect_level = m_cls_api[nFace].Ensemble_Tool_Option_ColorCompare_Get_InspectLevel(m_str_option_inspect_color_id[nFace]);
-					if( nFace == TOP )			emit Level_Color_Top(inspect_level) ;
-					else if( nFace == BOTTOM )	emit Level_Color_Bottom(inspect_level) ;
-
-					//Sensitivity level
-					int sensitivity_level = m_cls_api[nFace].Ensemble_Tool_Option_ColorCompare_Get_Sensitivity(m_str_option_inspect_color_id[nFace]);
-					if( nFace == TOP )			emit Sensitivity_Color_Top(sensitivity_level) ;
-					else if( nFace == BOTTOM )	emit Sensitivity_Color_Bottom(sensitivity_level) ;
 
 #if 1
 					//Get Object Image
-                    cv::Mat job_image = Get_Job_Image(nFace, m_str_job_id[nFace]) ;
-					if( nFace == TOP )			emit UpdateObjectImae_Top(job_image) ;
-					else if( nFace == BOTTOM )	emit UpdateObjectImae_Bottom(job_image) ;
+                    job_image[nFace] = Get_Job_Image(nFace, m_str_job_id[nFace]) ;
+					//if( nFace == TOP )			emit UpdateObjectImae_Top(job_image) ;
+					//else if( nFace == BOTTOM )	emit UpdateObjectImae_Bottom(job_image) ;
 #endif				
 	            	//Get Image
 	            	if( m_mat_input_image[nFace].empty() )	m_mat_input_image[nFace] = cv::Mat::zeros(DISPLAY_IMAGE_HEIGHT, DISPLAY_IMAGE_WIDTH, CV_8UC3) ;
@@ -124,19 +99,10 @@ void CEnsemble::run(void)
 							//Run
 							std::string str_result_xml = m_cls_api[nFace].Ensemble_Job_Run(m_str_job_id[nFace]) ;
                             m_count_run[nFace]++ ;
-                            if( nFace == TOP )			emit signal_Count_Run_Top(m_count_run[nFace]) ;
-                            else if( nFace == BOTTOM )	emit signal_Count_Run_Bottom(m_count_run[nFace]);
 							
 							//Result Inspect
-							float result_crack_quality = 0.0 ;
-							Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_crack_id[nFace], &result_crack_pass, &result_crack_quality) ;
-							if( nFace == TOP )			emit signal_Quality_Crack_Top(result_crack_quality) ;
-							else if( nFace == BOTTOM )	emit signal_Quality_Crack_Bottom(result_crack_quality) ;
-
-							float result_color_quality = 0.0 ;
-							Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_color_id[nFace], &result_color_pass, &result_color_quality) ;							
-							if( nFace == TOP )			emit signal_Quality_Color_Top(result_color_quality) ;
-							else if( nFace == BOTTOM )	emit signal_Quality_Color_Bottom(result_color_quality) ;
+							Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_crack_id[nFace], &result_crack_pass, &result_crack_quality[nFace]) ;
+							Get_Result_Crack_Quality(str_result_xml, m_str_option_inspect_color_id[nFace], &result_color_pass, &result_color_quality[nFace]) ;							
 														
 							if( result_crack_pass && result_color_pass )
 							{
@@ -150,21 +116,7 @@ void CEnsemble::run(void)
 	                            if( result_color_pass == false ) m_count_ng_color[nFace]++ ;
 							}
 
-							
-							if( nFace == TOP )			emit signal_Count_Pass_Top(m_count_pass[nFace]) ;
-                            else if( nFace == BOTTOM )	emit signal_Count_Pass_Bottom(m_count_pass[nFace]) ;
-							
-							if( nFace == TOP )			emit signal_Count_Ng_Top(m_count_ng[nFace]) ;
-							else if( nFace == BOTTOM )	emit signal_Count_Ng_Bottom(m_count_ng[nFace]) ;
-								
-							if( nFace == TOP )			emit signal_Count_Ng_Crack_Top(m_count_ng_crack[nFace]) ;
-							else if( nFace == BOTTOM )	emit signal_Count_Ng_Crack_Bottom(m_count_ng_crack[nFace]) ;
-								
-							if( nFace == TOP )			emit signal_Count_Ng_Color_Top(m_count_ng_color[nFace]) ;
-							else if( nFace == BOTTOM )	emit signal_Count_Ng_Color_Bottom(m_count_ng_color[nFace]) ;
-
-							
-							
+														
 							//Get Result Imag
 							ret = m_cls_api[nFace].Ensemble_Result_Get_Image(m_str_job_id[nFace], image_type,  &get_data, &width, &height, &get_source_image_type) ;
 							//ret = m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
@@ -238,22 +190,64 @@ void CEnsemble::run(void)
 						cv::rectangle(m_mat_input_image[nFace], rect_inspect_display, color_inspect, 3) ;
 					}
 
-					if( nFace == TOP )
-					{
-						emit Done_Top(m_mat_input_image[nFace]);
-						emit NetStatus_Top(true);
-					}
-					else if( nFace == BOTTOM )
-					{
-						emit Done_Bottom(m_mat_input_image[nFace]);
-						emit NetStatus_Bottom(true);
-					}
+					//check run for crack
+					run_option_crack[nFace] = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack_id[nFace]) ;
+					
+					//check run for color
+					run_option_color[nFace] = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_color_id[nFace]) ;
+					
+					//get inspect level
+					//Get Level 
+					inspect_level_crack[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack_id[nFace]);
+					
+					//qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
+					inspect_level_color[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_ColorCompare_Get_InspectLevel(m_str_option_inspect_color_id[nFace]);
+					
+					//Sensitivity level
+					sensitivity_level_color[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_ColorCompare_Get_Sensitivity(m_str_option_inspect_color_id[nFace]);
+
+					
 	            }
 
-				//delay
-				QThread::msleep(1000) ;	//delay 1sec
+				network_status[nFace] = true ;
             }
         }
+
+		//Run delay
+		if( Get_Status() == STATUS_TEST_RUN )
+		{
+			QThread::msleep(1000) ;	//delay 1sec
+		}
+
+		//object image
+		emit UpdateObjectImae(job_image[TOP], job_image[BOTTOM]) ; 
+		//camera image
+		emit Done(m_mat_input_image[TOP], m_mat_input_image[BOTTOM]) ;
+		//network
+        emit NetStatus(network_status[TOP], network_status[BOTTOM]) ;
+		//Job Info
+		QString qstr_info_top = QString::fromStdString(str_job_info[TOP]);
+		QString qstr_info_bottom = QString::fromStdString(str_job_info[BOTTOM]);
+		emit JobInfo(qstr_info_top, qstr_info_bottom) ;
+		//run crack		
+		emit RunCheck_Crack((bool)run_option_crack[TOP], (bool)run_option_crack[BOTTOM]);
+		//run color
+		emit RunCheck_Color((bool)run_option_color[TOP], (bool)run_option_color[BOTTOM]);
+		//crack level
+		emit Level_Crack(inspect_level_crack[TOP], inspect_level_crack[BOTTOM]) ;
+		//color level
+		emit Level_Color(inspect_level_color[TOP], inspect_level_color[BOTTOM]) ;
+		//color sensitivity level
+		emit Sensitivity_Color(sensitivity_level_color[TOP], sensitivity_level_color[BOTTOM]) ;
+		//run count
+		emit signal_Count_Run(m_count_run[TOP], m_count_run[BOTTOM]) ;
+		emit signal_Count_Pass(m_count_pass[TOP], m_count_pass[BOTTOM]) ;
+		emit signal_Count_Ng(m_count_ng[TOP], m_count_ng[BOTTOM]) ;
+		emit signal_Count_Ng_Crack(m_count_ng_crack[TOP], m_count_ng_crack[BOTTOM]) ;
+		emit signal_Count_Ng_Color(m_count_ng_color[TOP], m_count_ng_color[BOTTOM]) ;
+		//result
+		emit signal_Quality_Crack(result_crack_quality[TOP], result_crack_quality[BOTTOM]) ;
+		emit signal_Quality_Color(result_color_quality[TOP], result_color_quality[BOTTOM]) ;
 		
         QThread::yieldCurrentThread() ;
         QThread::usleep(33000) ;

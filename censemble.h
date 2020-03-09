@@ -91,37 +91,53 @@ protected:
     void run(void) ;
 
 signals:
+	void Done(cv::Mat image_top, cv::Mat image_bottom);
 	void Done_Top(cv::Mat image);
 	void Done_Bottom(cv::Mat image);
+	void UpdateObjectImae(cv::Mat image_top, cv::Mat image_bottom);
 	void UpdateObjectImae_Top(cv::Mat image);
 	void UpdateObjectImae_Bottom(cv::Mat image);
+	void NetStatus(bool b_con_top,bool b_con_bottom);
 	void NetStatus_Top(bool b_con);
 	void NetStatus_Bottom(bool b_con);
+	void JobInfo(QString qstr_info_top, QString qstr_info_bottom);
 	void JobInfo_Top(QString qstr_info);
 	void JobInfo_Bottom(QString qstr_info);
+	void RunCheck_Crack(bool b_run_top, bool b_run_bottom);
 	void RunCheck_Crack_Top(bool b_run);
 	void RunCheck_Crack_Bottom(bool b_run);
+	void RunCheck_Color(bool b_run_top, bool b_run_bottom);
 	void RunCheck_Color_Top(bool b_run);
 	void RunCheck_Color_Bottom(bool b_run);
+	void Level_Crack(int level_top, int level_bottom);
 	void Level_Crack_Top(int level);
 	void Level_Crack_Bottom(int level);
+	void Level_Color(int level_top, int level_bottom);
 	void Level_Color_Top(int level);
 	void Level_Color_Bottom(int level);
+	void Sensitivity_Color(int level_top, int level_bottom);
 	void Sensitivity_Color_Top(int level);
 	void Sensitivity_Color_Bottom(int level);
+	void signal_Quality_Crack(float quality_top, float quality_bottom);
 	void signal_Quality_Crack_Top(float quality);
 	void signal_Quality_Crack_Bottom(float quality);
+	void signal_Quality_Color(float quality_top, float quality_bottom);
 	void signal_Quality_Color_Top(float quality);
 	void signal_Quality_Color_Bottom(float quality);
 
+	void signal_Count_Run(int count_top, int count_bottom);
 	void signal_Count_Run_Top(int count);
 	void signal_Count_Run_Bottom(int count);
+	void signal_Count_Pass(int count_top, int count_bottom);
 	void signal_Count_Pass_Top(int count);
 	void signal_Count_Pass_Bottom(int count);
+	void signal_Count_Ng(int count_top, int count_bottom);
 	void signal_Count_Ng_Top(int count);
 	void signal_Count_Ng_Bottom(int count);
+	void signal_Count_Ng_Crack(int count_top, int count_bottom);
 	void signal_Count_Ng_Crack_Top(int count);
 	void signal_Count_Ng_Crack_Bottom(int count);
+	void signal_Count_Ng_Color(int count_top, int count_bottom);
 	void signal_Count_Ng_Color_Top(int count);
 	void signal_Count_Ng_Color_Bottom(int count);
 
