@@ -47,56 +47,55 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->label_image_top_object_bg->setStyleSheet("QLabel { background-color : black; }");
     ui->label_image_bottom_object_bg->setStyleSheet("QLabel { background-color : black; }");
 
-	m_pEnsemble[0] = new CEnsemble(this) ;
-	m_pEnsemble[1] = new CEnsemble(this) ;
+	m_pEnsemble = new CEnsemble(this) ;
 
-	connect(m_pEnsemble[0], SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture_Top(cv::Mat))) ;
-	connect(m_pEnsemble[1], SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture_Bottom(cv::Mat))) ;
+	connect(m_pEnsemble, SIGNAL(Done_Top(cv::Mat)), this, SLOT(updatePicture_Top(cv::Mat))) ;
+	connect(m_pEnsemble, SIGNAL(Done_Bottom(cv::Mat)), this, SLOT(updatePicture_Bottom(cv::Mat))) ;
 
-	connect(m_pEnsemble[0], SIGNAL(UpdateObjectImae(cv::Mat)), this, SLOT(updateObjectPicture_Top(cv::Mat))) ;
-	connect(m_pEnsemble[1], SIGNAL(UpdateObjectImae(cv::Mat)), this, SLOT(updateObjectPicture_Bottom(cv::Mat))) ;
+	connect(m_pEnsemble, SIGNAL(UpdateObjectImae_Top(cv::Mat)), this, SLOT(updateObjectPicture_Top(cv::Mat))) ;
+	connect(m_pEnsemble, SIGNAL(UpdateObjectImae_Bottom(cv::Mat)), this, SLOT(updateObjectPicture_Bottom(cv::Mat))) ;
 	
-	connect(m_pEnsemble[0], SIGNAL(NetStatus(bool)), this, SLOT(updateNetwork_Top(bool))) ;
-	connect(m_pEnsemble[1], SIGNAL(NetStatus(bool)), this, SLOT(updateNetwork_Bottom(bool))) ;
+	connect(m_pEnsemble, SIGNAL(NetStatus_Top(bool)), this, SLOT(updateNetwork_Top(bool))) ;
+	connect(m_pEnsemble, SIGNAL(NetStatus_Bottom(bool)), this, SLOT(updateNetwork_Bottom(bool))) ;
 
 	//job info
-	connect(m_pEnsemble[0], SIGNAL(JobInfo(QString)), this, SLOT(updateJobInfo_Top(QString))) ;
-	connect(m_pEnsemble[1], SIGNAL(JobInfo(QString)), this, SLOT(updateJobInfo_Bottom(QString))) ;
+	connect(m_pEnsemble, SIGNAL(JobInfo_Top(QString)), this, SLOT(updateJobInfo_Top(QString))) ;
+	connect(m_pEnsemble, SIGNAL(JobInfo_Bottom(QString)), this, SLOT(updateJobInfo_Bottom(QString))) ;
 
 	//run checked
-	connect(m_pEnsemble[0], SIGNAL(RunCheck_Crack(bool)), this, SLOT(updateRunCrack_Top(bool))) ;
-	connect(m_pEnsemble[1], SIGNAL(RunCheck_Crack(bool)), this, SLOT(updateRunCrack_Bottom(bool))) ;
-	connect(m_pEnsemble[0], SIGNAL(RunCheck_Color(bool)), this, SLOT(updateRunColor_Top(bool))) ;
-	connect(m_pEnsemble[1], SIGNAL(RunCheck_Color(bool)), this, SLOT(updateRunColor_Bottom(bool))) ;
+	connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Top(bool)), this, SLOT(updateRunCrack_Top(bool))) ;
+	connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Bottom(bool)), this, SLOT(updateRunCrack_Bottom(bool))) ;
+	connect(m_pEnsemble, SIGNAL(RunCheck_Color_Top(bool)), this, SLOT(updateRunColor_Top(bool))) ;
+	connect(m_pEnsemble, SIGNAL(RunCheck_Color_Bottom(bool)), this, SLOT(updateRunColor_Bottom(bool))) ;
 
 	//level
-	connect(m_pEnsemble[0], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(Level_Crack(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
-	connect(m_pEnsemble[0], SIGNAL(Level_Color(int)), this, SLOT(updateLevelColor_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(Level_Color(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(Level_Crack_Top(int)), this, SLOT(updateLevelCrack_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(Level_Crack_Bottom(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(Level_Color_Top(int)), this, SLOT(updateLevelColor_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(Level_Color_Bottom(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
 	
-	connect(m_pEnsemble[0], SIGNAL(Sensitivity_Color(int)), this, SLOT(updateSensitivityColor_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(Sensitivity_Color(int)), this, SLOT(updateSensitivityColor_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(Sensitivity_Color_Top(int)), this, SLOT(updateSensitivityColor_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(Sensitivity_Color_Bottom(int)), this, SLOT(updateSensitivityColor_Bottom(int))) ;
 
 	//quality
 	//crack
-	connect(m_pEnsemble[0], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Top(float))) ;
-	connect(m_pEnsemble[1], SIGNAL(signal_Quality_Crack(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Top(float)), this, SLOT(updateQualityCrack_Top(float))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Bottom(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
 	//color
-	connect(m_pEnsemble[0], SIGNAL(signal_Quality_Color(float)), this, SLOT(updateQualityColor_Top(float))) ;
-	connect(m_pEnsemble[1], SIGNAL(signal_Quality_Color(float)), this, SLOT(updateQualityColor_Bottom(float))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Quality_Color_Top(float)), this, SLOT(updateQualityColor_Top(float))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Quality_Color_Bottom(float)), this, SLOT(updateQualityColor_Bottom(float))) ;
 
 	//ccount
-	connect(m_pEnsemble[0], SIGNAL(signal_Count_Run(int)), this, SLOT(updateCountRun_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(signal_Count_Run(int)), this, SLOT(updateCountRun_Bottom(int))) ;
-	connect(m_pEnsemble[0], SIGNAL(signal_Count_Pass(int)), this, SLOT(updateCountPass_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(signal_Count_Pass(int)), this, SLOT(updateCountPass_Bottom(int))) ;
-	connect(m_pEnsemble[0], SIGNAL(signal_Count_Ng(int)), this, SLOT(updateCountNg_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(signal_Count_Ng(int)), this, SLOT(updateCountNg_Bottom(int))) ;
-	connect(m_pEnsemble[0], SIGNAL(signal_Count_Ng_Crack(int)), this, SLOT(updateCountNgCrack_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(signal_Count_Ng_Crack(int)), this, SLOT(updateCountNgCrack_Bottom(int))) ;
-	connect(m_pEnsemble[0], SIGNAL(signal_Count_Ng_Color(int)), this, SLOT(updateCountNgColor_Top(int))) ;
-	connect(m_pEnsemble[1], SIGNAL(signal_Count_Ng_Color(int)), this, SLOT(updateCountNgColor_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Run_Top(int)), this, SLOT(updateCountRun_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Run_Bottom(int)), this, SLOT(updateCountRun_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Pass_Top(int)), this, SLOT(updateCountPass_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Pass_Bottom(int)), this, SLOT(updateCountPass_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Top(int)), this, SLOT(updateCountNg_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Bottom(int)), this, SLOT(updateCountNg_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Top(int)), this, SLOT(updateCountNgCrack_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Bottom(int)), this, SLOT(updateCountNgCrack_Bottom(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Top(int)), this, SLOT(updateCountNgColor_Top(int))) ;
+	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Bottom(int)), this, SLOT(updateCountNgColor_Bottom(int))) ;
 	
 	
 	//slider
@@ -130,10 +129,10 @@ MainWindow::MainWindow(QWidget *parent) :
 		
 	
 	//m_pEnsemble[0]->SetIP("192.168.56.102") ;
-	//m_pEnsemble[1]->SetIP("192.168.56.102") ;
+	//m_pEnsemble->SetIP("192.168.56.102") ;
 
 	//m_pEnsemble[0]->SetPort(4000) ;
-	//m_pEnsemble[1]->SetPort(4001) ;
+	//m_pEnsemble->SetPort(4001) ;
 
 	std::string top_ip = m_cls_info.Get_Top_Ip_Addr() ;
 	int top_port = m_cls_info.Get_Top_Port_Num() ;
@@ -143,17 +142,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	m_cls_info.Save(top_ip, top_port, bottom_ip, bottom_port) ;
 
-	m_pEnsemble[0]->SetIP(top_ip) ;
-	m_pEnsemble[1]->SetIP(bottom_ip) ;
-
-	m_pEnsemble[0]->SetPort(top_port) ;
-	m_pEnsemble[1]->SetPort(bottom_port) ;
+	m_pEnsemble->SetNetwork(top_ip, top_port, bottom_ip, bottom_port) ;
 	
-	m_pEnsemble[0]->m_thread_run = true ;
-	m_pEnsemble[1]->m_thread_run = true ;
+	m_pEnsemble->m_thread_run = true ;
 	
-	m_pEnsemble[0]->start() ;
-	m_pEnsemble[1]->start() ;
+	m_pEnsemble->start() ;
 
 	//display
 	QString qstr_top = QString::fromStdString(top_ip) + ":" + QString::number(top_port);
@@ -161,19 +154,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	ui->label_info_top->setText(qstr_top) ;
 	ui->label_info_bottom->setText(qstr_bottom) ;
+
+	//Thread Start
+	
 	
 }
 
 MainWindow::~MainWindow()
 {
-	m_pEnsemble[0]->m_thread_run = false ;
-	m_pEnsemble[1]->m_thread_run = false ;
+	m_pEnsemble->m_thread_run = false ;
 
-	delete m_pEnsemble[0] ;
-	delete m_pEnsemble[1] ;
-
-	m_pEnsemble[0] = NULL ;
-	m_pEnsemble[1] = NULL ;
+	delete m_pEnsemble ;
+	m_pEnsemble = NULL ;
 	
     delete ui;
 }
@@ -210,7 +202,7 @@ void MainWindow::updatePicture_Top(cv::Mat image)
         //p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
 			
 		//draw guide line(mouse)
-		if( m_top_point_x >= 0 && m_top_point_y >= 0 && m_pEnsemble[0]->Get_Status() == STATUS_CONFIG )
+		if( m_top_point_x >= 0 && m_top_point_y >= 0 && m_pEnsemble->Get_Status() == STATUS_CONFIG )
 	    {
 	        QPainter qPainter(&qt_display_image);
 	        qPainter.setBrush(Qt::NoBrush);
@@ -273,7 +265,7 @@ void MainWindow::updatePicture_Bottom(cv::Mat image)
 		QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, p_image_label->width(), p_image_label->height()) ;
 
 		//draw guide line(mouse)
-		if( m_bottom_point_x >= 0 && m_bottom_point_y >= 0 && m_pEnsemble[1]->Get_Status() == STATUS_CONFIG )
+		if( m_bottom_point_x >= 0 && m_bottom_point_y >= 0 && m_pEnsemble->Get_Status() == STATUS_CONFIG )
 	    {
 	        QPainter qPainter(&qt_display_image);
 	        qPainter.setBrush(Qt::NoBrush);
@@ -406,13 +398,12 @@ void MainWindow::updateJobInfo_Bottom(QString qstr_info)
 
 void MainWindow::OnButton_Config(void)
 {
-	int status = m_pEnsemble[0]->Get_Status() ;
+	int status = m_pEnsemble->Get_Status() ;
 
 	if( status == STATUS_CONFIG )	status = STATUS_NORMAL ;
 	else							status = STATUS_CONFIG ;
 	
-	m_pEnsemble[0]->Set_Status(status) ;
-	m_pEnsemble[1]->Set_Status(status) ;
+	m_pEnsemble->Set_Status(status) ;
 
     //button text
     if( status == STATUS_CONFIG )
@@ -434,17 +425,14 @@ void MainWindow::OnButton_Config(void)
 
 void MainWindow::OnButton_Config_New(void)
 {
-	m_pEnsemble[0]->Config_New() ;
-	m_pEnsemble[1]->Config_New() ;
+	m_pEnsemble->Config_New() ;
 }
 
 void MainWindow::OnButton_Config_Save(void)
 {
-	m_pEnsemble[0]->Config_Save() ;
-	m_pEnsemble[1]->Config_Save() ;
+	m_pEnsemble->Config_Save() ;
 
-	m_pEnsemble[0]->Config_Load() ;
-	m_pEnsemble[1]->Config_Load() ;
+	m_pEnsemble->Config_Load() ;
 }
 
 #if 0
@@ -534,7 +522,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 		pt_y >= top_region_y && pt_y <= top_region_y+top_region_h )  
 	{
 		//top
-		if( m_pEnsemble[0]->Get_Status() == STATUS_CONFIG )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
 		{
 			m_select_region.type = 0 ;
 			m_select_region.x = pt_x - top_region_x ;
@@ -547,7 +535,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 			pt_y >= bottom_region_y && pt_y <= bottom_region_y+bottom_region_h )  
 	{
 		//bottom
-		if( m_pEnsemble[1]->Get_Status() == STATUS_CONFIG )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
 		{
 			m_select_region.type = 1 ;
 			m_select_region.x = pt_x - bottom_region_x ;
@@ -598,7 +586,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 		m_bottom_point_y = -1 ;
 
 		//top
-		if( m_pEnsemble[0]->Get_Status() == STATUS_CONFIG && m_select_region.type == 0  )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG && m_select_region.type == 0  )
 		{
 			m_select_region.w = (pt_x - top_region_x) - m_select_region.x ;
 			m_select_region.h = (pt_y - top_region_y) - m_select_region.y ;
@@ -616,7 +604,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 		m_bottom_point_y = pt_y - bottom_region_y ;
 
 		//bottom
-		if( m_pEnsemble[1]->Get_Status() == STATUS_CONFIG && m_select_region.type == 1  )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG && m_select_region.type == 1  )
 		{
 			m_select_region.w = (pt_x - bottom_region_x) - m_select_region.x ;
 			m_select_region.h = (pt_y - bottom_region_y) - m_select_region.y ;
@@ -634,7 +622,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
 	if( m_select_region.type == 0 )	//top
 	{
-		if( m_pEnsemble[0]->Get_Status() == STATUS_CONFIG )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
 		{			
 			float f_x = 0.0 ;
 			float f_y = 0.0 ;
@@ -649,12 +637,12 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 			f_w = (float)m_select_region.w / (float)label_w ;
 			f_h = (float)m_select_region.h / (float)label_h ;
 			
-			m_pEnsemble[0]->Config_Set_Region(f_x, f_y, f_w, f_h) ;
+			m_pEnsemble->Config_Set_Region(TOP, f_x, f_y, f_w, f_h) ;
 		}
 	}
 	else if( m_select_region.type == 1 )	//bottom
 	{
-		if( m_pEnsemble[1]->Get_Status() == STATUS_CONFIG )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
 		{
 			float f_x = 0.0 ;
 			float f_y = 0.0 ;
@@ -669,7 +657,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 			f_w = (float)m_select_region.w / (float)label_w ;
 			f_h = (float)m_select_region.h / (float)label_h ;
 			
-			m_pEnsemble[1]->Config_Set_Region(f_x, f_y, f_w, f_h) ;
+			m_pEnsemble->Config_Set_Region(BOTTOM, f_x, f_y, f_w, f_h) ;
 		}
 	}
 
@@ -689,17 +677,15 @@ void MainWindow::showEvent(QShowEvent *ev)
 
 void MainWindow::OnButton_Test_Run(void)
 {
-	if( m_pEnsemble[0]->Get_Status() == STATUS_TEST_RUN)
+	if( m_pEnsemble->Get_Status() == STATUS_TEST_RUN)
 	{
-		m_pEnsemble[0]->Set_Status(STATUS_NORMAL) ;
-		m_pEnsemble[1]->Set_Status(STATUS_NORMAL) ;
+		m_pEnsemble->Set_Status(STATUS_NORMAL) ;
 		
 		ui->pushButton_test_run->setText("Test Run Start");
 	}
 	else
 	{
-		m_pEnsemble[0]->Set_Status(STATUS_TEST_RUN) ;
-		m_pEnsemble[1]->Set_Status(STATUS_TEST_RUN) ;
+		m_pEnsemble->Set_Status(STATUS_TEST_RUN) ;
 
 		ui->pushButton_test_run->setText("Test Run Stop");
 	}
@@ -868,7 +854,7 @@ void MainWindow::OnSliderSetTopLevel(void)
 {
 	//get level
     int level = ui->horizontalSlider_level_top->value() ;
-	m_pEnsemble[0]->Config_Set_Level(level) ;
+	m_pEnsemble->Config_Set_Level(TOP, level) ;
 
 	m_set_user_level_top = false ;
 }
@@ -883,7 +869,7 @@ void MainWindow::OnSliderSetBottomLevel(void)
 {
 	//get level
     int level = ui->horizontalSlider_level_bottom->value() ;
-	m_pEnsemble[1]->Config_Set_Level(level) ;
+	m_pEnsemble->Config_Set_Level(BOTTOM, level) ;
 
 	m_set_user_level_bottom = false ;
 }
@@ -898,7 +884,7 @@ void MainWindow::OnSliderSetTopSensitivity_Color(void)
 {
 	//get level
     int level = ui->horizontalSlider_color_sensitivity_top->value() ;
-	m_pEnsemble[0]->Config_Set_ColorCompare_Sensitivity(level) ;
+	m_pEnsemble->Config_Set_ColorCompare_Sensitivity(TOP, level) ;
 
 	m_set_user_level_top = false ;
 }
@@ -913,7 +899,7 @@ void MainWindow::OnSliderSetBottomSensitivity_Color(void)
 {
 	//get level
     int level = ui->horizontalSlider_color_sensitivity_bottom->value() ;
-	m_pEnsemble[1]->Config_Set_ColorCompare_Sensitivity(level) ;
+	m_pEnsemble->Config_Set_ColorCompare_Sensitivity(BOTTOM, level) ;
 
 	m_set_user_level_bottom = false ;
 }
@@ -929,7 +915,7 @@ void MainWindow::OnSliderSetTopLevel_Color(void)
 {
 	//get level
     int level = ui->horizontalSlider_color_level_bottom->value() ;
-	m_pEnsemble[0]->Config_Set_Level_ColorCompare(level) ;
+	m_pEnsemble->Config_Set_Level_ColorCompare(TOP, level) ;
 
 	m_set_user_level_top = false ;
 }
@@ -944,7 +930,7 @@ void MainWindow::OnSliderSetBottomLevel_Color(void)
 {
 	//get level
     int level = ui->horizontalSlider_color_level_bottom->value() ;
-	m_pEnsemble[1]->Config_Set_Level_ColorCompare(level) ;
+	m_pEnsemble->Config_Set_Level_ColorCompare(BOTTOM, level) ;
 
 	m_set_user_level_bottom = false ;
 }

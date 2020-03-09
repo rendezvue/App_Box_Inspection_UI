@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <qprogressbar.h>
+#include <QThread>
 
 #include "censemble.h"
 #include "cmat2qimage.h"
@@ -33,7 +34,7 @@ public:
 private:
     Ui::MainWindow *ui;
 
-	 CEnsemble* m_pEnsemble[2];
+	 CEnsemble* m_pEnsemble;
 
 	 CIniInfo m_cls_info ;
 
@@ -59,6 +60,9 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 #endif
+	//thread
+    void run(void) ;
+
 	
 public slots:
 	void updatePicture_Top(cv::Mat image);
