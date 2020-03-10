@@ -620,12 +620,16 @@ void CEnsemble::Config_Load(const int surface)
 {
 	if( surface < 0 )
 	{
+		qDebug("Load All") ;
+		
 		//load DB
 		m_cls_api[TOP].Ensemble_Task_File_Load() ;
 		m_cls_api[BOTTOM].Ensemble_Task_File_Load() ;
 	}
 	else if( surface>= 0 && surface < 2 )
 	{
+		qDebug("Load %d", surface) ;
+		
 		m_cls_api[surface].Ensemble_Task_File_Load() ;
 	}
 }
@@ -638,14 +642,14 @@ void CEnsemble::Config_Set_Level(const int surface, const int level)
 
 void CEnsemble::Config_Set_Level_ColorCompare(const int surface, const int level)
 {
-    if( surface == TOP )			m_cls_api[TOP].Ensemble_Tool_Option_ColorCompare_Set_InspectLevel(m_str_option_inspect_crack_id[TOP], level);
-    else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Tool_Option_ColorCompare_Set_InspectLevel(m_str_option_inspect_crack_id[BOTTOM], level);
+    if( surface == TOP )			m_cls_api[TOP].Ensemble_Tool_Option_ColorCompare_Set_InspectLevel(m_str_option_inspect_color_id[TOP], level);
+    else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Tool_Option_ColorCompare_Set_InspectLevel(m_str_option_inspect_color_id[BOTTOM], level);
 }
 
 void CEnsemble::Config_Set_ColorCompare_Sensitivity(const int surface, const int level)
 {
-    if( surface == TOP )			m_cls_api[TOP].Ensemble_Tool_Option_ColorCompare_Set_Sensitivity(m_str_option_inspect_crack_id[TOP], level);
-    else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Tool_Option_ColorCompare_Set_Sensitivity(m_str_option_inspect_crack_id[BOTTOM], level);
+    if( surface == TOP )			m_cls_api[TOP].Ensemble_Tool_Option_ColorCompare_Set_Sensitivity(m_str_option_inspect_color_id[TOP], level);
+    else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Tool_Option_ColorCompare_Set_Sensitivity(m_str_option_inspect_color_id[BOTTOM], level);
 }
 
 void CEnsemble::Config_Set_Region(const int surface, const float f_x, const float f_y, const float f_w, const float f_h)

@@ -229,7 +229,7 @@
      <rect>
       <x>420</x>
       <y>10</y>
-      <width>311</width>
+      <width>271</width>
       <height>41</height>
      </rect>
     </property>
@@ -350,9 +350,9 @@
    <widget class="QPushButton" name="pushButton_config_save">
     <property name="geometry">
      <rect>
-      <x>750</x>
+      <x>700</x>
       <y>10</y>
-      <width>311</width>
+      <width>281</width>
       <height>41</height>
      </rect>
     </property>
@@ -1352,6 +1352,29 @@
      <string>Open Log</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_config_load">
+    <property name="geometry">
+     <rect>
+      <x>990</x>
+      <y>10</y>
+      <width>281</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>Load</string>
+    </property>
+   </widget>
    <zorder>label_image_top_bg</zorder>
    <zorder>label_image_bottom_bg</zorder>
    <zorder>label_image_top</zorder>
@@ -1395,6 +1418,7 @@
    <zorder>label_25</zorder>
    <zorder>label_26</zorder>
    <zorder>pushButton_test_open_log</zorder>
+   <zorder>pushButton_config_load</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

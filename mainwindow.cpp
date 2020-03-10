@@ -453,6 +453,17 @@ void MainWindow::OnButton_Config(void)
 	
 	m_pEnsemble->Set_Status(status) ;
 
+	status = m_pEnsemble->Get_Status() ;
+	
+	if( status == STATUS_TEST_RUN)
+	{
+		ui->pushButton_test_run->setText("Run Stop");		
+	}
+	else
+	{
+		ui->pushButton_test_run->setText("Run Start");
+	}
+	
     //button text
     if( status == STATUS_CONFIG )
 	{
@@ -468,7 +479,7 @@ void MainWindow::OnButton_Config(void)
 
 		ui->pushButton_config_new->hide() ;
 		ui->pushButton_config_save->hide() ;
-		ui->pushButton_config_load->show() ;
+		ui->pushButton_config_load->hide() ;
 	}
 
 }
@@ -744,6 +755,26 @@ void MainWindow::OnButton_Test_Run(void)
 		m_pEnsemble->Set_Status(STATUS_TEST_RUN) ;
 
 		ui->pushButton_test_run->setText("Run Stop");
+	}
+
+	const int status = m_pEnsemble->Get_Status() ;
+
+    //button text
+    if( status == STATUS_CONFIG )
+	{
+		ui->pushButton_config->setText("Done");
+
+		ui->pushButton_config_new->show() ;
+		ui->pushButton_config_save->show() ;
+		ui->pushButton_config_load->show() ;
+	}
+	else
+	{
+		ui->pushButton_config->setText("Config");
+
+		ui->pushButton_config_new->hide() ;
+		ui->pushButton_config_save->hide() ;
+		ui->pushButton_config_load->hide() ;
 	}
 }
 
@@ -1041,7 +1072,7 @@ void MainWindow::OnSliderBottomSensitivityMove_Color(int value)
 void MainWindow::OnSliderSetTopLevel_Color(void)
 {
 	//get level
-    int level = ui->horizontalSlider_color_level_bottom->value() ;
+    int level = ui->horizontalSlider_color_level_top->value() ;
 	m_pEnsemble->Config_Set_Level_ColorCompare(TOP, level) ;
 
 	m_set_user_level_top = false ;
