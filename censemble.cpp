@@ -1,7 +1,7 @@
 #include "censemble.h"
 
 void CEnsemble::run(void)
-{
+{	
 #if 1
     qRegisterMetaType<cv::Mat>("cv::Mat");
 
@@ -30,7 +30,7 @@ void CEnsemble::run(void)
     while(m_thread_run)
     {       
     	const int status = Get_Status() ;
-		
+
     	///////////////////////////////////////////////////////////////////////////////////////////////////
     	//Check Network
     	//
@@ -77,11 +77,11 @@ void CEnsemble::run(void)
 				//load DB
             	Config_Load(nFace) ;
 			}
+
 			//Get Object Image
             job_image[nFace] = Get_Job_Image(nFace, m_str_job_id[nFace]) ;
 			//if( nFace == TOP )			emit UpdateObjectImae_Top(job_image) ;
 			//else if( nFace == BOTTOM )	emit UpdateObjectImae_Bottom(job_image) ;
-
 			
 			//check run for crack
 			run_option_crack[nFace] = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack_id[nFace]) ;
@@ -268,17 +268,12 @@ void CEnsemble::run(void)
                 ret_data_size = m_cls_api[nFace].Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &m_image[nFace]) ;
 			}
 
-			//qDebug("teset 1 : ret_data_size=%d", ret_data_size) ;
-			
 			if( m_image[nFace].p_buf != NULL )
             {
                 if( m_image[nFace].image_width>0 && m_image[nFace].image_height >0 )
                 {
-                	//qDebug("teset 1") ;
-					
                     if( m_image[nFace].image_type == IMAGE_YUV420 )
                     {
-                    	//qDebug("teset 2") ;
                         cv::Mat get_image(m_image[nFace].image_height + m_image[nFace].image_height / 2, m_image[nFace].image_width, CV_8UC1, m_image[nFace].p_buf) ;
 
                         CImgDec cls_image_decoder ;
@@ -286,21 +281,15 @@ void CEnsemble::run(void)
                     }
                     else if( m_image[nFace].image_type == IMAGE_RGB888 )
                     {
-                    	//qDebug("teset 3") ;
                         cv::Mat get_image(m_image[nFace].image_height, m_image[nFace].image_width, CV_8UC3, m_image[nFace].p_buf) ;
-                        cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
+                        if( !get_image.empty() ) cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
                     }
 					 else if( m_image[nFace].image_type == IMAGE_JPG )
                     {
-                    	//qDebug("teset 4 : %d, %d", m_image[nFace].image_width, m_image[nFace].image_height) ;
                         cv::Mat get_image = cv::imdecode(cv::Mat(1,  m_image[nFace].image_width*m_image[nFace].image_height, CV_8UC1, m_image[nFace].p_buf), cv::IMREAD_UNCHANGED);
-						//qDebug("teset 4 : 1") ;
-                        cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
+                       if( !get_image.empty() )  cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
                     }
                 }
-
-				//qDebug("teset 5") ;
-
                 //delete [] get_data ;
                 //get_data = NULL ;
             }
@@ -358,8 +347,6 @@ void CEnsemble::run(void)
 		
         QThread::yieldCurrentThread() ;
         QThread::usleep(33000) ;
-
-		//qDebug("RUN : Finish") ;
     }
 #endif	
 }
@@ -565,12 +552,12 @@ cv::Mat CEnsemble::Get_Job_Image(const int surface, const std::string str_job_id
             else if( m_object_image.image_type == IMAGE_RGB888 )
 			{
                 cv::Mat get_image(m_object_image.image_height, m_object_image.image_width, CV_8UC3, m_object_image.p_buf) ;
-				cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+				if( !get_image.empty() ) cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
 			}
             else if( m_object_image.image_type == ImageTypeOption::IMAGE_JPG)
             {
                 cv::Mat get_image = cv::imdecode(cv::Mat(1, m_object_image.image_width*m_object_image.image_height, CV_8UC1, m_object_image.p_buf), cv::IMREAD_UNCHANGED) ;
-                cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+                if( !get_image.empty() ) cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
             }
 		}
     
@@ -620,16 +607,12 @@ void CEnsemble::Config_Load(const int surface)
 {
 	if( surface < 0 )
 	{
-		qDebug("Load All") ;
-		
 		//load DB
 		m_cls_api[TOP].Ensemble_Task_File_Load() ;
 		m_cls_api[BOTTOM].Ensemble_Task_File_Load() ;
 	}
 	else if( surface>= 0 && surface < 2 )
 	{
-		qDebug("Load %d", surface) ;
-		
 		m_cls_api[surface].Ensemble_Task_File_Load() ;
 	}
 }
