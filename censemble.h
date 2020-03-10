@@ -20,6 +20,17 @@
 #define BOTTOM	1
 #define FACE_MAX_COUNT 2
 
+#define FILE_TEST		1
+
+#define IO_DEVICE_LIGHT				0
+#define IO_DEVICE_SIGN_LED_GREEN	1
+#define IO_DEVICE_SIGN_LED_RED		2
+
+#define IO_DEVICE_OFF		0
+#define IO_DEVICE_ON		1
+
+
+
 
 class CEnsemble : public QThread
 {
@@ -38,9 +49,34 @@ public:
 			m_count_ng[i] = 0 ;
 			m_count_ng_crack[i] = 0 ;
 			m_count_ng_color[i] = 0 ;
+
+			m_image[i].p_buf = NULL ;
+			m_image[i].image_width = DISPLAY_IMAGE_WIDTH ;
+			m_image[i].image_height = DISPLAY_IMAGE_HEIGHT ;
+
+			m_object_image.p_buf = NULL ;
+		    m_object_image.image_width = 320 ;
+		    m_object_image.image_height = 240;
+
     	}
     }
-    ~CEnsemble() {}
+    ~CEnsemble() 
+	{
+		for( int i=0 ; i<FACE_MAX_COUNT ; i++ )
+    	{
+            if( m_image[i].p_buf )
+			{
+                delete [] m_image[i].p_buf ;
+                m_image[i].p_buf = NULL ;
+			}
+    	}
+
+        if( m_object_image.p_buf )
+		{
+            delete [] m_object_image.p_buf ;
+            m_object_image.p_buf = NULL ;
+		}
+	}
 public:
 	void SetNetwork(const std::string str_ip_top, const unsigned int port_top, const std::string str_ip_bottom, const unsigned int port_bottom) ;
 
@@ -86,6 +122,17 @@ private:
 	unsigned int m_count_ng[2] ;
 	unsigned int m_count_ng_crack[2] ;
 	unsigned int m_count_ng_color[2] ;
+
+	//Image
+	ImageBuf m_image[2] ;
+	//unsigned char* m_p_get_data[2] ;
+	//int m_get_data_width[2] ;
+	//int m_get_data_height[2] ;
+
+	ImageBuf m_object_image ;
+	//unsigned char* m_p_get_object_image_data ;
+    //int m_object_image_width ;
+    //int m_object_image_height;
 	
 protected:
     void run(void) ;
