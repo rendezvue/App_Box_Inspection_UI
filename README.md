@@ -24,3 +24,6 @@ sudo apt-get install build-essential qtcreator qt5-default
 
 * * *
 ![Program](https://github.com/rendezvue/App_Box_Inspection_UI/blob/master/doc/screenshot.png)
+
+## UI 프로그램 사용법
+https://rendezvue.atlassian.net/l/c/p3djJ6M1
