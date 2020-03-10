@@ -37,14 +37,14 @@ void CEnsemble::run(void)
     	///////////////////////////////////////////////////////////////////////////////////////////////////
     	//Check Network
     	//
-    	qDebug("RUN : 1 : Check Network") ;
+    	//qDebug("RUN : 1 : Check Network") ;
 		for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ )
 		{
 			if( !m_str_ip[nFace].empty() )
 	        {
             	if( !m_cls_api[nFace].Ensemble_Network_IsOnline() )
             	{
-	                qDebug("Try Re-Connect = %s:%d (%d)", m_str_ip[nFace].c_str(), m_port[nFace], nFace) ;
+	                //qDebug("Try Re-Connect = %s:%d (%d)", m_str_ip[nFace].c_str(), m_port[nFace], nFace) ;
 	                //try re-connect
 	                m_cls_api[nFace].Ensemble_Network_Disconnect() ;
 	                m_cls_api[nFace].Ensemble_Network_Connect(m_str_ip[nFace].c_str(), m_port[nFace]) ;
@@ -70,7 +70,7 @@ void CEnsemble::run(void)
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		//Get Information
 		//
-		qDebug("RUN : 2 : Get Base Information") ;
+		//qDebug("RUN : 2 : Get Base Information") ;
 		for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ )
 		{
 			str_job_info[nFace] = Get_Job_Info(nFace, &m_str_job_id[nFace], &m_str_option_inspect_crack_id[nFace], &m_str_option_inspect_color_id[nFace]) ;
@@ -96,7 +96,7 @@ void CEnsemble::run(void)
 			//Get Level 
 			inspect_level_crack[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack_id[nFace]);
 
-			//qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
+			////qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
 			inspect_level_color[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_ColorCompare_Get_InspectLevel(m_str_option_inspect_color_id[nFace]);
 
 			//Sensitivity level
@@ -126,13 +126,13 @@ void CEnsemble::run(void)
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		//Run 
 		//
-		qDebug("RUN : 3 : Run") ;
+		//qDebug("RUN : 3 : Run") ;
 		if( status == STATUS_TEST_RUN )
 		{
 			//------------------------------------------------------------
 			//STEP 1 : Check Get IO
 			//
-			qDebug("RUN : 3 : Run : Step1 : Check Get IO") ;
+			//qDebug("RUN : 3 : Run : Step1 : Check Get IO") ;
 			do
 			{
 				if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01 ) break ;		//Check Photo Sensor 1
@@ -144,7 +144,7 @@ void CEnsemble::run(void)
 			//------------------------------------------------------------
 			//STEP 2 : Sign LED All Off
 			//
-			qDebug("RUN : 3 : Run : Step2 : Sign LED All Off") ;
+			//qDebug("RUN : 3 : Run : Step2 : Sign LED All Off") ;
 			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_GREEN, IO_DEVICE_OFF ) ;
 			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_RED, IO_DEVICE_OFF ) ;
 			//
@@ -154,7 +154,7 @@ void CEnsemble::run(void)
 			//------------------------------------------------------------
 			//STEP 3 : Light On
 			//
-			qDebug("RUN : 3 : Run : Step3 : Light On") ;
+			//qDebug("RUN : 3 : Run : Step3 : Light On") ;
 			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_ON ) ;
 			QThread::msleep(0) ;    //TODO : timing sw delay
 			//
@@ -164,7 +164,7 @@ void CEnsemble::run(void)
 			//------------------------------------------------------------
 			//STEP 4 : Image Capture
 			//
-			qDebug("RUN : 3 : Run : Step4 : Image Capture") ;
+			//qDebug("RUN : 3 : Run : Step4 : Image Capture") ;
 			m_cls_api[TOP].Ensemble_Camera_Capture_SW_Trigger() ;
 			m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
 			//
@@ -174,7 +174,7 @@ void CEnsemble::run(void)
 			//------------------------------------------------------------
 			//STEP 5 : Do Vision
 			//
-			qDebug("RUN : 3 : Run : Step5 : Do Vision") ;
+			//qDebug("RUN : 3 : Run : Step5 : Do Vision") ;
 			for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ ) 
 			{
 				str_result_xml[nFace] = m_cls_api[nFace].Ensemble_Job_Run(m_str_job_id[nFace]) ;
@@ -187,7 +187,7 @@ void CEnsemble::run(void)
 			//------------------------------------------------------------
 			//STEP 6 : Light Off
 			//
-			qDebug("RUN : 3 : Run : Step6 : Light Off") ;
+			//qDebug("RUN : 3 : Run : Step6 : Light Off") ;
 			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
 			//		
 			//STEP 6 : Light Off
@@ -196,7 +196,7 @@ void CEnsemble::run(void)
 			//------------------------------------------------------------
 			//STEP 7 : Check Result & Set LED Status
 			//
-			qDebug("RUN : 3 : Run : Step7 : Check Result & Set LED Status") ;
+			//qDebug("RUN : 3 : Run : Step7 : Check Result & Set LED Status") ;
 			for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ ) 
 			{
 				//----------------------------------------
@@ -243,7 +243,7 @@ void CEnsemble::run(void)
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		//Get Image
 		//
-		qDebug("RUN : 4 : Get Image") ;
+		//qDebug("RUN : 4 : Get Image") ;
 		for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ ) 
 		{
 			if( m_mat_input_image[nFace].empty() )	m_mat_input_image[nFace] = cv::Mat::zeros(DISPLAY_IMAGE_HEIGHT, DISPLAY_IMAGE_WIDTH, CV_8UC3) ;
@@ -254,7 +254,6 @@ void CEnsemble::run(void)
 			//int height = DISPLAY_IMAGE_HEIGHT ;
 
 			const int image_type = IMAGE_RGB888 ;
-			int get_source_image_type = 0 ;
 
 			int ret_data_size = 0 ;
 			if( status == STATUS_TEST_RUN )
@@ -271,36 +270,38 @@ void CEnsemble::run(void)
                 ret_data_size = m_cls_api[nFace].Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &m_image[nFace]) ;
 			}
 
-			qDebug("teset 1 : ret_data_size=%d", ret_data_size) ;
+			//qDebug("teset 1 : ret_data_size=%d", ret_data_size) ;
 			
 			if( m_image[nFace].p_buf != NULL )
             {
                 if( m_image[nFace].image_width>0 && m_image[nFace].image_height >0 )
                 {
-                    if( get_source_image_type == IMAGE_YUV420 )
+                	//qDebug("teset 1") ;
+					
+                    if( m_image[nFace].image_type == IMAGE_YUV420 )
                     {
-                    	qDebug("teset 2") ;
+                    	//qDebug("teset 2") ;
                         cv::Mat get_image(m_image[nFace].image_height + m_image[nFace].image_height / 2, m_image[nFace].image_width, CV_8UC1, m_image[nFace].p_buf) ;
 
                         CImgDec cls_image_decoder ;
                         m_mat_input_image[nFace] = cls_image_decoder.Decoding(get_image) ;
                     }
-                    else if( get_source_image_type == IMAGE_RGB888 )
+                    else if( m_image[nFace].image_type == IMAGE_RGB888 )
                     {
-                    	qDebug("teset 3") ;
+                    	//qDebug("teset 3") ;
                         cv::Mat get_image(m_image[nFace].image_height, m_image[nFace].image_width, CV_8UC3, m_image[nFace].p_buf) ;
                         cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
                     }
-					 else if( get_source_image_type == IMAGE_JPG )
+					 else if( m_image[nFace].image_type == IMAGE_JPG )
                     {
-                    	qDebug("teset 4 : %d, %d", m_image[nFace].image_width, m_image[nFace].image_height) ;
+                    	//qDebug("teset 4 : %d, %d", m_image[nFace].image_width, m_image[nFace].image_height) ;
                         cv::Mat get_image = cv::imdecode(cv::Mat(1,  m_image[nFace].image_width*m_image[nFace].image_height, CV_8UC1, m_image[nFace].p_buf), cv::IMREAD_UNCHANGED);
-						qDebug("teset 4 : 1") ;
+						//qDebug("teset 4 : 1") ;
                         cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
                     }
                 }
 
-				qDebug("teset 5") ;
+				//qDebug("teset 5") ;
 
                 //delete [] get_data ;
                 //get_data = NULL ;
@@ -356,7 +357,7 @@ void CEnsemble::run(void)
 			QThread::msleep(1000) ;	//delay 1sec
 			
 			//Next Image
-			qDebug("RUN : Test Run : Next Image") ;
+			//qDebug("RUN : Test Run : Next Image") ;
 			for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ ) 
 			{
 				if( vec_test_source_list[nFace].size() > 0 )
@@ -383,7 +384,7 @@ void CEnsemble::run(void)
         QThread::yieldCurrentThread() ;
         QThread::usleep(33000) ;
 
-		qDebug("RUN : Finish") ;
+		//qDebug("RUN : Finish") ;
     }
 #endif	
 }
@@ -406,7 +407,7 @@ std::string CEnsemble::Get_Job_Info(const int surface, std::string* p_out_str_jo
 	//Get Job Info
 	std::string str_prj_list_xml = m_cls_api[surface].Ensemble_Project_Get_List() ;
 
-	//qDebug("Get Job Info = %s", str_prj_list_xml.c_str()) ;
+	////qDebug("Get Job Info = %s", str_prj_list_xml.c_str()) ;
 	
 	//Job info parsing
 	//XML Parsing
@@ -415,7 +416,7 @@ std::string CEnsemble::Get_Job_Info(const int surface, std::string* p_out_str_jo
 
 	if (!result)
     {
-        qDebug("xml parsing error") ;
+        //qDebug("xml parsing error") ;
     }
     else
     {
@@ -428,7 +429,7 @@ std::string CEnsemble::Get_Job_Info(const int surface, std::string* p_out_str_jo
             	std::string str_prj_id = project.attribute("ID").value();
                 std::string str_prj_name = project.attribute("Name").value();
 
-				//qDebug("Project[%d]: id=%s, name=%s", project_count, str_prj_id.c_str(), str_prj_name.c_str()) ;
+				////qDebug("Project[%d]: id=%s, name=%s", project_count, str_prj_id.c_str(), str_prj_name.c_str()) ;
 
 				//add info
 				str_ret += str_prj_name + "::" ;
@@ -447,7 +448,7 @@ std::string CEnsemble::Get_Job_Info(const int surface, std::string* p_out_str_jo
 						(*p_out_str_job_id) = str_job_id ;
 					}
 					
-					//qDebug("Job : Type=%d, Name=%s", type, str_name.c_str()) ;
+					////qDebug("Job : Type=%d, Name=%s", type, str_name.c_str()) ;
 
 					//add info
 					str_ret += str_name + "::" ;
@@ -462,7 +463,7 @@ std::string CEnsemble::Get_Job_Info(const int surface, std::string* p_out_str_jo
 						
 						//std::string str_tool_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 						
-	                    //qDebug("Tool : Type=%d, Name=%s", type, str_name.c_str()) ;
+	                    ////qDebug("Tool : Type=%d, Name=%s", type, str_name.c_str()) ;
 
 						//add info
 						str_ret += str_name ;
@@ -494,7 +495,7 @@ std::string CEnsemble::Get_Job_Info(const int surface, std::string* p_out_str_jo
 								}
 							}
 
-							//qDebug("Option : ID=%s, Type=%d(%d), Name=%s", str_option_id.c_str(), option_type, TOOL_TYPE_OPTION_INSPECT_CRACK2, str_option_name.c_str()) ;
+							////qDebug("Option : ID=%s, Type=%d(%d), Name=%s", str_option_id.c_str(), option_type, TOOL_TYPE_OPTION_INSPECT_CRACK2, str_option_name.c_str()) ;
 							
 							//std::string str_tool_option_type_name = m_cls_api.Ensemble_Info_Get_ToolTypeName(option_type) ;
 
@@ -544,7 +545,6 @@ cv::Mat CEnsemble::Get_Job_Image(const int surface, const std::string str_job_id
     //int object_image_height = 240 ;
 	
     const int image_type = IMAGE_RGB888 ;
-    int get_image_type = 0 ;
     //int object_image_size = m_cls_api.Ensemble_Job_Get_ObjectImage(str_job_id, image_type+IMAGE_THUMBNAIL, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
     int object_image_size = m_cls_api[surface].Ensemble_Job_Get_ObjectImage(str_job_id, image_type, &m_object_image)  ;
 
@@ -552,7 +552,7 @@ cv::Mat CEnsemble::Get_Job_Image(const int surface, const std::string str_job_id
     {
 		if( m_object_image.image_width > 0 && m_object_image.image_height > 0 )
 		{
-            if( get_image_type == IMAGE_YUV420 )
+            if( m_object_image.image_type == IMAGE_YUV420 )
 			{
 				//YUV420 
 		        cv::Mat get_image(m_object_image.image_height + m_object_image.image_height / 2, m_object_image.image_width, CV_8UC1, m_object_image.p_buf) ;
@@ -560,12 +560,12 @@ cv::Mat CEnsemble::Get_Job_Image(const int surface, const std::string str_job_id
 		        CImgDec cls_image_decoder ;
 		        object_image = cls_image_decoder.Decoding(get_image) ;
 			}
-            else if( get_image_type == IMAGE_RGB888 )
+            else if( m_object_image.image_type == IMAGE_RGB888 )
 			{
                 cv::Mat get_image(m_object_image.image_height, m_object_image.image_width, CV_8UC3, m_object_image.p_buf) ;
 				cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
 			}
-            else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+            else if( m_object_image.image_type == ImageTypeOption::IMAGE_JPG)
             {
                 cv::Mat get_image = cv::imdecode(cv::Mat(1, m_object_image.image_width*m_object_image.image_height, CV_8UC1, m_object_image.p_buf), cv::IMREAD_UNCHANGED) ;
                 cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
@@ -661,7 +661,7 @@ std::vector<std::string> CEnsemble::Get_Source_List(const int surface)
 
     if (!result)
     {
-        qDebug("xml parsing error") ;
+        //qDebug("xml parsing error") ;
     }
     else
     {
@@ -714,7 +714,7 @@ void CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, const
 
 	if (!result)
     {
-        qDebug("xml parsing error") ;
+        //qDebug("xml parsing error") ;
     }
     else
     {
@@ -749,7 +749,7 @@ void CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, const
                             int pass = option.child("Specific").child("Pass").text().as_int();
                             float quality = option.child("Specific").child("Quality").text().as_float();
 
-                            //qDebug("str_option_id = %s, quality = %f", str_option_id.c_str(), quality) ;
+                            ////qDebug("str_option_id = %s, quality = %f", str_option_id.c_str(), quality) ;
 
 							if( job_id == str_option_id )
 							{
