@@ -85,6 +85,7 @@ public slots:
 	void OnButton_Config(void) ;
 	void OnButton_Config_New(void) ;
 	void OnButton_Config_Save(void) ;
+	void OnButton_Config_Load(void) ;
 
 	void OnButton_Test_Run(void) ;
 	void OnButton_Open_Log(void) ;

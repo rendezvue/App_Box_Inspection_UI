@@ -3,9 +3,6 @@
 void CEnsemble::run(void)
 {
 #if 1
-	std::vector<std::string> vec_test_source_list[FACE_MAX_COUNT] ;
-	int test_index[FACE_MAX_COUNT] = {-1, } ;
-		
     qRegisterMetaType<cv::Mat>("cv::Mat");
 
 	//Connect
@@ -13,8 +10,8 @@ void CEnsemble::run(void)
 	m_cls_api[BOTTOM].Ensemble_Network_Connect(m_str_ip[BOTTOM].c_str(), m_port[BOTTOM]) ;
 
 	//get source list
-	vec_test_source_list[TOP] = Get_Source_List(TOP) ;
-	vec_test_source_list[BOTTOM] = Get_Source_List(BOTTOM) ;
+	m_vec_test_source_list[TOP] = Get_Source_List(TOP) ;
+	m_vec_test_source_list[BOTTOM] = Get_Source_List(BOTTOM) ;
 
 	cv::Mat job_image[FACE_MAX_COUNT] ;
 	bool network_status[FACE_MAX_COUNT] = {false,} ;
@@ -50,8 +47,8 @@ void CEnsemble::run(void)
 	                m_cls_api[nFace].Ensemble_Network_Connect(m_str_ip[nFace].c_str(), m_port[nFace]) ;
 
 					//get source list
-					vec_test_source_list[nFace].clear() ;
-					vec_test_source_list[nFace] = Get_Source_List(nFace) ;
+					m_vec_test_source_list[nFace].clear() ;
+					m_vec_test_source_list[nFace] = Get_Source_List(nFace) ;
 
 					network_status[nFace] = false ;
             	}
@@ -267,6 +264,7 @@ void CEnsemble::run(void)
 			}
 			else
 			{
+				m_cls_api[nFace].Ensemble_Camera_Capture_SW_Trigger() ;		//New Image
                 ret_data_size = m_cls_api[nFace].Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &m_image[nFace]) ;
 			}
 
@@ -354,31 +352,8 @@ void CEnsemble::run(void)
 		//Run delay
 		if( status == STATUS_TEST_RUN )
 		{			
-			QThread::msleep(1000) ;	//delay 1sec
-			
-			//Next Image
-			//qDebug("RUN : Test Run : Next Image") ;
-			for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ ) 
-			{
-				if( vec_test_source_list[nFace].size() > 0 )
-				{
-					//next image
-					if( test_index[nFace] >=0 )
-					{
-						if( test_index[nFace] >= vec_test_source_list[nFace].size() ) test_index[nFace] = 0 ;
-						
-						m_cls_api[nFace].Ensemble_Source_Set(vec_test_source_list[nFace][test_index[nFace]]) ;
-					}
-
-	                test_index[nFace]++ ;
-				}
-				else
-				{
-					vec_test_source_list[nFace] = Get_Source_List(nFace) ;
-
-					test_index[nFace] = 0 ;
-				}
-			}
+			//QThread::msleep(1000) ;	//delay 1sec
+			SetNextImage() ;
 		}
 		
         QThread::yieldCurrentThread() ;
@@ -387,6 +362,33 @@ void CEnsemble::run(void)
 		//qDebug("RUN : Finish") ;
     }
 #endif	
+}
+
+void CEnsemble::SetNextImage(void)
+{
+	//Next Image
+	//qDebug("RUN : Test Run : Next Image") ;
+	for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ ) 
+	{
+		if( m_vec_test_source_list[nFace].size() > 0 )
+		{
+			//next image
+			if( m_test_index[nFace] >=0 )
+			{
+				if( m_test_index[nFace] >= m_vec_test_source_list[nFace].size() ) m_test_index[nFace] = 0 ;
+				
+				m_cls_api[nFace].Ensemble_Source_Set(m_vec_test_source_list[nFace][m_test_index[nFace]]) ;
+			}
+
+            m_test_index[nFace]++ ;
+		}
+		else
+		{
+			m_vec_test_source_list[nFace] = Get_Source_List(nFace) ;
+
+			m_test_index[nFace] = 0 ;
+		}
+	}
 }
 
 void CEnsemble::SetNetwork(const std::string str_ip_top, const unsigned int port_top, const std::string str_ip_bottom, const unsigned int port_bottom)
@@ -593,6 +595,12 @@ void CEnsemble::Config_New(void)
 {
 	if( Get_Status() == STATUS_CONFIG )
 	{
+		SetNextImage() ;
+		
+		//Get New Image
+		m_cls_api[TOP].Ensemble_Camera_Capture_SW_Trigger() ;
+		m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
+			
 		//Set Base Image : not reset 
         m_cls_api[TOP].Ensemble_Job_Set_Image(m_str_job_id[TOP])  ;
         m_cls_api[BOTTOM].Ensemble_Job_Set_Image(m_str_job_id[BOTTOM])  ;

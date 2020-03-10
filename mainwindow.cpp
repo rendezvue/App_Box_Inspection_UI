@@ -137,6 +137,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->pushButton_config, SIGNAL(clicked()), this,  SLOT(OnButton_Config())) ;
 	connect(ui->pushButton_config_new, SIGNAL(clicked()), this,  SLOT(OnButton_Config_New())) ;
 	connect(ui->pushButton_config_save, SIGNAL(clicked()), this,  SLOT(OnButton_Config_Save())) ;
+	connect(ui->pushButton_config_load, SIGNAL(clicked()), this,  SLOT(OnButton_Config_Load())) ;
 
 	connect(ui->pushButton_test_run, SIGNAL(clicked()), this,  SLOT(OnButton_Test_Run())) ;
 	connect(ui->pushButton_test_open_log, SIGNAL(clicked()), this,  SLOT(OnButton_Open_Log())) ;
@@ -144,6 +145,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->pushButton_config_new->hide() ;
 	ui->pushButton_config_save->hide() ;
+	ui->pushButton_config_load->hide() ;
 		
 	
 	//m_pEnsemble[0]->SetIP("192.168.56.102") ;
@@ -458,6 +460,7 @@ void MainWindow::OnButton_Config(void)
 
 		ui->pushButton_config_new->show() ;
 		ui->pushButton_config_save->show() ;
+		ui->pushButton_config_load->show() ;
 	}
 	else
 	{
@@ -465,6 +468,7 @@ void MainWindow::OnButton_Config(void)
 
 		ui->pushButton_config_new->hide() ;
 		ui->pushButton_config_save->hide() ;
+		ui->pushButton_config_load->show() ;
 	}
 
 }
@@ -480,6 +484,12 @@ void MainWindow::OnButton_Config_Save(void)
 
 	m_pEnsemble->Config_Load() ;
 }
+
+void MainWindow::OnButton_Config_Load(void)
+{
+	m_pEnsemble->Config_Load() ;
+}
+
 
 #if 0
 bool MainWindow::eventFilter(QObject *obj, QEvent* event)
@@ -727,19 +737,19 @@ void MainWindow::OnButton_Test_Run(void)
 	{
 		m_pEnsemble->Set_Status(STATUS_NORMAL) ;
 		
-		ui->pushButton_test_run->setText("Test Run Start");
+		ui->pushButton_test_run->setText("Run Start");
 	}
 	else
 	{
 		m_pEnsemble->Set_Status(STATUS_TEST_RUN) ;
 
-		ui->pushButton_test_run->setText("Test Run Stop");
+		ui->pushButton_test_run->setText("Run Stop");
 	}
 }
 
 void MainWindow::OnButton_Open_Log(void)
 {
-	QDesktopServices::openUrl(QUrl("file:///./Log", QUrl::TolerantMode));
+	QDesktopServices::openUrl(QUrl("Log", QUrl::TolerantMode));
 }
 
 void MainWindow::updateRunCrack(bool b_run_top, bool b_run_bottom)

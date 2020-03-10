@@ -58,6 +58,8 @@ public:
 		    m_object_image.image_width = 320 ;
 		    m_object_image.image_height = 240;
 
+			m_test_index[i] = 0 ;
+
     	}
     }
     ~CEnsemble() 
@@ -104,27 +106,27 @@ public:
 	bool m_thread_run ;
 
 private:
-	std::string m_str_ip[2] ;
-	unsigned int m_port[2] ;
+	std::string m_str_ip[FACE_MAX_COUNT] ;
+	unsigned int m_port[FACE_MAX_COUNT] ;
 
-	CEnsembleAPI m_cls_api[2] ;
-	cv::Mat m_mat_input_image[2] ;
+	CEnsembleAPI m_cls_api[FACE_MAX_COUNT] ;
+	cv::Mat m_mat_input_image[FACE_MAX_COUNT] ;
 
 	int m_status ;
 
 	//top
-	std::string m_str_job_id[2] ; 
-	std::string m_str_option_inspect_crack_id[2] ;
-	std::string m_str_option_inspect_color_id[2] ;
+	std::string m_str_job_id[FACE_MAX_COUNT] ; 
+	std::string m_str_option_inspect_crack_id[FACE_MAX_COUNT] ;
+	std::string m_str_option_inspect_color_id[FACE_MAX_COUNT] ;
 	
-	unsigned int m_count_run[2] ;
-	unsigned int m_count_pass[2] ;
-	unsigned int m_count_ng[2] ;
-	unsigned int m_count_ng_crack[2] ;
-	unsigned int m_count_ng_color[2] ;
+	unsigned int m_count_run[FACE_MAX_COUNT] ;
+	unsigned int m_count_pass[FACE_MAX_COUNT] ;
+	unsigned int m_count_ng[FACE_MAX_COUNT] ;
+	unsigned int m_count_ng_crack[FACE_MAX_COUNT] ;
+	unsigned int m_count_ng_color[FACE_MAX_COUNT] ;
 
 	//Image
-	ImageBuf m_image[2] ;
+	ImageBuf m_image[FACE_MAX_COUNT] ;
 	//unsigned char* m_p_get_data[2] ;
 	//int m_get_data_width[2] ;
 	//int m_get_data_height[2] ;
@@ -133,6 +135,12 @@ private:
 	//unsigned char* m_p_get_object_image_data ;
     //int m_object_image_width ;
     //int m_object_image_height;
+
+	std::vector<std::string> m_vec_test_source_list[FACE_MAX_COUNT] ;
+	int m_test_index[FACE_MAX_COUNT] ;
+
+	//only Test
+	void SetNextImage(void) ;
 	
 protected:
     void run(void) ;
