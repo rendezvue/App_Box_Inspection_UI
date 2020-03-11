@@ -56,8 +56,8 @@ void CSaveLogFile::SaveLogFile(const int face, const bool ng_crack, const bool n
 	}
 
 	//Save Information
-	FILE *fp ;
-	fp = fopen(filename, "w+") ;
+    //FILE *fp ;
+    //fp = fopen(filename, "w+") ;
 	
 }
 
