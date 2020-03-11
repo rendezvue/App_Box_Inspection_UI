@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH += ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
-LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
+LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex -lboost_date_time
 
 CONFIG += link_pkgconfig
 PKGCONFIG += opencv4
@@ -43,7 +43,8 @@ SOURCES += \
     censemble.cpp \
     cmat2qimage.cpp \
     CIniInfo.cpp \
-    module/pugixml/src/pugixml.cpp
+    module/pugixml/src/pugixml.cpp \
+    csavelogfile.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -63,7 +64,8 @@ HEADERS += \
     cmat2qimage.h \
     CIniInfo.h \
     module/pugixml/src/pugiconfig.hpp \
-    module/pugixml/src/pugixml.hpp
+    module/pugixml/src/pugixml.hpp \
+    csavelogfile.h
 
 FORMS += \
         mainwindow.ui

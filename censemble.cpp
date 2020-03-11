@@ -26,6 +26,9 @@ void CEnsemble::run(void)
 	std::string str_result_xml[FACE_MAX_COUNT] ;
 	int result_crack_pass[FACE_MAX_COUNT] = {-1,} ;
 	int result_color_pass[FACE_MAX_COUNT] = {-1,} ;
+
+	bool b_ng_crack[FACE_MAX_COUNT] = {false, } ;
+	bool b_ng_color[FACE_MAX_COUNT] = {false, } ;
 	
     while(m_thread_run)
     {       
@@ -124,6 +127,9 @@ void CEnsemble::run(void)
 		//Run 
 		//
 		//qDebug("RUN : 3 : Run") ;
+		b_ng_crack[TOP] = false ; b_ng_crack[BOTTOM] = false ;
+		b_ng_color[TOP] = false ; b_ng_color[BOTTOM] = false ;
+		
 		if( status == STATUS_TEST_RUN )
 		{
 			//------------------------------------------------------------
@@ -209,8 +215,18 @@ void CEnsemble::run(void)
 				{	
 					m_count_ng[nFace]++ ;
 
-					if( result_crack_pass[nFace] == false ) m_count_ng_crack[nFace]++ ;
-					if( result_color_pass[nFace] == false ) m_count_ng_color[nFace]++ ;
+					if( result_crack_pass[nFace] == false )
+					{
+						m_count_ng_crack[nFace]++ ;
+
+						b_ng_crack[nFace] = true ;
+					}
+					if( result_color_pass[nFace] == false )
+					{	
+						m_count_ng_color[nFace]++ ;
+
+						b_ng_color[nFace] = true ;
+					}
 				}
 				//Result Inspect
 				//----------------------------------------
@@ -321,6 +337,14 @@ void CEnsemble::run(void)
 					cv::rectangle(m_mat_input_image[nFace], rect_inspect_display, color_inspect, 3) ;
 				}
 			}
+
+			//---------------------------------------------------------------------------
+			//Save Log : Result Image
+			{
+                //SaveLogFile(nFace, b_ng_crack[nFace], b_ng_color[nFace]) ;
+			}
+			//Save Log : Result Image
+			//---------------------------------------------------------------------------
 		}
 		//
 		//Get Image

@@ -780,7 +780,7 @@ void MainWindow::OnButton_Test_Run(void)
 
 void MainWindow::OnButton_Open_Log(void)
 {
-	QDesktopServices::openUrl(QUrl("Log", QUrl::TolerantMode));
+	QDesktopServices::openUrl(QUrl(LOG_BASE_FOLDER, QUrl::TolerantMode));
 }
 
 void MainWindow::updateRunCrack(bool b_run_top, bool b_run_bottom)

@@ -10,6 +10,8 @@
 #include "censemble.h"
 #include "cmat2qimage.h"
 #include "CIniInfo.h"
+#include "csavelogfile.h"
+
 
 #include <QDesktopServices> 
 

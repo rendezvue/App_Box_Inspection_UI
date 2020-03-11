@@ -142,6 +142,7 @@ private:
 	//only Test
 	void SetNextImage(void) ;
 	
+	
 protected:
     void run(void) ;
 
