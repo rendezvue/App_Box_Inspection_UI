@@ -27,9 +27,6 @@ void CEnsemble::run(void)
 	int result_crack_pass[FACE_MAX_COUNT] = {-1,} ;
 	int result_color_pass[FACE_MAX_COUNT] = {-1,} ;
 
-	bool b_ng_crack[FACE_MAX_COUNT] = {false, } ;
-	bool b_ng_color[FACE_MAX_COUNT] = {false, } ;
-	
     while(m_thread_run)
     {       
     	const int status = Get_Status() ;
@@ -127,9 +124,6 @@ void CEnsemble::run(void)
 		//Run 
 		//
 		//qDebug("RUN : 3 : Run") ;
-		b_ng_crack[TOP] = false ; b_ng_crack[BOTTOM] = false ;
-		b_ng_color[TOP] = false ; b_ng_color[BOTTOM] = false ;
-		
 		if( status == STATUS_TEST_RUN )
 		{
 			//------------------------------------------------------------
@@ -218,14 +212,10 @@ void CEnsemble::run(void)
 					if( result_crack_pass[nFace] == false )
 					{
 						m_count_ng_crack[nFace]++ ;
-
-						b_ng_crack[nFace] = true ;
 					}
 					if( result_color_pass[nFace] == false )
 					{	
 						m_count_ng_color[nFace]++ ;
-
-						b_ng_color[nFace] = true ;
 					}
 				}
 				//Result Inspect
@@ -340,8 +330,13 @@ void CEnsemble::run(void)
 
 			//---------------------------------------------------------------------------
 			//Save Log : Result Image
+			if( status == STATUS_TEST_RUN )
 			{
-                //SaveLogFile(nFace, b_ng_crack[nFace], b_ng_color[nFace]) ;
+				if( result_crack_pass[nFace] ==false || result_color_pass[nFace] == false )
+				{
+	                //SaveLogFile(nFace, b_ng_crack[nFace], b_ng_color[nFace]) ;
+	                m_cls_log_file.SaveLogFile(m_count_run[nFace], nFace, inspect_level_crack[nFace], result_crack_quality[nFace], result_crack_pass[nFace], sensitivity_level_color[nFace], inspect_level_color[nFace], result_color_quality[nFace], result_color_pass[nFace], m_mat_input_image[nFace]) ;
+				}
 			}
 			//Save Log : Result Image
 			//---------------------------------------------------------------------------

@@ -9,6 +9,9 @@
 #include "ImgDec.h"
 #include "pugixml.hpp"
 
+#include "csavelogfile.h"
+
+
 #define DISPLAY_IMAGE_WIDTH		640
 #define DISPLAY_IMAGE_HEIGHT	480
 
@@ -141,7 +144,9 @@ private:
 
 	//only Test
 	void SetNextImage(void) ;
-	
+
+	//log
+	CSaveLogFile m_cls_log_file ;
 	
 protected:
     void run(void) ;
