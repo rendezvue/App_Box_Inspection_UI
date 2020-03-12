@@ -22,7 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
+INCLUDEPATH += ./module/ImageBuf2Mat ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex -lboost_date_time
 
 CONFIG += link_pkgconfig
@@ -44,7 +44,8 @@ SOURCES += \
     cmat2qimage.cpp \
     CIniInfo.cpp \
     module/pugixml/src/pugixml.cpp \
-    csavelogfile.cpp
+    csavelogfile.cpp \
+    module/ImageBuf2Mat/CImageBuf2Mat.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -65,7 +66,8 @@ HEADERS += \
     CIniInfo.h \
     module/pugixml/src/pugiconfig.hpp \
     module/pugixml/src/pugixml.hpp \
-    csavelogfile.h
+    csavelogfile.h \
+    module/ImageBuf2Mat/CImageBuf2Mat.h
 
 FORMS += \
         mainwindow.ui
@@ -77,4 +79,5 @@ DISTFILES += \
     module/EnsembleCommand/LICENSE \
     module/EnsembleCommon/LICENSE \
     module/ImgEncDec/LICENSE \
-    module/PacketEthComm/LICENSE
+    module/PacketEthComm/LICENSE \
+    module/ImageBuf2Mat/LICENSE

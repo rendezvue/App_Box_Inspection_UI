@@ -276,28 +276,7 @@ void CEnsemble::run(void)
 
 			if( m_image[nFace].p_buf != NULL )
             {
-                if( m_image[nFace].image_width>0 && m_image[nFace].image_height >0 )
-                {
-                    if( m_image[nFace].image_type == IMAGE_YUV420 )
-                    {
-                        cv::Mat get_image(m_image[nFace].image_height + m_image[nFace].image_height / 2, m_image[nFace].image_width, CV_8UC1, m_image[nFace].p_buf) ;
-
-                        CImgDec cls_image_decoder ;
-                        m_mat_input_image[nFace] = cls_image_decoder.Decoding(get_image) ;
-                    }
-                    else if( m_image[nFace].image_type == IMAGE_RGB888 )
-                    {
-                        cv::Mat get_image(m_image[nFace].image_height, m_image[nFace].image_width, CV_8UC3, m_image[nFace].p_buf) ;
-                        if( !get_image.empty() ) cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
-                    }
-					 else if( m_image[nFace].image_type == IMAGE_JPG )
-                    {
-                        cv::Mat get_image = cv::imdecode(cv::Mat(1,  m_image[nFace].image_width*m_image[nFace].image_height, CV_8UC1, m_image[nFace].p_buf), cv::IMREAD_UNCHANGED);
-                       if( !get_image.empty() )  cv::cvtColor(get_image, m_mat_input_image[nFace], cv::COLOR_BGR2RGB) ;
-                    }
-                }
-                //delete [] get_data ;
-                //get_data = NULL ;
+				m_mat_input_image[nFace] = m_cls_imagebuf2mat.Cvt(m_image[nFace]) ;
             }
             else
             {
@@ -558,28 +537,8 @@ cv::Mat CEnsemble::Get_Job_Image(const int surface, const std::string str_job_id
 
 	if( m_object_image.p_buf != NULL )
     {
-		if( m_object_image.image_width > 0 && m_object_image.image_height > 0 )
-		{
-            if( m_object_image.image_type == IMAGE_YUV420 )
-			{
-				//YUV420 
-		        cv::Mat get_image(m_object_image.image_height + m_object_image.image_height / 2, m_object_image.image_width, CV_8UC1, m_object_image.p_buf) ;
-
-		        CImgDec cls_image_decoder ;
-		        object_image = cls_image_decoder.Decoding(get_image) ;
-			}
-            else if( m_object_image.image_type == IMAGE_RGB888 )
-			{
-                cv::Mat get_image(m_object_image.image_height, m_object_image.image_width, CV_8UC3, m_object_image.p_buf) ;
-				if( !get_image.empty() ) cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
-			}
-            else if( m_object_image.image_type == ImageTypeOption::IMAGE_JPG)
-            {
-                cv::Mat get_image = cv::imdecode(cv::Mat(1, m_object_image.image_width*m_object_image.image_height, CV_8UC1, m_object_image.p_buf), cv::IMREAD_UNCHANGED) ;
-                if( !get_image.empty() ) cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
-            }
-		}
-    
+		object_image = m_cls_imagebuf2mat.Cvt(m_object_image) ;
+		
         //delete [] get_object_image_data ;
         //get_object_image_data = NULL ;
     }

@@ -10,7 +10,7 @@
 #include "pugixml.hpp"
 
 #include "csavelogfile.h"
-
+#include "CImageBuf2Mat.h"
 
 #define DISPLAY_IMAGE_WIDTH		640
 #define DISPLAY_IMAGE_HEIGHT	480
@@ -147,6 +147,7 @@ private:
 
 	//log
 	CSaveLogFile m_cls_log_file ;
+	CImageBuf2Mat m_cls_imagebuf2mat ;
 	
 protected:
     void run(void) ;
