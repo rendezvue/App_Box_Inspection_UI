@@ -27,6 +27,9 @@ void CEnsemble::run(void)
 	int result_crack_pass[FACE_MAX_COUNT] = {-1,} ;
 	int result_color_pass[FACE_MAX_COUNT] = {-1,} ;
 
+    Start_Capture_Top = false;
+    boost::thread* thr = new boost::thread(boost::bind(&CEnsemble::Thread_Capture_SW_Trigger, this));
+
     while(m_thread_run)
     {       
     	const int status = Get_Status() ;
@@ -126,13 +129,18 @@ void CEnsemble::run(void)
 		//qDebug("RUN : 3 : Run") ;
 		if( status == STATUS_TEST_RUN )
 		{
+		
+			do
+			{
+                if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) == 0 ) break ;		//Check Photo Sensor 1
+			}while(1) ;		
 			//------------------------------------------------------------
 			//STEP 1 : Check Get IO
 			//
 			//qDebug("RUN : 3 : Run : Step1 : Check Get IO") ;
 			do
 			{
-				if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01 ) break ;		//Check Photo Sensor 1
+                if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 1
 			}while(1) ;
 			//
 			//STEP 1 : Check Get IO
@@ -153,43 +161,29 @@ void CEnsemble::run(void)
 			//
 			//qDebug("RUN : 3 : Run : Step3 : Light On") ;
 			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_ON ) ;
-			QThread::msleep(0) ;    //TODO : timing sw delay
-			//
-			//STEP 3 : Light On
+            QThread::msleep(0) ;    //TODO : timing sw delay
 			//------------------------------------------------------------
 
-			//------------------------------------------------------------
 			//STEP 4 : Image Capture
 			//
-			//qDebug("RUN : 3 : Run : Step4 : Image Capture") ;
-			m_cls_api[TOP].Ensemble_Camera_Capture_SW_Trigger() ;
-			m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
-			//
-			//STEP 4 : Image Capture
-			//------------------------------------------------------------
+			//qDebug("RUN : 3 : Run : Step4 : Image Capture") ;			
+			do
+			{
+                if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01 ) break ;		//Check Photo Sensor 1
+			}while(1) ;			
+            Start_Capture_Top = true;
+            m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
+			//STEP 5 : Light Off
+			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
 
 			//------------------------------------------------------------
-			//STEP 5 : Do Vision
-			//
+			//STEP 6 : Do Vision
 			//qDebug("RUN : 3 : Run : Step5 : Do Vision") ;
 			for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ ) 
 			{
 				str_result_xml[nFace] = m_cls_api[nFace].Ensemble_Job_Run(m_str_job_id[nFace]) ;
 				m_count_run[nFace]++ ;
 			}
-			//
-			//STEP 5 : Do Vision
-			//------------------------------------------------------------
-			
-			//------------------------------------------------------------
-			//STEP 6 : Light Off
-			//
-			//qDebug("RUN : 3 : Run : Step6 : Light Off") ;
-			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
-			//		
-			//STEP 6 : Light Off
-			//------------------------------------------------------------
-
 			//------------------------------------------------------------
 			//STEP 7 : Check Result & Set LED Status
 			//
@@ -235,6 +229,7 @@ void CEnsemble::run(void)
 				m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_GREEN, IO_DEVICE_OFF ) ;
 				m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_RED, IO_DEVICE_ON ) ;
 			}
+	
 			//		
 			//STEP 7 : Check Result & Set LED Status
 			//------------------------------------------------------------
@@ -347,6 +342,22 @@ void CEnsemble::run(void)
         QThread::usleep(33000) ;
     }
 #endif	
+}
+
+void CEnsemble::Thread_Capture_SW_Trigger()
+{
+    while(1)
+    {
+        if( Start_Capture_Top )
+        {
+            m_cls_api[TOP].Ensemble_Camera_Capture_SW_Trigger();
+            Start_Capture_Top = false;
+        }
+        else
+        {
+            usleep(1000);
+        }
+    }
 }
 
 void CEnsemble::SetNextImage(void)

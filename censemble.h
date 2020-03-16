@@ -25,15 +25,12 @@
 
 #define FILE_TEST		1
 
-#define IO_DEVICE_LIGHT				0
-#define IO_DEVICE_SIGN_LED_GREEN	1
-#define IO_DEVICE_SIGN_LED_RED		2
+#define IO_DEVICE_SIGN_LED_GREEN	0
+#define IO_DEVICE_SIGN_LED_RED		1
+#define IO_DEVICE_LIGHT				2
 
 #define IO_DEVICE_OFF		0
 #define IO_DEVICE_ON		1
-
-
-
 
 class CEnsemble : public QThread
 {
@@ -144,7 +141,8 @@ private:
 
 	//only Test
 	void SetNextImage(void) ;
-
+    void Thread_Capture_SW_Trigger();
+    bool Start_Capture_Top;
 	//log
 	CSaveLogFile m_cls_log_file ;
 	CImageBuf2Mat m_cls_imagebuf2mat ;
