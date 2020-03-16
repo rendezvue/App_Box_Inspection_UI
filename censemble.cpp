@@ -572,9 +572,11 @@ void CEnsemble::Config_New(void)
 
 		//Light On
 		m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_ON ) ;
+        QThread::msleep(300) ;
 		
 		//Get New Image
-		m_cls_api[TOP].Ensemble_Camera_Capture_SW_Trigger() ;
+//		m_cls_api[TOP].Ensemble_Camera_Capture_SW_Trigger() ;
+		Start_Capture_Top = true;
 		m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
 
 		//Light Off
