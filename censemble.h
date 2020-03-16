@@ -102,6 +102,8 @@ public:
 	void Config_Set_ColorCompare_Sensitivity(const int surface, const int level) ;
 	
 	void Config_Set_Region(const int surface, const float f_x, const float f_y, const float f_w, const float f_h) ;
+
+	void Set_Ensemble_Light(bool on);
 	
 	bool m_thread_run ;
 

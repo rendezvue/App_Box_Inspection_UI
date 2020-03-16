@@ -472,6 +472,8 @@ void MainWindow::OnButton_Config(void)
 		ui->pushButton_config_new->show() ;
 		ui->pushButton_config_save->show() ;
 		ui->pushButton_config_load->show() ;
+
+		m_pEnsemble->Set_Ensemble_Light(true);
 	}
 	else
 	{
@@ -480,6 +482,7 @@ void MainWindow::OnButton_Config(void)
 		ui->pushButton_config_new->hide() ;
 		ui->pushButton_config_save->hide() ;
 		ui->pushButton_config_load->hide() ;
+		m_pEnsemble->Set_Ensemble_Light(false);		
 	}
 
 }

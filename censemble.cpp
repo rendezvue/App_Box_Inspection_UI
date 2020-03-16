@@ -750,3 +750,14 @@ void CEnsemble::Get_Result_Crack_Quality(const std::string str_result_xml, const
     }
 }
 
+void CEnsemble::Set_Ensemble_Light(bool on)
+{
+	if( on )
+	{		
+		m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_ON ) ;
+	}
+	else
+	{
+		m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
+	}
+}
