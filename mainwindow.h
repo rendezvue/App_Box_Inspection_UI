@@ -92,6 +92,11 @@ public slots:
 	void OnButton_Test_Run(void) ;
 	void OnButton_Open_Log(void) ;
 
+	void OnCheckbox_Toggle_Crack_Top(bool b_check) ;
+	void OnCheckbox_Toggle_Color_Top(bool b_check) ;
+	void OnCheckbox_Toggle_Crack_Bottom(bool b_check) ;
+	void OnCheckbox_Toggle_Color_Bottom(bool b_check) ;
+
 	void updateRunCrack(bool b_run_top, bool b_run_bottom) ;
 	void updateRunCrack_Top(bool b_run) ;
 	void updateRunCrack_Bottom(bool b_run) ;

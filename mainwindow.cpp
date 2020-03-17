@@ -143,6 +143,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->pushButton_test_open_log, SIGNAL(clicked()), this,  SLOT(OnButton_Open_Log())) ;
 	
 
+	//check box
+    connect(ui->checkBox_check_crack_top, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Crack_Top(bool)));
+    connect(ui->checkBox_check_color_top, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Color_Top(bool)));
+	connect(ui->checkBox_check_crack_bottom, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Crack_Bottom(bool)));
+    connect(ui->checkBox_check_color_bottom, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Color_Bottom(bool)));
+	
 	ui->pushButton_config_new->hide() ;
 	ui->pushButton_config_save->hide() ;
 	ui->pushButton_config_load->hide() ;
@@ -1097,3 +1103,24 @@ void MainWindow::OnSliderBottomLevelMove_Color(int value)
 {
 	m_set_user_level_bottom = true ;
 }
+
+void MainWindow::OnCheckbox_Toggle_Crack_Top(bool b_check)
+{
+	m_pEnsemble->Run_Enable_Crack(TOP, b_check) ;
+}
+
+void MainWindow::OnCheckbox_Toggle_Color_Top(bool b_check)
+{
+	m_pEnsemble->Run_Enable_Color(TOP, b_check) ;
+}
+
+void MainWindow::OnCheckbox_Toggle_Crack_Bottom(bool b_check)
+{
+	m_pEnsemble->Run_Enable_Crack(BOTTOM, b_check) ;
+}
+
+void MainWindow::OnCheckbox_Toggle_Color_Bottom(bool b_check)
+{
+	m_pEnsemble->Run_Enable_Color(BOTTOM, b_check) ;
+}
+

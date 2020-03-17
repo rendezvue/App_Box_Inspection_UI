@@ -126,9 +126,10 @@ void CEnsemble::run(void)
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		//Run 
 		//
-		//qDebug("RUN : 3 : Run") ;
+		qDebug("RUN : 3 : Run") ;
 		if( status == STATUS_TEST_RUN )
 		{
+			qDebug("RUN : 3 : Run : STart") ;
 			//------------------------------------------------------------
 			//STEP 1 : Check Get IO ( Front Sensor )
 			//
@@ -137,7 +138,7 @@ void CEnsemble::run(void)
                 if( Get_Status() != STATUS_TEST_RUN ) break;
                 if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) == 0 ) break ;		//Check Photo Sensor 1
 			}while(1) ;		
-			//qDebug("RUN : 3 : Run : Step1 : Check Get IO") ;
+			qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor1") ;
 
 			//------------------------------------------------------------
 			//STEP 2 : Check Get IO ( Back Sensor )
@@ -147,7 +148,8 @@ void CEnsemble::run(void)
                 if( Get_Status() != STATUS_TEST_RUN ) break;			
                 if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 1
 			}while(1) ;
-
+			qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor2") ;
+				
 			//------------------------------------------------------------
 			//STEP 3 : Sign LED All Off
 			//
@@ -766,3 +768,16 @@ void CEnsemble::Set_Ensemble_Light(bool on)
 		m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
 	}
 }
+
+void CEnsemble::Run_Enable_Crack(const int surface, const bool run)
+{
+	if( surface == TOP )			m_cls_api[TOP].Ensemble_Task_Set_Run_Option(m_str_option_inspect_crack_id[TOP], run);
+    else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Task_Set_Run_Option(m_str_option_inspect_crack_id[BOTTOM], run);
+}
+
+void CEnsemble::Run_Enable_Color(const int surface, const bool run)
+{
+	if( surface == TOP )			m_cls_api[TOP].Ensemble_Task_Set_Run_Option(m_str_option_inspect_color_id[TOP], run);
+    else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Task_Set_Run_Option(m_str_option_inspect_color_id[BOTTOM], run);
+}
+

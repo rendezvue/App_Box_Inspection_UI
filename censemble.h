@@ -103,6 +103,9 @@ public:
 	
 	void Config_Set_Region(const int surface, const float f_x, const float f_y, const float f_w, const float f_h) ;
 
+	void Run_Enable_Crack(const int surface, const bool run) ;
+	void Run_Enable_Color(const int surface, const bool run) ;
+	
 	void Set_Ensemble_Light(bool on);
 	
 	bool m_thread_run ;
