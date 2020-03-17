@@ -263,7 +263,7 @@ void CEnsemble::run(void)
 			else
 			{
 				m_cls_api[nFace].Ensemble_Camera_Capture_SW_Trigger() ;		//New Image
-                ret_data_size = m_cls_api[nFace].Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &m_image[nFace]) ;
+                ret_data_size = m_cls_api[nFace].Ensemble_Source_Get_Image(image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &m_image[nFace]) ;
 			}
 
 			if( m_image[nFace].p_buf != NULL )
