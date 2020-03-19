@@ -136,7 +136,7 @@ void CEnsemble::run(void)
 			do
 			{
                 if( Get_Status() != STATUS_TEST_RUN ) break;
-                if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) == 0 ) break ;		//Check Photo Sensor 1
+                if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Check Photo Sensor 1
 			}while(1) ;		
 			qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor1") ;
 
@@ -146,7 +146,7 @@ void CEnsemble::run(void)
 			do
 			{
                 if( Get_Status() != STATUS_TEST_RUN ) break;			
-                if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 1
+                if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 2
 			}while(1) ;
 			qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor2") ;
 				
