@@ -129,55 +129,10 @@ void CEnsemble::run(void)
 		qDebug("RUN : 3 : Run") ;
 		if( status == STATUS_TEST_RUN )
 		{
-			qDebug("RUN : 3 : Run : STart") ;
-			//------------------------------------------------------------
-			//STEP 1 : Check Get IO ( Front Sensor )
-			//
-			do
-			{
-                if( Get_Status() != STATUS_TEST_RUN ) break;
-                if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Check Photo Sensor 1
-			}while(1) ;		
-			qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor1") ;
-
-			//------------------------------------------------------------
-			//STEP 2 : Check Get IO ( Back Sensor )
-			//			
-			do
-			{
-                if( Get_Status() != STATUS_TEST_RUN ) break;			
-                if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 2
-			}while(1) ;
-			qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor2") ;
-				
-			//------------------------------------------------------------
-			//STEP 3 : Sign LED All Off
-			//
-			//qDebug("RUN : 3 : Run : Step2 : Sign LED All Off") ;
-			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_GREEN, IO_DEVICE_OFF ) ;
-			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_RED, IO_DEVICE_OFF ) ;
-
-			//------------------------------------------------------------
-			//STEP 4 : Light On
-			//
-			//qDebug("RUN : 3 : Run : Step3 : Light On") ;
-			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_ON ) ;
-            QThread::msleep(0) ;    //TODO : timing sw delay
-			//------------------------------------------------------------
-
-			//STEP 5 : Image Capture
-			//
-			//qDebug("RUN : 3 : Run : Step4 : Image Capture") ;			
-			do
-			{
-                if( Get_Status() != STATUS_TEST_RUN ) break;			
-                if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01 ) break ;		//Check Photo Sensor 1
-			}while(1) ;			
-            Start_Capture_Top = true;
-            m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
-			//STEP 6 : Light Off
-			m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
-
+			//STEP 1~6 : Capture Image
+			Capture_Camera_Image();
+//			Capture_Camera_Center_Image();
+	
 			//------------------------------------------------------------
 			//STEP 7 : Do Vision
 			//qDebug("RUN : 3 : Run : Step5 : Do Vision") ;
@@ -342,6 +297,114 @@ void CEnsemble::run(void)
     }
 #endif	
 }
+void CEnsemble::Capture_Camera_Image()
+{
+	qDebug("RUN : 3 : Run : STart") ;
+	//------------------------------------------------------------
+	//STEP 1 : Check Get IO ( Front Sensor )
+	//
+	do
+	{
+        if( Get_Status() != STATUS_TEST_RUN ) break;
+        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Check Photo Sensor 1
+	}while(1) ;		
+	qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor1") ;
+
+	//------------------------------------------------------------
+	//STEP 2 : Check Get IO ( Back Sensor )
+	//			
+	do
+	{
+        if( Get_Status() != STATUS_TEST_RUN ) break;			
+        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 2
+	}while(1) ;
+	qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor2") ;
+		
+	//------------------------------------------------------------
+	//STEP 3 : Sign LED All Off
+	//
+	//qDebug("RUN : 3 : Run : Step2 : Sign LED All Off") ;
+	m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_GREEN, IO_DEVICE_OFF ) ;
+	m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_RED, IO_DEVICE_OFF ) ;
+
+	//------------------------------------------------------------
+	//STEP 4 : Light On
+	//
+	//qDebug("RUN : 3 : Run : Step3 : Light On") ;
+	m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_ON ) ;
+    QThread::msleep(0) ;    //TODO : timing sw delay
+	//------------------------------------------------------------
+
+	//STEP 5 : Image Capture
+	//
+	//qDebug("RUN : 3 : Run : Step4 : Image Capture") ;			
+	do
+	{
+		int top_frame_cnt = m_cls_api[TOP].Ensemble_Camera_Get_Frame_Count();
+		int bottom_frame_cnt = m_cls_api[BOTTOM].Ensemble_Camera_Get_Frame_Count();
+		qDebug("Frame cnt(top:%d, bottom:%d)\n",top_frame_cnt, bottom_frame_cnt);
+        if( Get_Status() != STATUS_TEST_RUN ) break;			
+        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01 ) break ;		//Check Photo Sensor 1
+	}while(1) ;			
+    Start_Capture_Top = true;
+    m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
+	//STEP 6 : Light Off
+	m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
+}
+void CEnsemble::Capture_Camera_Center_Image()
+{
+	// Step 1 : Check Front Sensor High ( The Box is entering )
+	do
+	{
+		if( Get_Status() != STATUS_TEST_RUN ) break;
+		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Check Photo Sensor 1
+	}while(1) ;
+	// Step 1 End
+
+	// Step 2 : Check Front Sensor Low ( The box passes through the sensor perfectly. )
+	/* need to test with ENSEMBLE_base */
+	do
+	{
+		if( Get_Status() != STATUS_TEST_RUN ) break;
+		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) == 0) break ;		//Check Photo Sensor 1
+	}while(1) ;	
+	/************************************/
+	// Step 2 End
+
+	// Step 3 : Get Start Frame Number
+	int TOP_FrameNum_start = m_cls_api[TOP].Ensemble_Camera_Get_Frame_Count();
+	int BOTTOM_FrameNum_start = m_cls_api[BOTTOM].Ensemble_Camera_Get_Frame_Count();
+	// Step 3 End
+
+	// Step 4 : Camera Capture Start
+	do
+	{
+		Start_Capture_Top = true;
+		m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
+		
+		if( Get_Status() != STATUS_TEST_RUN ) break;			
+		if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ; 	//Check Photo Sensor 2
+	}while(1) ;
+	// Step 4 End
+	
+	// Step 5 : Get End Frame Number
+	int TOP_FrameNum_end = m_cls_api[TOP].Ensemble_Camera_Get_Frame_Count();
+	int BOTTOM_FrameNum_end = m_cls_api[BOTTOM].Ensemble_Camera_Get_Frame_Count();
+	// Step 5 End
+
+	int TOP_Center_FrameNum = TOP_FrameNum_start + ((TOP_FrameNum_end - TOP_FrameNum_start)/2);
+	int BOTTOM_Center_FrameNum = BOTTOM_FrameNum_start + ((BOTTOM_FrameNum_end - BOTTOM_FrameNum_start)/2);	
+	
+	qDebug("TOP Camera Frame Change ( %d -> %d ), BOTTOM Camera Frame Change ( %d -> %d )\n", 
+			TOP_FrameNum_start,TOP_FrameNum_end ,BOTTOM_FrameNum_start,BOTTOM_FrameNum_end );
+	
+    qDebug("TOP_Center_FrameNum[%d] / BOTTOM_Center_FrameNum[%d]\n",TOP_Center_FrameNum ,BOTTOM_Center_FrameNum);
+
+	m_cls_api[TOP].Ensemble_Camera_Set_Camera_Image_To_Past_Frame(TOP_Center_FrameNum);
+	m_cls_api[BOTTOM].Ensemble_Camera_Set_Camera_Image_To_Past_Frame(BOTTOM_Center_FrameNum);	
+
+}
+
 
 void CEnsemble::Thread_Capture_SW_Trigger()
 {
