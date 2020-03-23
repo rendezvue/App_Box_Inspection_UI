@@ -130,8 +130,8 @@ void CEnsemble::run(void)
 		if( status == STATUS_TEST_RUN )
 		{
 			//STEP 1~6 : Capture Image
-			Capture_Camera_Image();
-//			Capture_Camera_Center_Image();
+//			Capture_Camera_Image(Get_Status());
+			Capture_Camera_Center_Image(Get_Status());
 	
 			//------------------------------------------------------------
 			//STEP 7 : Do Vision
@@ -297,28 +297,28 @@ void CEnsemble::run(void)
     }
 #endif	
 }
-void CEnsemble::Capture_Camera_Image()
+void CEnsemble::Capture_Camera_Image(int CurrentStatus)
 {
-	qDebug("RUN : 3 : Run : STart") ;
+	//qDebug("RUN : 3 : Run : STart") ;
 	//------------------------------------------------------------
 	//STEP 1 : Check Get IO ( Front Sensor )
 	//
 	do
 	{
-        if( Get_Status() != STATUS_TEST_RUN ) break;
+        if( Get_Status() != CurrentStatus ) break;
         if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Check Photo Sensor 1
 	}while(1) ;		
-	qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor1") ;
+	//qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor1") ;
 
 	//------------------------------------------------------------
 	//STEP 2 : Check Get IO ( Back Sensor )
 	//			
 	do
 	{
-        if( Get_Status() != STATUS_TEST_RUN ) break;			
+        if( Get_Status() != CurrentStatus ) break;			
         if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 2
 	}while(1) ;
-	qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor2") ;
+	//qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor2") ;
 		
 	//------------------------------------------------------------
 	//STEP 3 : Sign LED All Off
@@ -343,7 +343,7 @@ void CEnsemble::Capture_Camera_Image()
 		int top_frame_cnt = m_cls_api[TOP].Ensemble_Camera_Get_Frame_Count();
 		int bottom_frame_cnt = m_cls_api[BOTTOM].Ensemble_Camera_Get_Frame_Count();
 		qDebug("Frame cnt(top:%d, bottom:%d)\n",top_frame_cnt, bottom_frame_cnt);
-        if( Get_Status() != STATUS_TEST_RUN ) break;			
+        if( Get_Status() != CurrentStatus ) break;			
         if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01 ) break ;		//Check Photo Sensor 1
 	}while(1) ;			
     Start_Capture_Top = true;
@@ -351,13 +351,13 @@ void CEnsemble::Capture_Camera_Image()
 	//STEP 6 : Light Off
 	m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
 }
-void CEnsemble::Capture_Camera_Center_Image()
+void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 {
 	// Step 1 : Check Front Sensor High ( The Box is entering )
 	do
 	{
-		if( Get_Status() != STATUS_TEST_RUN ) break;
-		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Check Photo Sensor 1
+		if( Get_Status() != CurrentStatus ) break;
+		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Front sensor check( Object is entering )
 	}while(1) ;
 	// Step 1 End
 
@@ -365,8 +365,8 @@ void CEnsemble::Capture_Camera_Center_Image()
 	/* need to test with ENSEMBLE_base */
 	do
 	{
-		if( Get_Status() != STATUS_TEST_RUN ) break;
-		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) == 0) break ;		//Check Photo Sensor 1
+		if( Get_Status() != CurrentStatus ) break;
+		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) == 0) break ;		//Front sensor check( Waiting object out for start capture )
 	}while(1) ;	
 	/************************************/
 	// Step 2 End
@@ -382,8 +382,8 @@ void CEnsemble::Capture_Camera_Center_Image()
 		Start_Capture_Top = true;
 		m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
 		
-		if( Get_Status() != STATUS_TEST_RUN ) break;			
-		if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ; 	//Check Photo Sensor 2
+		if( Get_Status() != CurrentStatus ) break;			
+		if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ; 	//End sensor check
 	}while(1) ;
 	// Step 4 End
 	
@@ -634,7 +634,14 @@ void CEnsemble::Config_New(void)
 	if( Get_Status() == STATUS_CONFIG )
 	{
 		SetNextImage() ;
+//		Capture_Camera_Image(Get_Status());
+		Capture_Camera_Center_Image(Get_Status());
 
+        m_cls_api[TOP].Ensemble_Job_Set_Image(m_str_job_id[TOP])  ;
+        m_cls_api[BOTTOM].Ensemble_Job_Set_Image(m_str_job_id[BOTTOM])  ;
+
+
+#if 0		
 		//Light On
 		m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_ON ) ;
         QThread::msleep(300) ;
@@ -650,6 +657,7 @@ void CEnsemble::Config_New(void)
 		//Set Base Image : not reset 
         m_cls_api[TOP].Ensemble_Job_Set_Image(m_str_job_id[TOP])  ;
         m_cls_api[BOTTOM].Ensemble_Job_Set_Image(m_str_job_id[BOTTOM])  ;
+#endif        
 	}
 }
 

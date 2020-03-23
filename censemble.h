@@ -147,8 +147,8 @@ private:
 	//only Test
 	void SetNextImage(void) ;
     void Thread_Capture_SW_Trigger();
-	void Capture_Camera_Image();
-    void Capture_Camera_Center_Image();
+	void Capture_Camera_Image(int CurrentStatus);
+    void Capture_Camera_Center_Image(int CurrentStatus);
     bool Start_Capture_Top;
 	//log
 	CSaveLogFile m_cls_log_file ;
