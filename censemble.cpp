@@ -306,7 +306,7 @@ void CEnsemble::Capture_Camera_Image(int CurrentStatus)
 	do
 	{
         if( Get_Status() != CurrentStatus ) break;
-        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Check Photo Sensor 1
+        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) ) break ;		//Check Photo Sensor 1
 	}while(1) ;		
 	//qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor1") ;
 
@@ -316,7 +316,7 @@ void CEnsemble::Capture_Camera_Image(int CurrentStatus)
 	do
 	{
         if( Get_Status() != CurrentStatus ) break;			
-        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ;		//Check Photo Sensor 2
+        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_BACK ) break ;		//Check Photo Sensor 2
 	}while(1) ;
 	//qDebug("RUN : 3 : Run : Step1 : Check Get IO : Sensor2") ;
 		
@@ -344,7 +344,7 @@ void CEnsemble::Capture_Camera_Image(int CurrentStatus)
 		int bottom_frame_cnt = m_cls_api[BOTTOM].Ensemble_Camera_Get_Frame_Count();
 		qDebug("Frame cnt(top:%d, bottom:%d)\n",top_frame_cnt, bottom_frame_cnt);
         if( Get_Status() != CurrentStatus ) break;			
-        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01 ) break ;		//Check Photo Sensor 1
+        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT ) break ;		//Check Photo Sensor 1
 	}while(1) ;			
     Start_Capture_Top = true;
     m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
@@ -357,7 +357,7 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 	do
 	{
 		if( Get_Status() != CurrentStatus ) break;
-		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) ) break ;		//Front sensor check( Object is entering )
+        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) ) break ;		//Front sensor check( Object is entering )
 	}while(1) ;
 	// Step 1 End
 
@@ -366,7 +366,7 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 	do
 	{
 		if( Get_Status() != CurrentStatus ) break;
-		if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x01) == 0) break ;		//Front sensor check( Waiting object out for start capture )
+        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) == 0) break ;		//Front sensor check( Waiting object out for start capture )
 	}while(1) ;	
 	/************************************/
 	// Step 2 End
@@ -383,7 +383,7 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 		m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
 		
 		if( Get_Status() != CurrentStatus ) break;			
-		if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & 0x02 ) break ; 	//End sensor check
+        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_BACK ) break ; 	//End sensor check
 	}while(1) ;
 	// Step 4 End
 	

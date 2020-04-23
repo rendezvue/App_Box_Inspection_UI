@@ -32,6 +32,9 @@
 #define IO_DEVICE_OFF		0
 #define IO_DEVICE_ON		1
 
+#define SENSOR_FRONT        0x02
+#define SENSOR_BACK         0x01
+
 class CEnsemble : public QThread
 {
     Q_OBJECT
