@@ -3,7 +3,7 @@
 
 #include "opencv2/opencv.hpp"
 #include <QThread>
-
+#include <chrono>
 //API
 #include "EnsembleAPI.h"
 #include "ImgDec.h"

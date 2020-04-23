@@ -353,12 +353,18 @@ void CEnsemble::Capture_Camera_Image(int CurrentStatus)
 }
 void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 {
+    std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
+    std::chrono::duration<double> latency;
+    double time_over_sec = 5;
+
 	// Step 1 : Check Front Sensor High ( The Box is entering )
 	do
 	{
 		if( Get_Status() != CurrentStatus ) break;
         if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) ) break ;		//Front sensor check( Object is entering )
-	}while(1) ;
+
+        latency = std::chrono::system_clock::now() - start;
+    }while(latency.count() < time_over_sec) ;
 	// Step 1 End
 
 	// Step 2 : Check Front Sensor Low ( The box passes through the sensor perfectly. )
@@ -367,7 +373,9 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 	{
 		if( Get_Status() != CurrentStatus ) break;
         if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) == 0) break ;		//Front sensor check( Waiting object out for start capture )
-	}while(1) ;	
+
+        latency = std::chrono::system_clock::now() - start;
+    }while(latency.count() < time_over_sec) ;
 	/************************************/
 	// Step 2 End
 
@@ -384,7 +392,9 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 		
 		if( Get_Status() != CurrentStatus ) break;			
         if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_BACK ) break ; 	//End sensor check
-	}while(1) ;
+
+        latency = std::chrono::system_clock::now() - start;
+    }while(latency.count() < time_over_sec) ;
 	// Step 4 End
 	
 	// Step 5 : Get End Frame Number
