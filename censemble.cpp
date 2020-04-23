@@ -131,7 +131,17 @@ void CEnsemble::run(void)
 		{
 			//STEP 1~6 : Capture Image
 //			Capture_Camera_Image(Get_Status());
-			Capture_Camera_Center_Image(Get_Status());
+            if( Capture_Camera_Center_Image(Get_Status()) == true )
+            {
+                string RunStart_str_A = "RunStart-CAM-A";
+                string RunStart_str_B = "RunStart-CAM-B";
+                m_cls_api[TOP].Ensemble_Camera_Save_Image_To_Device_Local(RunStart_str_A);
+                m_cls_api[BOTTOM].Ensemble_Camera_Save_Image_To_Device_Local(RunStart_str_B);
+            }
+            else
+            {
+                // do capture error process
+            }
 	
 			//------------------------------------------------------------
 			//STEP 7 : Do Vision
@@ -660,6 +670,11 @@ void CEnsemble::Config_New(void)
 //		Capture_Camera_Image(Get_Status());
         if( Capture_Camera_Center_Image(Get_Status()) == true )
         {
+            string config_new_str_A = "ConfigNew-CAM-A";
+            string config_new_str_B = "ConfigNew-CAM-B";
+            m_cls_api[TOP].Ensemble_Camera_Save_Image_To_Device_Local(config_new_str_A);
+            m_cls_api[BOTTOM].Ensemble_Camera_Save_Image_To_Device_Local(config_new_str_B);
+
             m_cls_api[TOP].Ensemble_Job_Set_Image(m_str_job_id[TOP])  ;
             m_cls_api[BOTTOM].Ensemble_Job_Set_Image(m_str_job_id[BOTTOM])  ;
         }
