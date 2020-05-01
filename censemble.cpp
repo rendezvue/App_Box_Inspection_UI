@@ -266,7 +266,7 @@ void CEnsemble::run(void)
 			if( status == STATUS_TEST_RUN )
 			{
 				//if( result_crack_pass[nFace] ==false || result_color_pass[nFace] == false )
-				if( result_color_pass[nFace] == false )
+				//if( result_color_pass[nFace] == false )
 				{
 	                //SaveLogFile(nFace, b_ng_crack[nFace], b_ng_color[nFace]) ;
 	                m_cls_log_file.SaveLogFile(m_count_run[nFace], nFace, inspect_level_crack[nFace], result_crack_quality[nFace], result_crack_pass[nFace], sensitivity_level_color[nFace], inspect_level_color[nFace], result_color_quality[nFace], result_color_pass[nFace], m_mat_input_image[nFace]) ;
