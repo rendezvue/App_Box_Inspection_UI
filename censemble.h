@@ -50,8 +50,8 @@ public:
 			m_count_run[i] = 0 ;
 			m_count_pass[i] = 0 ;
 			m_count_ng[i] = 0 ;
-			m_count_ng_crack[i] = 0 ;
-			m_count_ng_color[i] = 0 ;
+            //m_count_ng_crack[i] = 0 ;
+            //m_count_ng_color[i] = 0 ;
 
 			m_image[i].p_buf = NULL ;
 			m_image[i].image_width = DISPLAY_IMAGE_WIDTH ;
@@ -130,8 +130,8 @@ private:
 	unsigned int m_count_run[FACE_MAX_COUNT] ;
 	unsigned int m_count_pass[FACE_MAX_COUNT] ;
 	unsigned int m_count_ng[FACE_MAX_COUNT] ;
-	unsigned int m_count_ng_crack[FACE_MAX_COUNT] ;
-	unsigned int m_count_ng_color[FACE_MAX_COUNT] ;
+	//unsigned int m_count_ng_crack[FACE_MAX_COUNT] ;
+	//unsigned int m_count_ng_color[FACE_MAX_COUNT] ;
 
 	//Image
 	ImageBuf m_image[FACE_MAX_COUNT] ;

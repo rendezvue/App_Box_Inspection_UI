@@ -20,12 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->lineEdit_count_ng_top->setStyleSheet("color: red") ;
 	ui->lineEdit_count_ng_bottom->setStyleSheet("color: red") ;
 
-	ui->lineEdit_count_ng_crack_top->setStyleSheet("color: red") ;
-	ui->lineEdit_count_ng_crack_bottom->setStyleSheet("color: red") ;
-
-	ui->lineEdit_count_ng_color_top->setStyleSheet("color: red") ;
-	ui->lineEdit_count_ng_color_bottom->setStyleSheet("color: red") ;
-
 	centralWidget()->installEventFilter(this);
 	centralWidget()->setMouseTracking(true);
 
@@ -904,38 +898,6 @@ void MainWindow::updateCountNg_Top(int count)
 void MainWindow::updateCountNg_Bottom(int count)
 {
 	ui->lineEdit_count_ng_bottom->setText(QString::number(count)) ;
-}
-
-void MainWindow::updateCountNgCrack(int count_top, int count_bottom)
-{
-	updateCountNgCrack_Top(count_top) ;
-	updateCountNgCrack_Bottom(count_bottom) ;
-}
-
-void MainWindow::updateCountNgCrack_Top(int count)
-{
-	ui->lineEdit_count_ng_crack_top->setText(QString::number(count)) ;
-}
-
-void MainWindow::updateCountNgCrack_Bottom(int count)
-{
-	ui->lineEdit_count_ng_crack_bottom->setText(QString::number(count)) ;
-}
-
-void MainWindow::updateCountNgColor(int count_top, int count_bottom)
-{
-	updateCountNgColor_Top(count_top) ;
-	updateCountNgColor_Bottom(count_bottom) ;
-}
-
-void MainWindow::updateCountNgColor_Top(int count)
-{
-	ui->lineEdit_count_ng_color_top->setText(QString::number(count)) ;
-}
-
-void MainWindow::updateCountNgColor_Bottom(int count)
-{
-	ui->lineEdit_count_ng_color_bottom->setText(QString::number(count)) ;
 }
 
 void MainWindow::OnSliderSetTopSensitivity_Color(void)

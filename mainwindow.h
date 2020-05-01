@@ -120,12 +120,6 @@ public slots:
 	void updateCountNg(int count_top, int count_bottom) ;
 	void updateCountNg_Top(int count) ;
 	void updateCountNg_Bottom(int count) ;
-	void updateCountNgCrack(int count_top, int count_bottom) ;
-	void updateCountNgCrack_Top(int count) ;
-	void updateCountNgCrack_Bottom(int count) ;
-	void updateCountNgColor(int count_top, int count_bottom) ;
-	void updateCountNgColor_Top(int count) ;
-	void updateCountNgColor_Bottom(int count) ;
 	
 	//slider Color : Sensitivity
 	void OnSliderSetTopSensitivity_Color(void) ;

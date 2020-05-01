@@ -87,14 +87,14 @@ void CEnsemble::run(void)
 			//else if( nFace == BOTTOM )	emit UpdateObjectImae_Bottom(job_image) ;
 			
 			//check run for crack
-			run_option_crack[nFace] = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack_id[nFace]) ;
+			//run_option_crack[nFace] = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_crack_id[nFace]) ;
 
 			//check run for color
 			run_option_color[nFace] = m_cls_api[nFace].Ensemble_Task_Get_Run_Option(m_str_option_inspect_color_id[nFace]) ;
 
 			//get inspect level
 			//Get Level 
-			inspect_level_crack[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack_id[nFace]);
+			//inspect_level_crack[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_Crack_Get_InspectLevel(m_str_option_inspect_crack_id[nFace]);
 
 			////qDebug("m_str_option_inspect_color_id = %s", m_str_option_inspect_color_id.c_str()) ;
 			inspect_level_color[nFace] = m_cls_api[nFace].Ensemble_Tool_Option_ColorCompare_Get_InspectLevel(m_str_option_inspect_color_id[nFace]);
@@ -110,11 +110,11 @@ void CEnsemble::run(void)
 		QString qstr_info_bottom = QString::fromStdString(str_job_info[BOTTOM]);
 		emit JobInfo(qstr_info_top, qstr_info_bottom) ;
 		//run crack		
-		emit RunCheck_Crack((bool)run_option_crack[TOP], (bool)run_option_crack[BOTTOM]);
+		//emit RunCheck_Crack((bool)run_option_crack[TOP], (bool)run_option_crack[BOTTOM]);
 		//run color
 		emit RunCheck_Color((bool)run_option_color[TOP], (bool)run_option_color[BOTTOM]);
 		//crack level
-		emit Level_Crack(inspect_level_crack[TOP], inspect_level_crack[BOTTOM]) ;
+		//emit Level_Crack(inspect_level_crack[TOP], inspect_level_crack[BOTTOM]) ;
 		//color level
 		emit Level_Color(inspect_level_color[TOP], inspect_level_color[BOTTOM]) ;
 		//color sensitivity level
@@ -149,10 +149,11 @@ void CEnsemble::run(void)
 			{
 				//----------------------------------------
 				//Result Inspect
-				Get_Result_Crack_Quality(str_result_xml[nFace], m_str_option_inspect_crack_id[nFace], &result_crack_pass[nFace], &result_crack_quality[nFace]) ;
+				//Get_Result_Crack_Quality(str_result_xml[nFace], m_str_option_inspect_crack_id[nFace], &result_crack_pass[nFace], &result_crack_quality[nFace]) ;
 				Get_Result_Crack_Quality(str_result_xml[nFace], m_str_option_inspect_color_id[nFace], &result_color_pass[nFace], &result_color_quality[nFace]) ;							
 											
-				if( result_crack_pass[nFace] && result_color_pass[nFace] )
+				//if( result_crack_pass[nFace] && result_color_pass[nFace] )
+				if( result_color_pass[nFace] )
 				{
 					m_count_pass[nFace]++ ;
 				}
@@ -160,6 +161,7 @@ void CEnsemble::run(void)
 				{	
 					m_count_ng[nFace]++ ;
 
+#if 0
 					if( result_crack_pass[nFace] == false )
 					{
 						m_count_ng_crack[nFace]++ ;
@@ -168,13 +170,15 @@ void CEnsemble::run(void)
 					{	
 						m_count_ng_color[nFace]++ ;
 					}
+#endif					
 				}
 				//Result Inspect
 				//----------------------------------------
 			}
 
-			if( result_crack_pass[TOP] && result_crack_pass[BOTTOM] &&
-				result_color_pass[TOP] && result_color_pass[BOTTOM] )
+			//if( result_crack_pass[TOP] && result_crack_pass[BOTTOM] &&
+			//	result_color_pass[TOP] && result_color_pass[BOTTOM] )
+			if( result_color_pass[TOP] && result_color_pass[BOTTOM] )
 			{
 				//PASS sign
 				m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_SIGN_LED_GREEN, IO_DEVICE_ON ) ;
@@ -242,10 +246,11 @@ void CEnsemble::run(void)
 			//result image
 			if( status == STATUS_TEST_RUN )
 			{
-				if( result_crack_pass[nFace] >= 0 || result_color_pass[nFace] >= 0 )
+				//if( result_crack_pass[nFace] >= 0 || result_color_pass[nFace] >= 0 )
 				{
 					cv::Scalar color_inspect  = cv::Scalar(255,0,0) ;  //NG
-					if( result_crack_pass[nFace] == 1 && result_color_pass[nFace] == 1 )
+					//if( result_crack_pass[nFace] == 1 && result_color_pass[nFace] == 1 )
+					if( result_color_pass[nFace] == 1 )
 					{
 						color_inspect  = cv::Scalar(0,255,0) ;  //PASS
 					}
@@ -260,7 +265,8 @@ void CEnsemble::run(void)
 			//Save Log : Result Image
 			if( status == STATUS_TEST_RUN )
 			{
-				if( result_crack_pass[nFace] ==false || result_color_pass[nFace] == false )
+				//if( result_crack_pass[nFace] ==false || result_color_pass[nFace] == false )
+				if( result_color_pass[nFace] == false )
 				{
 	                //SaveLogFile(nFace, b_ng_crack[nFace], b_ng_color[nFace]) ;
 	                m_cls_log_file.SaveLogFile(m_count_run[nFace], nFace, inspect_level_crack[nFace], result_crack_quality[nFace], result_crack_pass[nFace], sensitivity_level_color[nFace], inspect_level_color[nFace], result_color_quality[nFace], result_color_pass[nFace], m_mat_input_image[nFace]) ;
@@ -279,10 +285,10 @@ void CEnsemble::run(void)
 		emit signal_Count_Run(m_count_run[TOP], m_count_run[BOTTOM]) ;
 		emit signal_Count_Pass(m_count_pass[TOP], m_count_pass[BOTTOM]) ;
 		emit signal_Count_Ng(m_count_ng[TOP], m_count_ng[BOTTOM]) ;
-		emit signal_Count_Ng_Crack(m_count_ng_crack[TOP], m_count_ng_crack[BOTTOM]) ;
-		emit signal_Count_Ng_Color(m_count_ng_color[TOP], m_count_ng_color[BOTTOM]) ;
+		//emit signal_Count_Ng_Crack(m_count_ng_crack[TOP], m_count_ng_crack[BOTTOM]) ;
+		//emit signal_Count_Ng_Color(m_count_ng_color[TOP], m_count_ng_color[BOTTOM]) ;
 		//result
-		emit signal_Quality_Crack(result_crack_quality[TOP], result_crack_quality[BOTTOM]) ;
+		//emit signal_Quality_Crack(result_crack_quality[TOP], result_crack_quality[BOTTOM]) ;
 		emit signal_Quality_Color(result_color_quality[TOP], result_color_quality[BOTTOM]) ;
 
 		//Run delay
