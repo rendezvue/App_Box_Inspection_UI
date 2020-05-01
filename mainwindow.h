@@ -92,22 +92,12 @@ public slots:
 	void OnButton_Test_Run(void) ;
 	void OnButton_Open_Log(void) ;
 
-	void OnCheckbox_Toggle_Crack_Top(bool b_check) ;
 	void OnCheckbox_Toggle_Color_Top(bool b_check) ;
-	void OnCheckbox_Toggle_Crack_Bottom(bool b_check) ;
 	void OnCheckbox_Toggle_Color_Bottom(bool b_check) ;
-
-	void updateRunCrack(bool b_run_top, bool b_run_bottom) ;
-	void updateRunCrack_Top(bool b_run) ;
-	void updateRunCrack_Bottom(bool b_run) ;
 
 	void updateRunColor(bool b_run_top, bool b_run_bottom) ;
 	void updateRunColor_Top(bool b_run) ;
 	void updateRunColor_Bottom(bool b_run) ;
-
-	void updateLevelCrack(int level_top, int level_bottom) ;
-	void updateLevelCrack_Top(int level) ;
-	void updateLevelCrack_Bottom(int level) ;
 
 	void updateLevelColor(int level_top, int level_bottom) ;
 	void updateLevelColor_Top(int level) ;
@@ -117,9 +107,6 @@ public slots:
 	void updateSensitivityColor_Top(int level) ;
 	void updateSensitivityColor_Bottom(int level) ;
 
-	void updateQualityCrack(float quality_top, float quality_bottom) ;
-	void updateQualityCrack_Top(float quality) ;
-	void updateQualityCrack_Bottom(float quality) ;
 	void updateQualityColor(float quality_top, float quality_bottom) ;
 	void updateQualityColor_Top(float quality) ;
 	void updateQualityColor_Bottom(float quality) ;
@@ -140,13 +127,6 @@ public slots:
 	void updateCountNgColor_Top(int count) ;
 	void updateCountNgColor_Bottom(int count) ;
 	
-	//slider Crack
-	void OnSliderSetTopLevel(void) ;
-    void OnSliderTopMove(int value) ;
-	//slider Crack
-	void OnSliderSetBottomLevel(void) ;
-    void OnSliderBottomMove(int value) ;
-
 	//slider Color : Sensitivity
 	void OnSliderSetTopSensitivity_Color(void) ;
     void OnSliderTopSensitivityMove_Color(int value) ;

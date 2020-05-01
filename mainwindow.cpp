@@ -67,18 +67,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	//connect(m_pEnsemble, SIGNAL(JobInfo_Bottom(QString)), this, SLOT(updateJobInfo_Bottom(QString))) ;
 
 	//run checked
-	connect(m_pEnsemble, SIGNAL(RunCheck_Crack(bool, bool)), this, SLOT(updateRunCrack(bool, bool))) ;
-	//connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Top(bool)), this, SLOT(updateRunCrack_Top(bool))) ;
-	//connect(m_pEnsemble, SIGNAL(RunCheck_Crack_Bottom(bool)), this, SLOT(updateRunCrack_Bottom(bool))) ;
-
 	connect(m_pEnsemble, SIGNAL(RunCheck_Color(bool, bool)), this, SLOT(updateRunColor(bool, bool))) ;
 	//connect(m_pEnsemble, SIGNAL(RunCheck_Color_Top(bool)), this, SLOT(updateRunColor_Top(bool))) ;
 	//connect(m_pEnsemble, SIGNAL(RunCheck_Color_Bottom(bool)), this, SLOT(updateRunColor_Bottom(bool))) ;
 
 	//level
-	connect(m_pEnsemble, SIGNAL(Level_Crack(int, int)), this, SLOT(updateLevelCrack(int, int))) ;
-	//connect(m_pEnsemble, SIGNAL(Level_Crack_Top(int)), this, SLOT(updateLevelCrack_Top(int))) ;
-	//connect(m_pEnsemble, SIGNAL(Level_Crack_Bottom(int)), this, SLOT(updateLevelCrack_Bottom(int))) ;
 	connect(m_pEnsemble, SIGNAL(Level_Color(int, int)), this, SLOT(updateLevelColor(int, int))) ;
 	//connect(m_pEnsemble, SIGNAL(Level_Color_Top(int)), this, SLOT(updateLevelColor_Top(int))) ;
 	//connect(m_pEnsemble, SIGNAL(Level_Color_Bottom(int)), this, SLOT(updateLevelColor_Bottom(int))) ;
@@ -88,10 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	//connect(m_pEnsemble, SIGNAL(Sensitivity_Color_Bottom(int)), this, SLOT(updateSensitivityColor_Bottom(int))) ;
 
 	//quality
-	//crack
-	connect(m_pEnsemble, SIGNAL(signal_Quality_Crack(float, float)), this, SLOT(updateQualityCrack(float, float))) ;
-	//connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Top(float)), this, SLOT(updateQualityCrack_Top(float))) ;
-	//connect(m_pEnsemble, SIGNAL(signal_Quality_Crack_Bottom(float)), this, SLOT(updateQualityCrack_Bottom(float))) ;
 	//color
 	connect(m_pEnsemble, SIGNAL(signal_Quality_Color(float, float)), this, SLOT(updateQualityColor(float, float))) ;
 	//connect(m_pEnsemble, SIGNAL(signal_Quality_Color_Top(float)), this, SLOT(updateQualityColor_Top(float))) ;
@@ -117,11 +106,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	
 	//slider
-	//crack
-	connect(ui->horizontalSlider_level_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopLevel()));
-	connect(ui->horizontalSlider_level_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopMove(int)));
-	connect(ui->horizontalSlider_level_bottom, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetBottomLevel()));
-	connect(ui->horizontalSlider_level_bottom, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderBottomMove(int)));
 	//color compare : sensitivity
 	connect(ui->horizontalSlider_color_sensitivity_top, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetTopSensitivity_Color()));
 	connect(ui->horizontalSlider_color_sensitivity_top, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderTopSensitivityMove_Color(int)));
@@ -144,9 +128,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 
 	//check box
-    connect(ui->checkBox_check_crack_top, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Crack_Top(bool)));
     connect(ui->checkBox_check_color_top, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Color_Top(bool)));
-	connect(ui->checkBox_check_crack_bottom, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Crack_Bottom(bool)));
     connect(ui->checkBox_check_color_bottom, SIGNAL(clicked(bool)), this, SLOT(OnCheckbox_Toggle_Color_Bottom(bool)));
 	
 	ui->pushButton_config_new->hide() ;
@@ -789,22 +771,6 @@ void MainWindow::OnButton_Open_Log(void)
 	QDesktopServices::openUrl(QUrl(LOG_BASE_FOLDER, QUrl::TolerantMode));
 }
 
-void MainWindow::updateRunCrack(bool b_run_top, bool b_run_bottom)
-{
-	updateRunCrack_Top(b_run_top) ;
-	updateRunCrack_Bottom(b_run_bottom) ;
-}
-
-void MainWindow::updateRunCrack_Top(bool b_run)
-{
-	ui->checkBox_check_crack_top->setChecked(b_run);
-}
-
-void MainWindow::updateRunCrack_Bottom(bool b_run)
-{
-	ui->checkBox_check_crack_bottom->setChecked(b_run);
-}
-
 void MainWindow::updateRunColor(bool b_run_top, bool b_run_bottom)
 {
 	updateRunColor_Top(b_run_top) ;
@@ -819,26 +785,6 @@ void MainWindow::updateRunColor_Top(bool b_run)
 void MainWindow::updateRunColor_Bottom(bool b_run)
 {
 	ui->checkBox_check_color_bottom->setChecked(b_run);
-}
-
-void MainWindow::updateLevelCrack(int level_top, int level_bottom)
-{
-	updateLevelCrack_Top(level_top) ;
-	updateLevelCrack_Bottom(level_bottom) ;
-}
-	
-void MainWindow::updateLevelCrack_Top(int level)
-{
-	//qDebug("crack level = %d", level) ;
-	
-	//Set Slider
-	if( m_set_user_level_top == false ) ui->horizontalSlider_level_top->setValue(level) ;
-}
-
-void MainWindow::updateLevelCrack_Bottom(int level)
-{
-	//Set Slider
-	if( m_set_user_level_bottom == false ) ui->horizontalSlider_level_bottom->setValue(level) ;
 }
 
 void MainWindow::updateLevelColor(int level_top, int level_bottom)
@@ -877,28 +823,6 @@ void MainWindow::updateSensitivityColor_Bottom(int level)
 {
 	//Set Slider
 	if( m_set_user_level_bottom == false ) ui->horizontalSlider_color_sensitivity_bottom->setValue(level) ;
-}
-
-void MainWindow::updateQualityCrack(float quality_top, float quality_bottom)
-{
-	updateQualityCrack_Top(quality_top) ;
-	updateQualityCrack_Bottom(quality_bottom) ;
-}
-
-void MainWindow::updateQualityCrack_Top(float quality)
-{
-	ui->progressBar_quality_top->setValue(quality) ;
-
-	const int level = ui->horizontalSlider_level_top->value() ;
-	UI_UpdateProgressbarColorStatus(ui->progressBar_quality_top, quality, level) ;
-}
-
-void MainWindow::updateQualityCrack_Bottom(float quality)
-{
-	ui->progressBar_quality_bottom->setValue(quality) ;
-
-	const int level = ui->horizontalSlider_level_bottom->value() ;
-	UI_UpdateProgressbarColorStatus(ui->progressBar_quality_bottom, quality, level) ;
 }
 
 void MainWindow::updateQualityColor(float quality_top, float quality_bottom) 
@@ -1014,36 +938,6 @@ void MainWindow::updateCountNgColor_Bottom(int count)
 	ui->lineEdit_count_ng_color_bottom->setText(QString::number(count)) ;
 }
 
-void MainWindow::OnSliderSetTopLevel(void)
-{
-	//get level
-    int level = ui->horizontalSlider_level_top->value() ;
-	m_pEnsemble->Config_Set_Level(TOP, level) ;
-
-	m_set_user_level_top = false ;
-}
-
-void MainWindow::OnSliderTopMove(int value) 
-{
-	//set feature
-	m_set_user_level_top = true ;
-}
-
-void MainWindow::OnSliderSetBottomLevel(void)
-{
-	//get level
-    int level = ui->horizontalSlider_level_bottom->value() ;
-	m_pEnsemble->Config_Set_Level(BOTTOM, level) ;
-
-	m_set_user_level_bottom = false ;
-}
-
-void MainWindow::OnSliderBottomMove(int value) 
-{
-	//set feature
-	m_set_user_level_bottom = true ;
-}
-
 void MainWindow::OnSliderSetTopSensitivity_Color(void)
 {
 	//get level
@@ -1104,19 +998,9 @@ void MainWindow::OnSliderBottomLevelMove_Color(int value)
 	m_set_user_level_bottom = true ;
 }
 
-void MainWindow::OnCheckbox_Toggle_Crack_Top(bool b_check)
-{
-	m_pEnsemble->Run_Enable_Crack(TOP, b_check) ;
-}
-
 void MainWindow::OnCheckbox_Toggle_Color_Top(bool b_check)
 {
 	m_pEnsemble->Run_Enable_Color(TOP, b_check) ;
-}
-
-void MainWindow::OnCheckbox_Toggle_Crack_Bottom(bool b_check)
-{
-	m_pEnsemble->Run_Enable_Crack(BOTTOM, b_check) ;
 }
 
 void MainWindow::OnCheckbox_Toggle_Color_Bottom(bool b_check)
