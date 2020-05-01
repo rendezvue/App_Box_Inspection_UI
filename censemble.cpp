@@ -720,8 +720,50 @@ void CEnsemble::Config_Set_ColorCompare_Sensitivity(const int surface, const int
 
 void CEnsemble::Config_Set_Region(const int surface, const float f_x, const float f_y, const float f_w, const float f_h)
 {
-    if( surface == TOP )			m_cls_api[TOP].Ensemble_Job_Set_SelectObject(m_str_job_id[TOP], f_x, f_y, f_w, f_h) ;
-    else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Job_Set_SelectObject(m_str_job_id[BOTTOM], f_x, f_y, f_w, f_h) ;
+	//Add 
+	const float margin_top = 0.02 ;
+	float mask_fx = 0.01 ;
+	float mask_fy = f_y - margin_top ;
+	float mask_fw = 1.0 - (0.01)*2 ;
+	float mask_fh = f_h + (margin_top*2) ;
+	if( mask_fx < 0 ) mask_fx = 0 ;
+	if( mask_fx > 1.0 ) mask_fx = 1.0 ;
+	if( mask_fy < 0 ) mask_fy = 0 ;
+	if( mask_fy > 1.0 ) mask_fy = 1.0 ;
+	if( mask_fw < 0 ) mask_fw = 0 ;
+	if( mask_fw > 1.0 ) mask_fw = 1.0 ;
+	if( mask_fh < 0 ) mask_fh = 0 ;
+	if( mask_fh > 1.0 ) mask_fh = 1.0 ;
+	
+    if( surface == TOP )
+	{
+		m_cls_api[TOP].Ensemble_Job_Set_SelectObject(m_str_job_id[TOP], f_x, f_y, f_w, f_h) ;
+
+		//Mask region Clear.
+		m_cls_api[TOP].Ensemble_Job_Del_MaskArea(m_str_job_id[TOP]);
+		//Mask region Add.
+		m_cls_api[TOP].Ensemble_Job_Set_MaskArea(m_str_job_id[TOP], mask_fx, mask_fy, mask_fw, mask_fh, false);
+		const float mask_center_fx = (float)517.0/(float)1280.0 ;
+		const float mask_center_fy = (float)373.0/(float)960.0 ;
+		const float mask_center_fw = (float)195.0/(float)1280.0 ;
+		const float mask_center_fh = (float)168.0/(float)960.0 ;		
+		m_cls_api[TOP].Ensemble_Job_Set_MaskArea(m_str_job_id[TOP], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
+		
+    }
+    else if( surface == BOTTOM )
+	{
+		m_cls_api[BOTTOM].Ensemble_Job_Set_SelectObject(m_str_job_id[BOTTOM], f_x, f_y, f_w, f_h) ;
+
+		//Mask region Clear.
+		m_cls_api[BOTTOM].Ensemble_Job_Del_MaskArea(m_str_job_id[BOTTOM]);
+		//Mask region Add.
+		m_cls_api[BOTTOM].Ensemble_Job_Set_MaskArea(m_str_job_id[BOTTOM], mask_fx, mask_fy, mask_fw, mask_fh, false);
+		const float mask_center_fx = (float)517.0/(float)1280.0 ;
+		const float mask_center_fy = (float)373.0/(float)960.0 ;
+		const float mask_center_fw = (float)195.0/(float)1280.0 ;
+		const float mask_center_fh = (float)168.0/(float)960.0 ;		
+		m_cls_api[BOTTOM].Ensemble_Job_Set_MaskArea(m_str_job_id[BOTTOM], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
+    }
 }
 
 std::vector<std::string> CEnsemble::Get_Source_List(const int surface)
