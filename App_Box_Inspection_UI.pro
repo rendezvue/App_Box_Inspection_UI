@@ -22,7 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ./module/ImageBuf2Mat ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
+INCLUDEPATH += ./module/ImageBuf2Mat ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/EnsembleAPI/src/interface ./module/EnsembleAPI/module/PacketEthComm ./module/EnsembleAPI/module/PacketEthComm/Client ./module/EnsembleAPI/module/EnsembleCommon ./module/EnsembleAPI/module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex -lboost_date_time
 
 CONFIG += link_pkgconfig
@@ -31,15 +31,15 @@ PKGCONFIG += opencv4
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    module/EnsembleAPI/src/Interface.cpp \
-    module/EnsembleAPI/src/InterfaceControl.cpp \
-    module/EnsembleAPI/EnsembleAPI.cpp \
+    module/EnsembleAPI/src/interface/Interface.cpp \
+    module/EnsembleAPI/src/interface/InterfaceControl.cpp \
+    module/EnsembleAPI/src/EnsembleAPI.cpp \
     module/ImgEncDec/ImgDec.cpp \
     module/ImgEncDec/ImgEnc.cpp \
-    module/PacketEthComm/Client/EthernetClient.cpp \
-    module/PacketEthComm/Client/EthernetClientControlData.cpp \
-    module/PacketEthComm/EthernetGetInfo.cpp \
-    module/PacketEthComm/RendezvueCheckData.cpp \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClient.cpp \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClientControlData.cpp \
+    module/EnsembleAPI/module/PacketEthComm/EthernetGetInfo.cpp \
+    module/EnsembleAPI/module/PacketEthComm/RendezvueCheckData.cpp \
     censemble.cpp \
     cmat2qimage.cpp \
     CIniInfo.cpp \
@@ -50,18 +50,18 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    module/EnsembleAPI/src/Interface.h \
-    module/EnsembleAPI/src/InterfaceControl.h \
-    module/EnsembleAPI/EnsembleAPI.h \
-    module/EnsembleCommand/EnsembleCommand.h \
-    module/EnsembleCommon/EnsembleCommon.h \
+    module/EnsembleAPI/src/interface/Interface.h \
+    module/EnsembleAPI/src/interface/InterfaceControl.h \
+    module/EnsembleAPI/src/EnsembleAPI.h \
+    module/EnsembleAPI/module/EnsembleCommand/EnsembleCommand.h \
+    module/EnsembleAPI/module/EnsembleCommon/EnsembleCommon.h \
     module/ImgEncDec/ImgDec.h \
     module/ImgEncDec/ImgEnc.h \
-    module/PacketEthComm/Client/EthernetClient.h \
-    module/PacketEthComm/Client/EthernetClientControlData.h \
-    module/PacketEthComm/ErrorType.h \
-    module/PacketEthComm/EthernetGetInfo.h \
-    module/PacketEthComm/RendezvueCheckData.h \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClient.h \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClientControlData.h \
+    module/EnsembleAPI/module/PacketEthComm/ErrorType.h \
+    module/EnsembleAPI/module/PacketEthComm/EthernetGetInfo.h \
+    module/EnsembleAPI/module/PacketEthComm/RendezvueCheckData.h \
     censemble.h \
     cmat2qimage.h \
     CIniInfo.h \
@@ -73,13 +73,3 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
-
-DISTFILES += \
-    module/EnsembleAPI/README.md \
-    module/ImgEncDec/README.md \
-    module/EnsembleAPI/LICENSE \
-    module/EnsembleCommand/LICENSE \
-    module/EnsembleCommon/LICENSE \
-    module/ImgEncDec/LICENSE \
-    module/PacketEthComm/LICENSE \
-    module/ImageBuf2Mat/LICENSE
