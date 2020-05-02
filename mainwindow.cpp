@@ -10,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	//setMouseTracking(true);
 	ui->setupUi(this);
 
+	m_pCheckLogSize = new CCheckLogSize(this) ;
+	m_pCheckLogSize->m_thread_run = true ;
+	m_pCheckLogSize->start() ;
+	
 	//
 	ui->lineEdit_count_run_top->setStyleSheet("color: black") ;
 	ui->lineEdit_count_run_bottom->setStyleSheet("color: black") ;
@@ -91,10 +95,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_pEnsemble, SIGNAL(signal_Count_Ng(int, int)), this, SLOT(updateCountNg(int, int))) ;
 	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Top(int)), this, SLOT(updateCountNg_Top(int))) ;
 	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Bottom(int)), this, SLOT(updateCountNg_Bottom(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack(int, int)), this, SLOT(updateCountNgCrack(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack(int, int)), this, SLOT(updateCountNgCrack(int, int))) ;
 	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Top(int)), this, SLOT(updateCountNgCrack_Top(int))) ;
 	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Crack_Bottom(int)), this, SLOT(updateCountNgCrack_Bottom(int))) ;
-	connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color(int, int)), this, SLOT(updateCountNgColor(int, int))) ;
+	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color(int, int)), this, SLOT(updateCountNgColor(int, int))) ;
 	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Top(int)), this, SLOT(updateCountNgColor_Top(int))) ;
 	//connect(m_pEnsemble, SIGNAL(signal_Count_Ng_Color_Bottom(int)), this, SLOT(updateCountNgColor_Bottom(int))) ;
 	
@@ -168,6 +172,12 @@ MainWindow::~MainWindow()
 
 	delete m_pEnsemble ;
 	m_pEnsemble = NULL ;
+
+	if( m_pCheckLogSize ) 
+	{
+		delete m_pCheckLogSize ;
+		m_pCheckLogSize = NULL ;
+	}
 	
     delete ui;
 }

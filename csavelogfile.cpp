@@ -75,5 +75,9 @@ void CSaveLogFile::SaveLogFile(const int run_count, const int face, const float 
 	myfile << str_save_time << "," << face << "," << inspect_level_crack << "," << crack_quality << "," << ng_crack << "," << sensitivity_level_color << "," << inspect_level_color << "," << color_quality << "," << ng_color << "," << str_save_image_file << std::endl ;
 	myfile.close();
 
+
+	//file delete
+    //std::system("find ./Log -mtime +10 -exec rm -rf {} \\;") ;
+
 }
 

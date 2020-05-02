@@ -126,7 +126,7 @@ void CEnsemble::run(void)
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		//Run 
 		//
-		qDebug("RUN : 3 : Run") ;
+		//qDebug("RUN : 3 : Run") ;
 		if( status == STATUS_TEST_RUN )
 		{
 			//STEP 1~6 : Capture Image

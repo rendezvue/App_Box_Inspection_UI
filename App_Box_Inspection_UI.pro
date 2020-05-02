@@ -45,7 +45,8 @@ SOURCES += \
     CIniInfo.cpp \
     module/pugixml/src/pugixml.cpp \
     csavelogfile.cpp \
-    module/ImageBuf2Mat/CImageBuf2Mat.cpp
+    module/ImageBuf2Mat/CImageBuf2Mat.cpp \
+    CheckLogSize.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -67,7 +68,8 @@ HEADERS += \
     module/pugixml/src/pugiconfig.hpp \
     module/pugixml/src/pugixml.hpp \
     csavelogfile.h \
-    module/ImageBuf2Mat/CImageBuf2Mat.h
+    module/ImageBuf2Mat/CImageBuf2Mat.h \
+    CheckLogSize.h
 
 FORMS += \
         mainwindow.ui

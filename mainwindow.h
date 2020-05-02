@@ -15,6 +15,8 @@
 
 #include <QDesktopServices> 
 
+#include "CheckLogSize.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -37,7 +39,8 @@ private:
     Ui::MainWindow *ui;
 
 	 CEnsemble* m_pEnsemble;
-
+	 CCheckLogSize* m_pCheckLogSize ;
+	 
 	 CIniInfo m_cls_info ;
 
 	 int m_top_point_x ;
