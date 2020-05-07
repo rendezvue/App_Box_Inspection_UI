@@ -215,11 +215,11 @@ void CEnsemble::run(void)
 			if( status == STATUS_TEST_RUN )
 			{
 				//Get Result Imag
-				ret_data_size = m_cls_api[nFace].Ensemble_Result_Get_Image(m_str_job_id[nFace], image_type,  &m_image[nFace]) ;
+                ret_data_size = m_cls_api[nFace].Ensemble_Task_Get_Result_Image(m_str_job_id[nFace], image_type,  &m_image[nFace]) ;
 			}
 			else if( status == STATUS_CONFIG)
 			{
-                ret_data_size = m_cls_api[nFace].Ensemble_Job_Get_Image(m_str_job_id[nFace], image_type, &m_image[nFace])  ;
+                ret_data_size = m_cls_api[nFace].Ensemble_Task_Get_Image(m_str_job_id[nFace], image_type, &m_image[nFace])  ;
 			}
 			else
 			{
@@ -622,7 +622,7 @@ cv::Mat CEnsemble::Get_Job_Image(const int surface, const std::string str_job_id
 	
     const int image_type = IMAGE_RGB888 ;
     //int object_image_size = m_cls_api.Ensemble_Job_Get_ObjectImage(str_job_id, image_type+IMAGE_THUMBNAIL, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
-    int object_image_size = m_cls_api[surface].Ensemble_Job_Get_ObjectImage(str_job_id, image_type, &m_object_image)  ;
+    int object_image_size = m_cls_api[surface].Ensemble_Task_Get_ObjectImage(str_job_id, image_type, &m_object_image)  ;
 
 	if( m_object_image.p_buf != NULL )
     {
@@ -737,32 +737,42 @@ void CEnsemble::Config_Set_Region(const int surface, const float f_x, const floa
 	
     if( surface == TOP )
 	{
-		m_cls_api[TOP].Ensemble_Job_Set_SelectObject(m_str_job_id[TOP], f_x, f_y, f_w, f_h) ;
+        cv::Point2f pt_rotated_roi_1 = cv::Point2f(f_x, f_y) ;
+        cv::Point2f pt_rotated_roi_2 = cv::Point2f(f_x + f_w, f_y) ;
+        cv::Point2f pt_rotated_roi_3 = cv::Point2f(f_x + f_w, f_y + f_h) ;
+        cv::Point2f pt_rotated_roi_4 = cv::Point2f(f_x, f_y + f_h) ;
+
+        m_cls_api[TOP].Ensemble_Find_Object_Set_SelectObject(m_str_job_id[TOP], pt_rotated_roi_1.x, pt_rotated_roi_1.y, pt_rotated_roi_2.x, pt_rotated_roi_2.y, pt_rotated_roi_3.x, pt_rotated_roi_3.y, pt_rotated_roi_4.x, pt_rotated_roi_4.y ) ;
 
 		//Mask region Clear.
-		m_cls_api[TOP].Ensemble_Job_Del_MaskArea(m_str_job_id[TOP]);
+        m_cls_api[TOP].Ensemble_Task_Del_MaskArea(m_str_job_id[TOP]);
 		//Mask region Add.
-		m_cls_api[TOP].Ensemble_Job_Set_MaskArea(m_str_job_id[TOP], mask_fx, mask_fy, mask_fw, mask_fh, false);
+        m_cls_api[TOP].Ensemble_Task_Set_MaskArea(m_str_job_id[TOP], mask_fx, mask_fy, mask_fw, mask_fh, false);
 		const float mask_center_fx = (float)517.0/(float)1280.0 ;
 		const float mask_center_fy = (float)373.0/(float)960.0 ;
 		const float mask_center_fw = (float)195.0/(float)1280.0 ;
 		const float mask_center_fh = (float)168.0/(float)960.0 ;		
-		m_cls_api[TOP].Ensemble_Job_Set_MaskArea(m_str_job_id[TOP], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
+        m_cls_api[TOP].Ensemble_Task_Set_MaskArea(m_str_job_id[TOP], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
 		
     }
     else if( surface == BOTTOM )
 	{
-		m_cls_api[BOTTOM].Ensemble_Job_Set_SelectObject(m_str_job_id[BOTTOM], f_x, f_y, f_w, f_h) ;
+        cv::Point2f pt_rotated_roi_1 = cv::Point2f(f_x, f_y) ;
+        cv::Point2f pt_rotated_roi_2 = cv::Point2f(f_x + f_w, f_y) ;
+        cv::Point2f pt_rotated_roi_3 = cv::Point2f(f_x + f_w, f_y + f_h) ;
+        cv::Point2f pt_rotated_roi_4 = cv::Point2f(f_x, f_y + f_h) ;
+
+        m_cls_api[BOTTOM].Ensemble_Find_Object_Set_SelectObject(m_str_job_id[BOTTOM], pt_rotated_roi_1.x, pt_rotated_roi_1.y, pt_rotated_roi_2.x, pt_rotated_roi_2.y, pt_rotated_roi_3.x, pt_rotated_roi_3.y, pt_rotated_roi_4.x, pt_rotated_roi_4.y ) ;
 
 		//Mask region Clear.
-		m_cls_api[BOTTOM].Ensemble_Job_Del_MaskArea(m_str_job_id[BOTTOM]);
+        m_cls_api[BOTTOM].Ensemble_Task_Del_MaskArea(m_str_job_id[BOTTOM]);
 		//Mask region Add.
-		m_cls_api[BOTTOM].Ensemble_Job_Set_MaskArea(m_str_job_id[BOTTOM], mask_fx, mask_fy, mask_fw, mask_fh, false);
+        m_cls_api[BOTTOM].Ensemble_Task_Set_MaskArea(m_str_job_id[BOTTOM], mask_fx, mask_fy, mask_fw, mask_fh, false);
 		const float mask_center_fx = (float)517.0/(float)1280.0 ;
 		const float mask_center_fy = (float)373.0/(float)960.0 ;
 		const float mask_center_fw = (float)195.0/(float)1280.0 ;
 		const float mask_center_fh = (float)168.0/(float)960.0 ;		
-		m_cls_api[BOTTOM].Ensemble_Job_Set_MaskArea(m_str_job_id[BOTTOM], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
+        m_cls_api[BOTTOM].Ensemble_Task_Set_MaskArea(m_str_job_id[BOTTOM], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
     }
 }
 
