@@ -12,6 +12,23 @@
 #include "csavelogfile.h"
 #include "CImageBuf2Mat.h"
 
+//boost 
+#include <boost/asio.hpp>
+#include <boost/thread.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/regex.hpp>
+
+#include <boost/range/iterator_range.hpp>
+#include <boost/system/error_code.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/iostreams/categories.hpp>  // sink_tag
+#include <iterator>  // back_inserter
+#include "boost/date_time/local_time/local_time.hpp"
+
+
 #define DISPLAY_IMAGE_WIDTH		640
 #define DISPLAY_IMAGE_HEIGHT	480
 
@@ -103,7 +120,9 @@ public:
 	void Config_Set_Level(const int surface, const int level) ;
 	void Config_Set_Level_ColorCompare(const int surface, const int level) ;
 	void Config_Set_ColorCompare_Sensitivity(const int surface, const int level) ;
-	
+
+	void Config_Set_Mask(const int surface) ;
+	void Config_Set_Local_Mask(const int surface, const float f_x, const float f_y, const float f_w, const float f_h) ;
 	void Config_Set_Region(const int surface, const float f_x, const float f_y, const float f_w, const float f_h) ;
 
 	void Run_Enable_Crack(const int surface, const bool run) ;

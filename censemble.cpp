@@ -718,62 +718,191 @@ void CEnsemble::Config_Set_ColorCompare_Sensitivity(const int surface, const int
     else if( surface == BOTTOM )	m_cls_api[BOTTOM].Ensemble_Tool_Option_ColorCompare_Set_Sensitivity(m_str_option_inspect_color_id[BOTTOM], level);
 }
 
+void CEnsemble::Config_Set_Mask(const int surface)
+{
+	boost::property_tree::ptree pt_object;
+	boost::property_tree::ptree pt_local;
+
+	float mask_object_fx=0 ;
+	float mask_object_fy=0 ;
+	float mask_object_fw=0 ;
+	float mask_object_fh=0 ;
+
+	float mask_local_fx=0 ;
+	float mask_local_fy=0 ;
+	float mask_local_fw=0 ;
+	float mask_local_fh=0 ;
+		
+	if( surface == TOP )
+	{
+		try
+		{
+			boost::property_tree::ini_parser::read_ini("./mask_top_object.ini", pt_object);
+			
+			mask_object_fx = pt_object.get<float>("top.mask_fx") ;
+			mask_object_fy = pt_object.get<float>("top.mask_fy") ;
+			mask_object_fw = pt_object.get<float>("top.mask_fw") ;
+			mask_object_fh = pt_object.get<float>("top.mask_fh") ;
+		}
+		catch(std::exception e)
+		{
+			mask_object_fx = 0 ;
+			mask_object_fy = 0 ;
+			mask_object_fw = 0 ;
+			mask_object_fh = 0 ;
+		}
+
+		
+		try
+		{
+			boost::property_tree::ini_parser::read_ini("./mask_top_local.ini", pt_local);
+			
+			mask_local_fx = pt_local.get<float>("top.mask_fx") ;
+			mask_local_fy = pt_local.get<float>("top.mask_fy") ;
+			mask_local_fw = pt_local.get<float>("top.mask_fw") ;
+			mask_local_fh = pt_local.get<float>("top.mask_fh") ;
+		}
+		catch(std::exception e)
+		{
+			mask_local_fx = 0 ;
+			mask_local_fy = 0 ;
+			mask_local_fw = 0 ;
+			mask_local_fh = 0 ;
+		}
+	}
+	else if( surface == BOTTOM )
+	{
+		try
+		{
+			boost::property_tree::ini_parser::read_ini("./mask_bottom_object.ini", pt_object);
+			
+			mask_object_fx = pt_object.get<float>("bottom.mask_fx") ;
+			mask_object_fy = pt_object.get<float>("bottom.mask_fy") ;
+			mask_object_fw = pt_object.get<float>("bottom.mask_fw") ;
+			mask_object_fh = pt_object.get<float>("bottom.mask_fh") ;
+		}
+		catch(std::exception e)
+		{
+			mask_object_fx = 0 ;
+			mask_object_fy = 0 ;
+			mask_object_fw = 0 ;
+			mask_object_fh = 0 ;
+		}
+
+		
+		try
+		{
+			boost::property_tree::ini_parser::read_ini("./mask_bottom_local.ini", pt_local);
+			
+			mask_local_fx = pt_local.get<float>("bottom.mask_fx") ;
+			mask_local_fy = pt_local.get<float>("bottom.mask_fy") ;
+			mask_local_fw = pt_local.get<float>("bottom.mask_fw") ;
+			mask_local_fh = pt_local.get<float>("bottom.mask_fh") ;
+		}
+		catch(std::exception e)
+		{
+			mask_local_fx = 0 ;
+			mask_local_fy = 0 ;
+			mask_local_fw = 0 ;
+			mask_local_fh = 0 ;
+		}
+	}
+
+	//Mask region Clear.
+	m_cls_api[surface].Ensemble_Task_Del_MaskArea(m_str_job_id[surface]);
+
+	//Mask region Add. (Object)
+	m_cls_api[surface].Ensemble_Task_Set_MaskArea(m_str_job_id[surface], mask_object_fx, mask_object_fy, mask_object_fw, mask_object_fh, false);
+
+	//Mask region Add. (Local)
+	m_cls_api[surface].Ensemble_Task_Set_MaskArea(m_str_job_id[surface], mask_local_fx, mask_local_fy, mask_local_fw, mask_local_fh, true);
+}
+
+void CEnsemble::Config_Set_Local_Mask(const int surface, const float f_x, const float f_y, const float f_w, const float f_h)
+{
+	
+	if( surface == TOP )
+	{
+		//Set Object masking area
+		boost::property_tree::ptree pt;
+
+	    pt.put("top.mask_fx", f_x) ;
+		pt.put("top.mask_fy", f_y) ;
+		pt.put("top.mask_fw", f_w) ;
+		pt.put("top.mask_fh", f_h) ;
+
+		boost::property_tree::ini_parser::write_ini( "./mask_top_local.ini" , pt );
+	}
+	else if( surface == BOTTOM )
+	{
+		//Set Object masking area
+		boost::property_tree::ptree pt;
+
+	    pt.put("bottom.mask_fx", f_x) ;
+		pt.put("bottom.mask_fy", f_y) ;
+		pt.put("bottom.mask_fw", f_w) ;
+		pt.put("bottom.mask_fh", f_h) ;
+
+		boost::property_tree::ini_parser::write_ini( "./mask_bottom_local.ini" , pt );
+	}
+
+	Config_Set_Mask(surface) ;
+}
+
+
 void CEnsemble::Config_Set_Region(const int surface, const float f_x, const float f_y, const float f_w, const float f_h)
 {
-	//Add 
-	const float margin_top = 0.02 ;
-	float mask_fx = 0.01 ;
-	float mask_fy = f_y - margin_top ;
-	float mask_fw = 1.0 - (0.01)*2 ;
-	float mask_fh = f_h + (margin_top*2) ;
-	if( mask_fx < 0 ) mask_fx = 0 ;
-	if( mask_fx > 1.0 ) mask_fx = 1.0 ;
-	if( mask_fy < 0 ) mask_fy = 0 ;
-	if( mask_fy > 1.0 ) mask_fy = 1.0 ;
-	if( mask_fw < 0 ) mask_fw = 0 ;
-	if( mask_fw > 1.0 ) mask_fw = 1.0 ;
-	if( mask_fh < 0 ) mask_fh = 0 ;
-	if( mask_fh > 1.0 ) mask_fh = 1.0 ;
-	
-    if( surface == TOP )
+	if( surface == TOP || surface == BOTTOM )
 	{
-        cv::Point2f pt_rotated_roi_1 = cv::Point2f(f_x, f_y) ;
-        cv::Point2f pt_rotated_roi_2 = cv::Point2f(f_x + f_w, f_y) ;
-        cv::Point2f pt_rotated_roi_3 = cv::Point2f(f_x + f_w, f_y + f_h) ;
-        cv::Point2f pt_rotated_roi_4 = cv::Point2f(f_x, f_y + f_h) ;
-
-        m_cls_api[TOP].Ensemble_Find_Object_Set_SelectObject(m_str_job_id[TOP], pt_rotated_roi_1.x, pt_rotated_roi_1.y, pt_rotated_roi_2.x, pt_rotated_roi_2.y, pt_rotated_roi_3.x, pt_rotated_roi_3.y, pt_rotated_roi_4.x, pt_rotated_roi_4.y ) ;
-
-		//Mask region Clear.
-        m_cls_api[TOP].Ensemble_Task_Del_MaskArea(m_str_job_id[TOP]);
-		//Mask region Add.
-        m_cls_api[TOP].Ensemble_Task_Set_MaskArea(m_str_job_id[TOP], mask_fx, mask_fy, mask_fw, mask_fh, false);
-		const float mask_center_fx = (float)517.0/(float)1280.0 ;
-		const float mask_center_fy = (float)373.0/(float)960.0 ;
-		const float mask_center_fw = (float)195.0/(float)1280.0 ;
-		const float mask_center_fh = (float)168.0/(float)960.0 ;		
-        m_cls_api[TOP].Ensemble_Task_Set_MaskArea(m_str_job_id[TOP], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
+		//Add 
+		const float margin_top = 0.02 ;
+		float mask_fx = 0.01 ;
+		float mask_fy = f_y - margin_top ;
+		float mask_fw = 1.0 - (0.01)*2 ;
+		float mask_fh = f_h + (margin_top*2) ;
+		if( mask_fx < 0 ) mask_fx = 0 ;
+		if( mask_fx > 1.0 ) mask_fx = 1.0 ;
+		if( mask_fy < 0 ) mask_fy = 0 ;
+		if( mask_fy > 1.0 ) mask_fy = 1.0 ;
+		if( mask_fw < 0 ) mask_fw = 0 ;
+		if( mask_fw > 1.0 ) mask_fw = 1.0 ;
+		if( mask_fh < 0 ) mask_fh = 0 ;
+		if( mask_fh > 1.0 ) mask_fh = 1.0 ;
 		
-    }
-    else if( surface == BOTTOM )
-	{
         cv::Point2f pt_rotated_roi_1 = cv::Point2f(f_x, f_y) ;
         cv::Point2f pt_rotated_roi_2 = cv::Point2f(f_x + f_w, f_y) ;
         cv::Point2f pt_rotated_roi_3 = cv::Point2f(f_x + f_w, f_y + f_h) ;
         cv::Point2f pt_rotated_roi_4 = cv::Point2f(f_x, f_y + f_h) ;
 
-        m_cls_api[BOTTOM].Ensemble_Find_Object_Set_SelectObject(m_str_job_id[BOTTOM], pt_rotated_roi_1.x, pt_rotated_roi_1.y, pt_rotated_roi_2.x, pt_rotated_roi_2.y, pt_rotated_roi_3.x, pt_rotated_roi_3.y, pt_rotated_roi_4.x, pt_rotated_roi_4.y ) ;
+		if( surface == TOP )
+		{
+			//Set Object masking area
+			boost::property_tree::ptree pt;
 
-		//Mask region Clear.
-        m_cls_api[BOTTOM].Ensemble_Task_Del_MaskArea(m_str_job_id[BOTTOM]);
-		//Mask region Add.
-        m_cls_api[BOTTOM].Ensemble_Task_Set_MaskArea(m_str_job_id[BOTTOM], mask_fx, mask_fy, mask_fw, mask_fh, false);
-		const float mask_center_fx = (float)517.0/(float)1280.0 ;
-		const float mask_center_fy = (float)373.0/(float)960.0 ;
-		const float mask_center_fw = (float)195.0/(float)1280.0 ;
-		const float mask_center_fh = (float)168.0/(float)960.0 ;		
-        m_cls_api[BOTTOM].Ensemble_Task_Set_MaskArea(m_str_job_id[BOTTOM], mask_center_fx, mask_center_fy, mask_center_fw, mask_center_fh, true);
-    }
+		    pt.put("top.mask_fx", mask_fx) ;
+			pt.put("top.mask_fy", mask_fy) ;
+			pt.put("top.mask_fw", mask_fw) ;
+			pt.put("top.mask_fh", mask_fh) ;
+	
+			boost::property_tree::ini_parser::write_ini( "./mask_top_object.ini" , pt );
+		}
+		else if( surface == BOTTOM )
+		{
+			//Set Object masking area
+			boost::property_tree::ptree pt;
+
+		    pt.put("bottom.mask_fx", mask_fx) ;
+			pt.put("bottom.mask_fy", mask_fy) ;
+			pt.put("bottom.mask_fw", mask_fw) ;
+			pt.put("bottom.mask_fh", mask_fh) ;
+
+			boost::property_tree::ini_parser::write_ini( "./mask_bottom_object.ini" , pt );
+		}
+		
+		Config_Set_Mask(surface) ;		
+		
+        m_cls_api[surface].Ensemble_Find_Object_Set_SelectObject(m_str_job_id[surface], pt_rotated_roi_1.x, pt_rotated_roi_1.y, pt_rotated_roi_2.x, pt_rotated_roi_2.y, pt_rotated_roi_3.x, pt_rotated_roi_3.y, pt_rotated_roi_4.x, pt_rotated_roi_4.y ) ;
+	}
 }
 
 std::vector<std::string> CEnsemble::Get_Source_List(const int surface)

@@ -237,13 +237,26 @@ void MainWindow::updatePicture_Top(cv::Mat image)
 	    }
 
 		//draw select region
-		if( m_select_region.type == 0 )	//top
+		if( m_select_region.type == 10 )	//top
 		{
 			if( m_select_region.w > 0 && m_select_region.h > 0 )
 			{
 				QPainter qPainter(&qt_display_image);
 				qPainter.setBrush(Qt::NoBrush);
 				qPainter.setPen(Qt::blue);
+				
+				qPainter.drawRect(m_select_region.x,m_select_region.y,m_select_region.w,m_select_region.h);
+
+				bool bEnd = qPainter.end();
+			}
+		}
+		else if( m_select_region.type == 11 )	//top
+		{
+			if( m_select_region.w > 0 && m_select_region.h > 0 )
+			{
+				QPainter qPainter(&qt_display_image);
+				qPainter.setBrush(Qt::NoBrush);
+				qPainter.setPen(Qt::red);
 				
 				qPainter.drawRect(m_select_region.x,m_select_region.y,m_select_region.w,m_select_region.h);
 
@@ -300,7 +313,20 @@ void MainWindow::updatePicture_Bottom(cv::Mat image)
 	    }
 
 		//draw select region
-		if( m_select_region.type == 1 )	//bottom
+		if( m_select_region.type == 20 )	//bottom
+		{
+			if( m_select_region.w > 0 && m_select_region.h > 0 )
+			{
+				QPainter qPainter(&qt_display_image);
+				qPainter.setBrush(Qt::NoBrush);
+				qPainter.setPen(Qt::blue);
+				
+				qPainter.drawRect(m_select_region.x,m_select_region.y,m_select_region.w,m_select_region.h);
+
+				bool bEnd = qPainter.end();
+			}
+		}
+		else if( m_select_region.type == 21 )	//bottom
 		{
 			if( m_select_region.w > 0 && m_select_region.h > 0 )
 			{
@@ -580,27 +606,53 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 	if( pt_x >= top_region_x && pt_x <= top_region_x+top_region_w &&
 		pt_y >= top_region_y && pt_y <= top_region_y+top_region_h )  
 	{
-		//top
 		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
 		{
-			m_select_region.type = 0 ;
-			m_select_region.x = pt_x - top_region_x ;
-			m_select_region.y = pt_y - top_region_y ;
-			m_select_region.w = 1 ;
-			m_select_region.h = 1 ;
+			Qt::MouseButtons mouseButtons = event->buttons();
+			if( mouseButtons == Qt::LeftButton )
+			{
+				//top
+				m_select_region.type = 10 ;
+				m_select_region.x = pt_x - top_region_x ;
+				m_select_region.y = pt_y - top_region_y ;
+				m_select_region.w = 1 ;
+				m_select_region.h = 1 ;
+			}
+			else if( mouseButtons == Qt::RightButton )
+			{
+				//top
+				m_select_region.type = 11 ;
+				m_select_region.x = pt_x - top_region_x ;
+				m_select_region.y = pt_y - top_region_y ;
+				m_select_region.w = 1 ;
+				m_select_region.h = 1 ;
+			}
 		}
 	}
 	else if( pt_x >= bottom_region_x && pt_x <= bottom_region_x+bottom_region_w &&
 			pt_y >= bottom_region_y && pt_y <= bottom_region_y+bottom_region_h )  
 	{
-		//bottom
 		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
 		{
-			m_select_region.type = 1 ;
-			m_select_region.x = pt_x - bottom_region_x ;
-			m_select_region.y = pt_y - bottom_region_y ;
-			m_select_region.w = 1 ;
-			m_select_region.h = 1 ;
+			Qt::MouseButtons mouseButtons = event->buttons();
+			if( mouseButtons == Qt::LeftButton )
+			{
+				//bottom
+				m_select_region.type = 20 ;
+				m_select_region.x = pt_x - bottom_region_x ;
+				m_select_region.y = pt_y - bottom_region_y ;
+				m_select_region.w = 1 ;
+				m_select_region.h = 1 ;
+			}
+			else if( mouseButtons == Qt::RightButton )
+			{
+				//bottom
+				m_select_region.type = 21 ;
+				m_select_region.x = pt_x - bottom_region_x ;
+				m_select_region.y = pt_y - bottom_region_y ;
+				m_select_region.w = 1 ;
+				m_select_region.h = 1 ;
+			}
 		}
 	}
 	
@@ -645,10 +697,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 		m_bottom_point_y = -1 ;
 
 		//top
-		if( m_pEnsemble->Get_Status() == STATUS_CONFIG && m_select_region.type == 0  )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
 		{
-			m_select_region.w = (pt_x - top_region_x) - m_select_region.x ;
-			m_select_region.h = (pt_y - top_region_y) - m_select_region.y ;
+			if( m_select_region.type == 10 || m_select_region.type == 11 )
+			{
+				m_select_region.w = (pt_x - top_region_x) - m_select_region.x ;
+				m_select_region.h = (pt_y - top_region_y) - m_select_region.y ;
+			}
 		}
 	}
 	else if( pt_x >= bottom_region_x && pt_x <= bottom_region_x+bottom_region_w &&
@@ -663,10 +718,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 		m_bottom_point_y = pt_y - bottom_region_y ;
 
 		//bottom
-		if( m_pEnsemble->Get_Status() == STATUS_CONFIG && m_select_region.type == 1  )
+		if( m_pEnsemble->Get_Status() == STATUS_CONFIG   )
 		{
-			m_select_region.w = (pt_x - bottom_region_x) - m_select_region.x ;
-			m_select_region.h = (pt_y - bottom_region_y) - m_select_region.y ;
+			if( m_select_region.type == 20 || m_select_region.type == 21 )
+			{
+				m_select_region.w = (pt_x - bottom_region_x) - m_select_region.x ;
+				m_select_region.h = (pt_y - bottom_region_y) - m_select_region.y ;
+			}
 		}
 	}
 }
@@ -679,44 +737,40 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 	m_bottom_point_x = -1 ;
 	m_bottom_point_y = -1 ;
 
-	if( m_select_region.type == 0 )	//top
-	{
-		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
-		{			
-			float f_x = 0.0 ;
-			float f_y = 0.0 ;
-			float f_w = 0.0 ;
-			float f_h = 0.0 ;
+	if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
+	{	
+		float f_x = 0.0 ;
+		float f_y = 0.0 ;
+		float f_w = 0.0 ;
+		float f_h = 0.0 ;
 
-			int label_w = ui->label_image_top->width() ;
-			int label_h = ui->label_image_top->height() ;
+		int label_w = ui->label_image_top->width() ;
+		int label_h = ui->label_image_top->height() ;
 
-			f_x = (float)m_select_region.x / (float)label_w ;
-			f_y = (float)m_select_region.y / (float)label_h ;
-			f_w = (float)m_select_region.w / (float)label_w ;
-			f_h = (float)m_select_region.h / (float)label_h ;
-			
+		f_x = (float)m_select_region.x / (float)label_w ;
+		f_y = (float)m_select_region.y / (float)label_h ;
+		f_w = (float)m_select_region.w / (float)label_w ;
+		f_h = (float)m_select_region.h / (float)label_h ;
+		
+		if( m_select_region.type == 10 )	//top	select object
+		{
 			m_pEnsemble->Config_Set_Region(TOP, f_x, f_y, f_w, f_h) ;
 		}
-	}
-	else if( m_select_region.type == 1 )	//bottom
-	{
-		if( m_pEnsemble->Get_Status() == STATUS_CONFIG )
+		else if( m_select_region.type == 11 )	//top	select masking
 		{
-			float f_x = 0.0 ;
-			float f_y = 0.0 ;
-			float f_w = 0.0 ;
-			float f_h = 0.0 ;
-
-			int label_w = ui->label_image_bottom->width() ;
-			int label_h = ui->label_image_bottom->height() ;
-
-			f_x = (float)m_select_region.x / (float)label_w ;
-			f_y = (float)m_select_region.y / (float)label_h ;
-			f_w = (float)m_select_region.w / (float)label_w ;
-			f_h = (float)m_select_region.h / (float)label_h ;
+			m_pEnsemble->Config_Set_Local_Mask(TOP, f_x, f_y, f_w, f_h) ;
 			
+			//m_pEnsemble->Config_Set_Region(TOP, f_x, f_y, f_w, f_h) ;
+		}
+		else if( m_select_region.type == 20 )	//bottom	select object
+		{
 			m_pEnsemble->Config_Set_Region(BOTTOM, f_x, f_y, f_w, f_h) ;
+		}
+		else if( m_select_region.type == 21 )	//bottom	select masking
+		{
+			m_pEnsemble->Config_Set_Local_Mask(BOTTOM, f_x, f_y, f_w, f_h) ;
+			
+			//m_pEnsemble->Config_Set_Region(BOTTOM, f_x, f_y, f_w, f_h) ;
 		}
 	}
 
