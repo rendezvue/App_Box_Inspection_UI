@@ -148,7 +148,11 @@ void CEnsemble::run(void)
 			//STEP 1~6 : Capture Image
 //			Capture_Camera_Image(Get_Status());
 			Capture_Camera_Center_Image(Get_Status());
-	
+            string RunStart_str_A = "RunStart-CAM-A";
+            string RunStart_str_B = "RunStart-CAM-B";
+            m_cls_api[TOP].Ensemble_Camera_Save_Image_To_Device_Local(RunStart_str_A);
+            m_cls_api[BOTTOM].Ensemble_Camera_Save_Image_To_Device_Local(RunStart_str_B);
+
 			//------------------------------------------------------------
 			//STEP 7 : Do Vision
 			//qDebug("RUN : 3 : Run : Step5 : Do Vision") ;
@@ -380,11 +384,15 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
     double time_over_sec = 5;
 
 	// Step 1 : Check Front Sensor High ( The Box is entering )
+    qDebug("box front check\n");
 	do
 	{
 		if( Get_Status() != CurrentStatus ) break;
-        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) ) break ;		//Front sensor check( Object is entering )
-
+        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) )
+        {
+            qDebug("Fonrt sensor start check!\n");
+            break ;		//Front sensor check( Object is entering )
+        }
         latency = std::chrono::system_clock::now() - start;
     }while(latency.count() < time_over_sec) ;
 	// Step 1 End
@@ -394,8 +402,11 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 	do
 	{
 		if( Get_Status() != CurrentStatus ) break;
-        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) == 0) break ;		//Front sensor check( Waiting object out for start capture )
-
+        if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) == 0)
+        {
+            qDebug("Front sensor end check!\n");
+            break ;		//Front sensor check( Waiting object out for start capture )
+        }
         latency = std::chrono::system_clock::now() - start;
     }while(latency.count() < time_over_sec) ;
 	/************************************/
@@ -412,7 +423,11 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 		Start_Capture_Top = true;
 		m_cls_api[BOTTOM].Ensemble_Camera_Capture_SW_Trigger() ;
 		
-		if( Get_Status() != CurrentStatus ) break;			
+        if( Get_Status() != CurrentStatus )
+        {
+            qDebug("Back sensor OK!!\n");
+            break;
+        }
         if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_BACK ) break ; 	//End sensor check
 
         latency = std::chrono::system_clock::now() - start;
@@ -668,6 +683,11 @@ void CEnsemble::Config_New(void)
 		SetNextImage() ;
 //		Capture_Camera_Image(Get_Status());
 		Capture_Camera_Center_Image(Get_Status());
+
+        string config_new_str_A = "ConfigNew-CAM-A";
+        string config_new_str_B = "ConfigNew-CAM-B";
+        m_cls_api[TOP].Ensemble_Camera_Save_Image_To_Device_Local(config_new_str_A);
+        m_cls_api[BOTTOM].Ensemble_Camera_Save_Image_To_Device_Local(config_new_str_B);
 
         m_cls_api[TOP].Ensemble_Job_Set_Image(m_str_job_id[TOP])  ;
         m_cls_api[BOTTOM].Ensemble_Job_Set_Image(m_str_job_id[BOTTOM])  ;
