@@ -66,7 +66,7 @@ void CEnsemble::run(void)
 		//
     	//Check Network
     	///////////////////////////////////////////////////////////////////////////////////////////////////
-
+		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		//Get Information
 		//
@@ -123,12 +123,28 @@ void CEnsemble::run(void)
 		//Get Information
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
+		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		//Run 
 		//
 		//qDebug("RUN : 3 : Run") ;
 		if( status == STATUS_TEST_RUN )
 		{
+			
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			//Set Information for Detect
+			for( int nFace=0 ; nFace<FACE_MAX_COUNT ; nFace++ )
+			{
+				//threshold
+				m_cls_api[nFace].Ensemble_Find_Object_Set_DetectOption(m_str_job_id[nFace], DetectOption::DETECT_OPTION_THRESHOLD, 0.0) ;
+	
+				//angle
+				m_cls_api[nFace].Ensemble_Find_Object_Set_DetectOption(m_str_job_id[nFace], DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN, -10) ;
+				m_cls_api[nFace].Ensemble_Find_Object_Set_DetectOption(m_str_job_id[nFace], DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, 10) ;
+			}
+			//Set Information for Detect
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			
 			//STEP 1~6 : Capture Image
 //			Capture_Camera_Image(Get_Status());
 			Capture_Camera_Center_Image(Get_Status());
