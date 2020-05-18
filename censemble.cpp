@@ -147,7 +147,10 @@ void CEnsemble::run(void)
 			
 			//STEP 1~6 : Capture Image
 //			Capture_Camera_Image(Get_Status());
-			Capture_Camera_Center_Image(Get_Status());
+            if( Capture_Camera_Center_Image(Get_Status()) == false )
+            {
+                continue;
+            }
             string RunStart_str_A = "RunStart-CAM-A";
             string RunStart_str_B = "RunStart-CAM-B";
             m_cls_api[TOP].Ensemble_Camera_Save_Image_To_Device_Local(RunStart_str_A);
@@ -377,13 +380,22 @@ void CEnsemble::Capture_Camera_Image(int CurrentStatus)
 	//STEP 6 : Light Off
 	m_cls_api[TOP].Ensemble_Digital_IO_SetOut( IO_DEVICE_LIGHT, IO_DEVICE_OFF ) ;
 }
-void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
+bool CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 {
+    bool capture_success = true;
     std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
     std::chrono::duration<double> latency;
     double time_over_sec = 5;
+    m_cls_api[TOP].Ensemble_Camera_Set_Manual_Exposure_Value("test",1000);
+    m_cls_api[BOTTOM].Ensemble_Camera_Set_Manual_Exposure_Value("test",1000);
 
 	// Step 1 : Check Front Sensor High ( The Box is entering )
+    while(0)
+    {
+        int front = m_cls_api[TOP].Ensemble_Digital_IO_GetIn();
+        int back = m_cls_api[TOP].Ensemble_Digital_IO_GetIn();
+        qDebug("val = 0x%x , 0x%x\n",front,back);
+    }
     qDebug("box front check\n");
 	do
 	{
@@ -394,12 +406,18 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
             break ;		//Front sensor check( Object is entering )
         }
         latency = std::chrono::system_clock::now() - start;
-    }while(latency.count() < time_over_sec) ;
+        if( latency.count() > time_over_sec )
+        {
+            capture_success = false;
+            break;
+        }
+    }while(1) ;
 	// Step 1 End
 
 	// Step 2 : Check Front Sensor Low ( The box passes through the sensor perfectly. )
 	/* need to test with ENSEMBLE_base */
-	do
+    qDebug("box front check\n");
+    do
 	{
 		if( Get_Status() != CurrentStatus ) break;
         if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) == 0)
@@ -408,8 +426,12 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
             break ;		//Front sensor check( Waiting object out for start capture )
         }
         latency = std::chrono::system_clock::now() - start;
-    }while(latency.count() < time_over_sec) ;
-	/************************************/
+        if( latency.count() > time_over_sec )
+        {
+            capture_success = false;
+            break;
+        }
+    }while(1) ;	/************************************/
 	// Step 2 End
 
 	// Step 3 : Get Start Frame Number
@@ -431,9 +453,17 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
         if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_BACK ) break ; 	//End sensor check
 
         latency = std::chrono::system_clock::now() - start;
-    }while(latency.count() < time_over_sec) ;
-	// Step 4 End
+        if( latency.count() > time_over_sec )
+        {
+            capture_success = false;
+            break;
+        }
+    }while(1) ;// Step 4 End
 	
+    if( capture_success == false)
+        return false;
+
+
 	// Step 5 : Get End Frame Number
 	int TOP_FrameNum_end = m_cls_api[TOP].Ensemble_Camera_Get_Frame_Count();
 	int BOTTOM_FrameNum_end = m_cls_api[BOTTOM].Ensemble_Camera_Get_Frame_Count();
@@ -449,7 +479,7 @@ void CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 
 	m_cls_api[TOP].Ensemble_Camera_Set_Camera_Image_To_Past_Frame(TOP_Center_FrameNum);
 	m_cls_api[BOTTOM].Ensemble_Camera_Set_Camera_Image_To_Past_Frame(BOTTOM_Center_FrameNum);	
-
+    return capture_success;
 }
 
 
@@ -682,7 +712,10 @@ void CEnsemble::Config_New(void)
 	{
 		SetNextImage() ;
 //		Capture_Camera_Image(Get_Status());
-		Capture_Camera_Center_Image(Get_Status());
+        if( Capture_Camera_Center_Image(Get_Status()) == false )
+        {
+               return;
+        }
 
         string config_new_str_A = "ConfigNew-CAM-A";
         string config_new_str_B = "ConfigNew-CAM-B";
