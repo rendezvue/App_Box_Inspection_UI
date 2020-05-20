@@ -403,6 +403,7 @@ bool CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
         if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) )
         {
             qDebug("OK:2. Front sensor start check OK!!\n");
+            start = std::chrono::system_clock::now(); // update start time
             break ;		//Front sensor check( Object is entering )
         }
         latency = std::chrono::system_clock::now() - start;
