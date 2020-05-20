@@ -396,40 +396,43 @@ bool CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
         int back = m_cls_api[TOP].Ensemble_Digital_IO_GetIn();
         qDebug("val = 0x%x , 0x%x\n",front,back);
     }
-    qDebug("box front check\n");
+    qDebug("OK:1. Befor box front check \n");
 	do
 	{
 		if( Get_Status() != CurrentStatus ) break;
         if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) )
         {
-            qDebug("Fonrt sensor start check!\n");
+            qDebug("OK:2. Front sensor start check OK!!\n");
             break ;		//Front sensor check( Object is entering )
         }
         latency = std::chrono::system_clock::now() - start;
         if( latency.count() > time_over_sec )
         {
+            qDebug("Fail: 2. Front sensor start check\n");
             capture_success = false;
-            break;
+            return false;
         }
     }while(1) ;
 	// Step 1 End
 
 	// Step 2 : Check Front Sensor Low ( The box passes through the sensor perfectly. )
 	/* need to test with ENSEMBLE_base */
-    qDebug("box front check\n");
+
+    qDebug("OK:3.wait box out on front sensor\n");
     do
 	{
 		if( Get_Status() != CurrentStatus ) break;
         if( (m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_FRONT) == 0)
         {
-            qDebug("Front sensor end check!\n");
+            qDebug("OK:4. Wait box out on front sensor OK!!\n");
             break ;		//Front sensor check( Waiting object out for start capture )
         }
         latency = std::chrono::system_clock::now() - start;
         if( latency.count() > time_over_sec )
         {
+            qDebug("Fail: 4.Wait box out on front sensor \n");
             capture_success = false;
-            break;
+            return false;
         }
     }while(1) ;	/************************************/
 	// Step 2 End
@@ -440,6 +443,7 @@ bool CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
 	// Step 3 End
 
 	// Step 4 : Camera Capture Start
+    qDebug("5. OK: Start Capture\n");
 	do
 	{
 		Start_Capture_Top = true;
@@ -450,13 +454,19 @@ bool CEnsemble::Capture_Camera_Center_Image(int CurrentStatus)
             qDebug("Back sensor OK!!\n");
             break;
         }
-        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_BACK ) break ; 	//End sensor check
+        if( m_cls_api[TOP].Ensemble_Digital_IO_GetIn() & SENSOR_BACK )
+        {
+            qDebug("OK: 6. End sensor check!");
+            break ; 	//End sensor check
+        }
 
         latency = std::chrono::system_clock::now() - start;
         if( latency.count() > time_over_sec )
         {
+            qDebug("Fail: 6. End sensor check time out\n");
             capture_success = false;
-            break;
+
+            return false;
         }
     }while(1) ;// Step 4 End
 	
